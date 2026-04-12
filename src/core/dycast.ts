@@ -24,9 +24,9 @@ import type {
   Text,
   User
 } from './model';
-import { getImInfo, getLiveInfo } from './request';
+import { fetchUser, getImInfo, getLiveInfo } from './request';
 import { getSignature } from './signature';
-import { logUserCast } from '@/utils/debugUtil';
+// import { logUserCast } from '@/utils/debugUtil';
 
 /**
  * 连接状态
@@ -140,6 +140,7 @@ export interface DyMessage {
   id?: string;
   method?: CastMethod;
   user?: CastUser;
+  toUser?: CastUser;
   gift?: CastGift;
   content?: string;
   rtfContent?: CastRtfContent[];
@@ -308,11 +309,12 @@ enum PayloadType {
 }
 
 /** API */
-// const BASE_URL = 'wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/';
+// wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/  => version: 1.0.14-beta.0
+// wss://webcast100-ws-web-lq.douyin.com/webcast/im/push/v2/  => version: 1.0.15
 const BASE_URL = `${location.origin.replace(/^http/, 'ws')}/socket/webcast/im/push/v2/`;
 
 /** SDK 版本 */
-const VERSION = '1.0.14-beta.0';
+export const VERSION = '1.0.15';
 
 /**
  * 默认配置
@@ -766,6 +768,7 @@ export class DyCast {
           message = decodeGiftMessage(payload);
           data.method = CastMethod.GIFT;
           data.user = this._getCastUser(message.user);
+          data.toUser = this._getCastUser(message.toUser);
           data.gift = this._getCastGift(message.gift, message.repeatCount || message.comboCount, message.repeatEnd);
           break;
         case CastMethod.LIKE:
@@ -934,11 +937,11 @@ export class DyCast {
         });
       } else if (pieces[i].userValue) {
         // 艾特用户
-        let toUser = pieces[i].userValue?.user;
+        let atUser = pieces[i].userValue?.user;
         list.push({
           type: CastRtfContentType.USER,
-          text: `@${toUser?.nickname}`,
-          user: this._getCastUser(toUser)
+          text: `@${atUser?.nickname}`,
+          user: this._getCastUser(atUser)
         });
       } else {
         // 假定为普通文本类型
@@ -992,7 +995,7 @@ export class DyCast {
   private _ping() {
     return encodePushFrame({
       payloadType: PayloadType.Hb
-    });
+    }) as Uint8Array<ArrayBuffer>;
   }
 
   /**
@@ -1008,9 +1011,9 @@ export class DyCast {
         index < 128
           ? arr.push(index)
           : index < 2048
-          ? (arr.push(192 + (index >> 6)), arr.push(128 + (63 & index)))
-          : index < 65536 &&
-            (arr.push(224 + (index >> 12)), arr.push(128 + ((index >> 6) & 63)), arr.push(128 + (63 & index)));
+            ? (arr.push(192 + (index >> 6)), arr.push(128 + (63 & index)))
+            : index < 65536 &&
+              (arr.push(224 + (index >> 12)), arr.push(128 + ((index >> 6) & 63)), arr.push(128 + (63 & index)));
       }
       return new Uint8Array(arr);
     };
@@ -1018,7 +1021,7 @@ export class DyCast {
       payloadType: PayloadType.Ack,
       payload: getPayload(ext),
       logId
-    });
+    }) as Uint8Array<ArrayBuffer>;
   }
 
   /** 关闭后 */
@@ -1080,6 +1083,7 @@ export class DyCast {
       const info = await getLiveInfo(roomNum);
       this.info = info;
       this.status = info.status;
+      await fetchUser();
       const res = await getImInfo(info.roomId, info.uniqueId);
       this.imInfo = res;
     } catch (err) {

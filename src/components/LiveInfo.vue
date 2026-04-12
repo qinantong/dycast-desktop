@@ -100,6 +100,7 @@ $errorText: #e94829;
   gap: 12px;
   box-sizing: border-box;
   padding: 24px 18px;
+  padding-bottom: 0;
   .live-info-cover {
     width: 100%;
     display: flex;

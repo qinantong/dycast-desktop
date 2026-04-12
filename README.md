@@ -25,7 +25,7 @@
   - 主要为解析提取后的弹幕，通过序列化`json`的格式
 - 分类展示直播间弹幕
   - 聊天弹幕(包含文本、普通表情、会员表情、合并表情等)
-  - 礼物弹幕
+  - 礼物弹幕(需登录 cookie)
   - 关注弹幕
   - 点赞弹幕(包含点赞数量)
   - 进入弹幕
@@ -82,6 +82,8 @@ export interface DyMessage {
   method?: CastMethod;
   // 用户信息
   user?: CastUser;
+  // 送给用户
+  toUser?: CastUser;
   // 礼物信息(当类型为礼物弹幕时有值)
   gift?: CastGift;
   // 弹幕文本
@@ -194,7 +196,7 @@ export enum CastMethod {
 
 - 项目运行后，具体界面展示如下
 
-  ![主界面](https://static.ltgcm.top/md/20250428180514.png)
+  ![主界面](https://static.ltgcm.top/md/20260412153737.png)
 
   - 整体界面为三栏布局：左侧为直播间信息及连接状态展示；中间为主要弹幕展示；右侧为输入及其它信息展示
   - 右侧主要包含两个输入框，第一个为房间号输入框，第二个为转发地址输入框；输入带有格式验证，格式不正确无法连接
@@ -202,7 +204,7 @@ export enum CastMethod {
 
 - 在右侧房间号输入框输入房间号后，点击**连接**，等待几秒后，会在左下方状态信息展示连接结果，有时可能出现网络拥堵情况，稍后再连接即可，正常连接成功/失败均会有相应的消息通知提示，也可以看控制台输出。连接成功后，大致展示如下：
 
-  ![结果](https://static.ltgcm.top/md/20250428181510.png)
+  ![结果](https://static.ltgcm.top/md/20260412153804.png)
 
 - 此时，用户可在转发信息框填入自己的`WebSocket`服务端地址，点击**转发**，即可建立连接，将弹幕信息实时传送到所设置后端
 
@@ -294,8 +296,8 @@ export enum CastMethod {
           # Nginx 不区分 ws / wss 协议
           # WebSocket 实际上是通过 HTTP 升级实现的
           # 故使用 https:// 非 wss://
-          proxy_pass https://webcast5-ws-web-lf.douyin.com/;
-  
+          proxy_pass https://webcast100-ws-web-lq.douyin.com/;
+          
           # WebSocket 关键配置
           proxy_http_version 1.1;
           proxy_set_header Upgrade $http_upgrade;

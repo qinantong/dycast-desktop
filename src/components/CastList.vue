@@ -34,6 +34,7 @@
             <CastItem
               :method="item.method"
               :user="item.user"
+              :to-user="item.toUser"
               :gift="item.gift"
               :content="item.content"
               :rtf-content="item.rtfContent" />
@@ -249,7 +250,10 @@ $darkText: #a5a5a5;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  box-shadow: 0px 5px 10px 0px $shadowB3, 0px 3px 6px 0px $shadowB15, 0 0 1px 0 $lightBd;
+  box-shadow:
+    0px 5px 10px 0px $shadowB3,
+    0px 3px 6px 0px $shadowB15,
+    0 0 1px 0 $lightBd;
   border-radius: 0.5rem;
   background-color: $lightBg;
   overflow: hidden;
@@ -273,10 +277,15 @@ $darkText: #a5a5a5;
   &.theme-dark {
     background-color: $darkBg;
     border: 0.5px solid $shadowW2;
-    box-shadow: 0px 6px 10px 0px $shadowB2, 0px 3px 6px 0px $shadowB12, inset 0px 0.5px 0.5px 0px $shadowW6;
+    box-shadow:
+      0px 6px 10px 0px $shadowB2,
+      0px 3px 6px 0px $shadowB12,
+      inset 0px 0.5px 0.5px 0px $shadowW6;
     .cast-list-header {
       background-color: $darkBarBg;
-      box-shadow: 0px 1px 0px 0px $shadowB3, 0px 0.5px 0px 0px $shadowB0;
+      box-shadow:
+        0px 1px 0px 0px $shadowB3,
+        0px 0.5px 0px 0px $shadowB0;
     }
     .title {
       color: $darkText;
@@ -314,7 +323,9 @@ $darkText: #a5a5a5;
   padding: 3px 8px;
   display: flex;
   align-items: center;
-  box-shadow: 0px 1px 0px 0px $shadowB05, 0px 0.5px 0px 0px $shadowB1;
+  box-shadow:
+    0px 1px 0px 0px $shadowB05,
+    0px 0.5px 0px 0px $shadowB1;
   .title {
     width: 100%;
     display: flex;

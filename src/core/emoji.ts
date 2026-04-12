@@ -3,502 +3,746 @@
  *  - https://www.douyin.com/aweme/v1/web/emoji/list
  */
 export const emojis: Record<string, string> = {
+  '[鲸鱼点赞]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5e87abfaec4244ac8c7b492248defd69?lk3s=343af0a2&x-expires=2091276000&x-signature=j2Bu%2FuEUibpZdIKfSQ7Hro4CJR8%3D&from=876277922',
+  '[鲸鱼爱慕]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/412ff73c8d5445c3ab2b548186bb1ae9?lk3s=343af0a2&x-expires=2091276000&x-signature=4w2LJxWFXPMMU7YFHpXY6G4LB0E%3D&from=876277922',
+  '[鲸鱼停机]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/edee77db18cf46c8af1691a9405290a9?lk3s=343af0a2&x-expires=2091276000&x-signature=Ko0NOk%2FkBaNxOFuUYOni8WrsXbM%3D&from=876277922',
+  '[鲸鱼呲牙]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0d36ce5458834752a5c1da1a9a88f658?lk3s=343af0a2&x-expires=2091276000&x-signature=Z433o4M1V2f%2BFkbLR9dA1wEuY7o%3D&from=876277922',
+  '[鲸鱼尬笑]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e18e2ef75cc9490d9b1eb65d9931e9eb?lk3s=343af0a2&x-expires=2091276000&x-signature=ZrWmrJPcaEVqsUubEbjJ1zvTxpY%3D&from=876277922',
+  '[鲸鱼流泪]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/740693622e5d48b7895caa3dfbafe808?lk3s=343af0a2&x-expires=2091276000&x-signature=S7TKkxFBnxJPTLKwr4HP7yf06vo%3D&from=876277922',
+  '[鲸鱼捂脸]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/01043fddca3d43a2933f2efabf185224?lk3s=343af0a2&x-expires=2091276000&x-signature=a6P6zU%2BFXO5f%2BmpUTkukqi3lsIE%3D&from=876277922',
+  '[过年牛]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4eb88a2105dd468a9e11bc787e8f0db1?lk3s=343af0a2&x-expires=2091276000&x-signature=Way3Xxs%2F2JEQoifSPjGv97LgQ3k%3D&from=876277922',
+  '[戴口罩]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/816f04f800c0401ea543f328755df037?lk3s=343af0a2&x-expires=2091276000&x-signature=ICpvCOR2kJO4zRmi%2BUVsFMTBfIM%3D&from=876277922',
+  '[勤洗手]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d4f5dbf2d002447693d53ad5b5bb0871?lk3s=343af0a2&x-expires=2091276000&x-signature=bU6Jkyn573swEDFskZsXUY3Sce8%3D&from=876277922',
+  '[不信谣言]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/14718db575044d82980eb4b409efdd44?lk3s=343af0a2&x-expires=2091276000&x-signature=aG3TAnIkZN8IJS8rsTsmAE7U0Iw%3D&from=876277922',
   '[微笑]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/907e61eb04e54074a101b43035d50145?lk3s=343af0a2&x-expires=2073823200&x-signature=MjgLDdotxtB5mPt%2FcfoesgEyUrw%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/54a0f69dc150401a85ba8c20c1a05db1?lk3s=343af0a2&x-expires=2091276000&x-signature=cb0ggCnY2yr198wEX4yz%2FSIoi6k%3D&from=876277922',
   '[色]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/fba0f99d4b8049cd905bfd076d4efbf2?lk3s=343af0a2&x-expires=2073823200&x-signature=3ef4Yss%2Be9jSXCn%2Fx118CcmQslU%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/27a1d35dea9748ac8c14f6c2c9829965?lk3s=343af0a2&x-expires=2091276000&x-signature=H3VtEeXN699YZ9a1Kzc1rfNvM0A%3D&from=876277922',
+  '[爱慕]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/27a1d35dea9748ac8c14f6c2c9829965?lk3s=343af0a2&x-expires=2091276000&x-signature=H3VtEeXN699YZ9a1Kzc1rfNvM0A%3D&from=876277922',
   '[发呆]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/44ddc9a6bcd9471a858a33c382f6fafa?lk3s=343af0a2&x-expires=2073823200&x-signature=bt9X%2BdfdJZrEU2KqU1U203lKORI%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/88ebe7b3f2e24729aa4de3ff33ae5731?lk3s=343af0a2&x-expires=2091276000&x-signature=ATfo1RBSBL1owfDNlAu3QjRf3og%3D&from=876277922',
+  '[惊呆]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/88ebe7b3f2e24729aa4de3ff33ae5731?lk3s=343af0a2&x-expires=2091276000&x-signature=ATfo1RBSBL1owfDNlAu3QjRf3og%3D&from=876277922',
   '[酷拽]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2609e5a35a3f436084bd618ef819227f?lk3s=343af0a2&x-expires=2073823200&x-signature=H6Su2ny4TRCAxPG6MhFvCQaRfhU%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0fac43466165409a805b3b6e3547ccef?lk3s=343af0a2&x-expires=2091276000&x-signature=Dt0uClSBeE33GikCq1NQI0rhq7M%3D&from=876277922',
   '[抠鼻]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a90f7139a14140dbba575425193ca6c5?lk3s=343af0a2&x-expires=2073823200&x-signature=5hDfo4K3vTacDeNHpsE4wNxDzPA%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/accde8fa9fe04c5e8fa3f25d1ddb5584?lk3s=343af0a2&x-expires=2091276000&x-signature=Yh4qTHHuQWz5ePJ0YQI7N%2BOCa%2FA%3D&from=876277922',
   '[流泪]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/7e606e0d73d843a2bc1c15219a1318cd?lk3s=343af0a2&x-expires=2073823200&x-signature=fN%2BpHdwjDDVGw3TVockkwcNgdpE%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2d8dc1e2bb8a417cab4130df2d10e478?lk3s=343af0a2&x-expires=2091276000&x-signature=fq9ciUiMsF%2Ff1tUi%2BSWDBm3RyF0%3D&from=876277922',
   '[捂脸]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3df5f3ca07e546b697b301ab9e2e3c23?lk3s=343af0a2&x-expires=2073823200&x-signature=0gV0VLOVdAPtDK578izTHNcMn3Q%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/357ac72b9b6449f7bd3005ff66678822?lk3s=343af0a2&x-expires=2091276000&x-signature=%2BHh6mRDeVuQhH9lOXr17ycER5cU%3D&from=876277922',
   '[发怒]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/476e92daceb14bee99e36b8f50a40e81?lk3s=343af0a2&x-expires=2073823200&x-signature=zUDm3e2ZrzyMsPOZESr4Gre2gEM%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/156352b6879b4b5f96fd80434ff72c8e?lk3s=343af0a2&x-expires=2091276000&x-signature=jNIqRt62kBQgmJswjkEODLWVxMc%3D&from=876277922',
   '[呲牙]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/86d772fc25a0404090613bad4a123947?lk3s=343af0a2&x-expires=2073823200&x-signature=tabxHYr%2BK1R5k9MxCjtwr0eXlY8%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/17bc9c4501784279b8e7d886832b0f28?lk3s=343af0a2&x-expires=2091276000&x-signature=HLt33cnsR0s9rPg%2BcfAtmh7PjLA%3D&from=876277922',
   '[尬笑]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a993e64d05cd428e876600a75129332f?lk3s=343af0a2&x-expires=2073823200&x-signature=%2F4ueoVAiEE7qyEJNpr0IlNuCF2M%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/96744c9a302345d1b14d7e0a9951c7b9?lk3s=343af0a2&x-expires=2091276000&x-signature=cbzbDzTvDgD7%2B%2FNjvwmRQAlfp7s%3D&from=876277922',
+  '[睡]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f63c365042714b2694cc4b671160af3d?lk3s=343af0a2&x-expires=2091276000&x-signature=hQlcBxJJmkjaH7eICPzG2uoCDas%3D&from=876277922',
+  '[鼾睡]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f63c365042714b2694cc4b671160af3d?lk3s=343af0a2&x-expires=2091276000&x-signature=hQlcBxJJmkjaH7eICPzG2uoCDas%3D&from=876277922',
   '[害羞]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ab54a06f377346f88f094fe6281103ff?lk3s=343af0a2&x-expires=2073823200&x-signature=S%2BrgTbBVnuQ50BSTRj3bK%2BRC8Sk%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d05cee2608fe4f998fef3f90de9466df?lk3s=343af0a2&x-expires=2091276000&x-signature=WsnVRxdTw8hziyIJRJvDzDPCWd0%3D&from=876277922',
   '[调皮]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/72045b3ac8654458a94767f463804c82?lk3s=343af0a2&x-expires=2073823200&x-signature=xpnqDsUvnAKuKHT1HKvDQIr8VP4%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a921fa28653043c1bbf162abe017c99a?lk3s=343af0a2&x-expires=2091276000&x-signature=icVltkVBEFTKX58s10uUozazGao%3D&from=876277922',
+  '[可爱]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a921fa28653043c1bbf162abe017c99a?lk3s=343af0a2&x-expires=2091276000&x-signature=icVltkVBEFTKX58s10uUozazGao%3D&from=876277922',
   '[舔屏]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cca02095fe5f448ea2289ece0e2ac49f?lk3s=343af0a2&x-expires=2073823200&x-signature=V6RMv0xuHUCx8gUnAXWmCdavdk4%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d99bd102d422484188b98e8889c0c330?lk3s=343af0a2&x-expires=2091276000&x-signature=kBRXTDEpfOHtRRr0LB4ClyeOUJo%3D&from=876277922',
   '[看]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cce25443e61846699d1f08782fb365bb?lk3s=343af0a2&x-expires=2073823200&x-signature=9CZVV1IIPHYkUlOsay7OtUH4Mh8%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/87c2ae45679c4cc4a35bd7182fd76935?lk3s=343af0a2&x-expires=2091276000&x-signature=73RswQuKYvDLEGCDyzbZwUVLKXQ%3D&from=876277922',
   '[爱心]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/740e29f4ca6547ccb4f7cf3fe0463629?lk3s=343af0a2&x-expires=2073823200&x-signature=gT1cp0sAU8MK1tFaEJ8tdoyJZsU%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/427b632213784532a4076c3b0ab269fb?lk3s=343af0a2&x-expires=2091276000&x-signature=UQ95KKM5Eod1kqRQ4hYGxBdFS14%3D&from=876277922',
   '[比心]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/8a7a9fb41d444aa68dd5568ba72040aa?lk3s=343af0a2&x-expires=2073823200&x-signature=6kPwByXVEQSS0kKGnxd%2FGy7Q%2BaQ%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/75b4e7e2405447959578f54d87811e35?lk3s=343af0a2&x-expires=2091276000&x-signature=C3982zhZka9cJ4ADx3%2FZqQc2RhI%3D&from=876277922',
   '[赞]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4c4a175aaf2b4e0c98b8d46684d64564?lk3s=343af0a2&x-expires=2073823200&x-signature=JoffJ8mqbHQy6nUe6l7%2FYYLsoFc%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1a09f79a0e7e433eb2bc143c9f026d65?lk3s=343af0a2&x-expires=2091276000&x-signature=FtVRn%2FX0s%2BsVpzDb0ZIVVodYX%2BY%3D&from=876277922',
   '[鼓掌]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/bd1068daba564862be71631451611ba7?lk3s=343af0a2&x-expires=2073823200&x-signature=Ipx0bBGc2ZKcu8yBCQXRm1kIb9A%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/15d1258bec8e4c9ea9687f1134bd5f65?lk3s=343af0a2&x-expires=2091276000&x-signature=jGft%2FEIH3v9NIZB6NDdkOuKWNV0%3D&from=876277922',
   '[感谢]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/478afb0911604f5289d9cbfd4183b404?lk3s=343af0a2&x-expires=2073823200&x-signature=Z38%2BaQoYNLP%2F1AwGigxR6ZXwVNk%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/fabab8b14ec64f669283287a4b7041cb?lk3s=343af0a2&x-expires=2091276000&x-signature=tW5QbHpqY%2FmlkQAUiiJ0oqkLmSg%3D&from=876277922',
+  '[祈祷]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/fabab8b14ec64f669283287a4b7041cb?lk3s=343af0a2&x-expires=2091276000&x-signature=tW5QbHpqY%2FmlkQAUiiJ0oqkLmSg%3D&from=876277922',
   '[抱抱你]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/8dcb4606e9f14613a3bbf98a1646e56f?lk3s=343af0a2&x-expires=2073823200&x-signature=HDGq5RUzLMBGMJHlizhwbTT2o8Q%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/299f50b8f96640d5b349cc6cb4a76030?lk3s=343af0a2&x-expires=2091276000&x-signature=T1cqQ3lcpDBlGKwDcqhuHBgYPmg%3D&from=876277922',
   '[玫瑰]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/06abb0913446422cbac6ab18ea8fa44a?lk3s=343af0a2&x-expires=2073823200&x-signature=gVzo1zT%2BPH8ujps5ouRCOPv6ivA%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/683fcd46faf148af99c90e36ccc4c013?lk3s=343af0a2&x-expires=2091276000&x-signature=zIOACwj2A08hczXcqqhCPEH4dlc%3D&from=876277922',
   '[尴尬流汗]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c98569a7f04943d7a8de0c15cef36151?lk3s=343af0a2&x-expires=2073823200&x-signature=uhWSs7aC0eW%2FU1JVklH4IkPKZGk%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/160eca1320584e2e87122e7d7ba72a53?lk3s=343af0a2&x-expires=2091276000&x-signature=OBdTSJln82YK42tRXARJjzVriL8%3D&from=876277922',
   '[戳手手]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a7a5a4db025642a392ee10d5c74e65c9?lk3s=343af0a2&x-expires=2073823200&x-signature=O7JG0ctffL2pxaGIEkyRVy8OTug%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4268c0b885ec4eae8e95dab8635ca215?lk3s=343af0a2&x-expires=2091276000&x-signature=dQmdI5bgVnPvhZNCwlEArFjM86Y%3D&from=876277922',
   '[星星眼]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/66fb1287c3f04b4bbb427a1368d12a22?lk3s=343af0a2&x-expires=2073823200&x-signature=NQouKLW%2Bo5bpIqHN0QChk9HKO6g%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/007064f99b694041a1890e52ff8c5768?lk3s=343af0a2&x-expires=2091276000&x-signature=XBw4ahWi8eR%2FuRlllqhB9TU2EBQ%3D&from=876277922',
   '[杀马特]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c6646c7cd6fc4f8d89f332c2d46e4597?lk3s=343af0a2&x-expires=2073823200&x-signature=7GmlsMFCmqtdYUBYooNJilZkfkg%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ed5fb68598cf4741b3e7f2affd825650?lk3s=343af0a2&x-expires=2091276000&x-signature=0iydWOArpwEGhHsUhVNKpdsBljI%3D&from=876277922',
   '[黄脸干杯]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e959a423dd0a43fd8fcd5dd0499928cf?lk3s=343af0a2&x-expires=2073823200&x-signature=Jtb%2FybbEDU54yPwaRPdSKZdWB9k%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a0a1e35991334532b142572d93f38ac5?lk3s=343af0a2&x-expires=2091276000&x-signature=w25HgPo7JoMhUZ3OWgv6FBLJbJ8%3D&from=876277922',
   '[抱紧自己]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e5275fd92a234e34984044e3b2213ebc?lk3s=343af0a2&x-expires=2073823200&x-signature=m1xhmkZyoUTSPoJM1Th%2F29g%2BoLA%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c0cf6b7d6a144b68b6045fd92bfe9fe2?lk3s=343af0a2&x-expires=2091276000&x-signature=MnRj5KcIH%2B5s%2BXZp3z70V43q%2BrU%3D&from=876277922',
   '[拜拜]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3545637c30284f6bb732a444f91196ab?lk3s=343af0a2&x-expires=2073823200&x-signature=pqLNy8T%2FlbyhstMPjTwDGY9Zg3w%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/36cf73734e9c49d48b3e9a5bbe2affaf?lk3s=343af0a2&x-expires=2091276000&x-signature=ksInH%2Bke5YQrdz9zmWREQpbzABc%3D&from=876277922',
   '[热化了]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a3d1ce9301c5410d88cc2470a3e11c30?lk3s=343af0a2&x-expires=2073823200&x-signature=o5W5YJL4wCX1YXwfE1iSM%2FJQlCw%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2cffc18234074d20acb0c6334c76f04a?lk3s=343af0a2&x-expires=2091276000&x-signature=yOBv09b%2BJHO1QbxiuDjysOcWUaI%3D&from=876277922',
   '[黄脸祈祷]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/bf6b3de54ab34732af82809635c704f8?lk3s=343af0a2&x-expires=2073823200&x-signature=%2FHzYhlLZc4KVG3OLT1WDXnEihj8%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3f67722d0c694372b7023deda01bd91c?lk3s=343af0a2&x-expires=2091276000&x-signature=ZdBoGn678j1ph8xpRENnRW6jg08%3D&from=876277922',
   '[懵]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/bbcb745bbb1c463089a0d40177623c9e?lk3s=343af0a2&x-expires=2073823200&x-signature=LulDwZlJtII7QV7VLuPezFJgkBo%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/dbd68a1183b344648759f5971cbc6238?lk3s=343af0a2&x-expires=2091276000&x-signature=qBfJZo5G7lsoNr4IM01Drl0xsCo%3D&from=876277922',
   '[举手]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/49bb5e7832d644dd99f50d3b6733a4c6?lk3s=343af0a2&x-expires=2073823200&x-signature=VgjowyO3fU%2BMAVtlCbDqnbBwtg4%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3c34da0d65db47c6933e6b66cc17e5aa?lk3s=343af0a2&x-expires=2091276000&x-signature=gSd9yv4Jn6y63liBqconEccKIH4%3D&from=876277922',
   '[加功德]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/517f7385630e4641af73c3ea93e44c7d?lk3s=343af0a2&x-expires=2073823200&x-signature=OdjnrHMonaK07l6SAPAu6kp1ppc%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/49b00fcf022d4c36ba86bb19c7358ec6?lk3s=343af0a2&x-expires=2091276000&x-signature=qAE2ktqy1zDe%2FSQ9oiooWYB6iCI%3D&from=876277922',
   '[摊手]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e44b432ef18e4d84844e9eb1e7d135ac?lk3s=343af0a2&x-expires=2073823200&x-signature=q46BmnrKs%2FYqk4QQ4J0EkzaSTfU%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6ffc70d8850b4e5eb6c7a5aa9e7b1782?lk3s=343af0a2&x-expires=2091276000&x-signature=YgU1pXm5EGYlv7UTGznpstz9zzI%3D&from=876277922',
   '[无语流汗]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/47fe86652a1b4cf288de5f929cba5d80?lk3s=343af0a2&x-expires=2073823200&x-signature=xJr8Yd1OOUKVTYmgvYDQnC5VAzY%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/67f5a31e2895499dbfff97ff81efb0f8?lk3s=343af0a2&x-expires=2091276000&x-signature=K5O8FdWsKyOvHzvdo266lU%2FlLjk%3D&from=876277922',
   '[续火花吧]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ebff2644a4ab4149a41f1bc7282879b1?lk3s=343af0a2&x-expires=2073823200&x-signature=crf7tlWbC23dUpwNYzTwbvjjBdQ%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1da1cd2598ba48a78cf07dc7eea09338?lk3s=343af0a2&x-expires=2091276000&x-signature=j%2BBC8ybhdc%2BZmwvDl01BI8PbcY8%3D&from=876277922',
   '[点火]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/094c1f852c2343658b2677023755249b?lk3s=343af0a2&x-expires=2073823200&x-signature=mxK22tWDTqEuxUqskJQ501KxFbc%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3bb9834bd95d4a5ba305ca2d788bd62e?lk3s=343af0a2&x-expires=2091276000&x-signature=elWa5zGDId1wduKDKbIZxWGgWGQ%3D&from=876277922',
   '[哭哭]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/df7b9c648eef4720962f604f1c81a77c?lk3s=343af0a2&x-expires=2073823200&x-signature=01cuEyEBFPcyWjxDQKUvjaq%2Bsp0%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c380b32e707b43a2967ee7b492771c0f?lk3s=343af0a2&x-expires=2091276000&x-signature=Nuji4hmOcyBw7t5vkbOD2ObfG24%3D&from=876277922',
+  '[递花]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0e852ad2bd964d2ebf611631afa737ef?lk3s=343af0a2&x-expires=2091276000&x-signature=PQtiGbI2q9ng28Sy12YpsJbfX2A%3D&from=876277922',
+  '[点头哈腰]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/87107a051f9c4ad3aeaab474eca9f7ca?lk3s=343af0a2&x-expires=2091276000&x-signature=wr4MSDQWwOM%2FESAgF3Bp%2FuZOpj0%3D&from=876277922',
   '[吐舌小狗]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b485611a693d4eadadf29f5f055511f6?lk3s=343af0a2&x-expires=2073823200&x-signature=kNX8MMbjRarIFRnrXiQ1xxUyWZM%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e4fb11ce2e2b432483ef58e058be6e0d?lk3s=343af0a2&x-expires=2091276000&x-signature=DHVoeKfjeDIzYtVjHe3I16brjSM%3D&from=876277922',
   '[送花]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f1d000c0d62a4d77b14641076a05f5b9?lk3s=343af0a2&x-expires=2073823200&x-signature=LNvbbRc%2BlTWMNB1o6U6PTqvjkVo%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ff736698b03446d19ae05cbd6cc45256?lk3s=343af0a2&x-expires=2091276000&x-signature=Z3yEdVEePK6etgs%2BQ6fTCRk7lc4%3D&from=876277922',
   '[爱心手]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f87a6fb3ac774f2e8f9f1760e3d2de45?lk3s=343af0a2&x-expires=2073823200&x-signature=er8giVWSJlYYr8ur3NHpv2ZJ5mA%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/7f50f1d4d0c74571b1a60eba9b41a4d7?lk3s=343af0a2&x-expires=2091276000&x-signature=zoDIbZYAzeJHzCin1TfT%2BbiebRk%3D&from=876277922',
   '[贴贴]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/24b237f43dee47c5a068bf4457b97145?lk3s=343af0a2&x-expires=2073823200&x-signature=u%2Fht1ZeoKO2QefKsCdk1c%2B6Sv9Q%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c3dee11223784da3a2ed524d94bb2ce8?lk3s=343af0a2&x-expires=2091276000&x-signature=TxbcjSHpVrH6pAxrrFwP%2Fqw%2BEew%3D&from=876277922',
   '[灵机一动]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9e2b0289cd994a91a77676265d5ab7a7?lk3s=343af0a2&x-expires=2073823200&x-signature=HSVlWvRSHuKlo9yQ8%2FnCgpxFtbU%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/801127f060844405b0f5e00bd01cb8ba?lk3s=343af0a2&x-expires=2091276000&x-signature=qlfeC5wDy%2FiNI51QaEoq9Km%2BNew%3D&from=876277922',
+  '[灵光一闪]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/801127f060844405b0f5e00bd01cb8ba?lk3s=343af0a2&x-expires=2091276000&x-signature=qlfeC5wDy%2FiNI51QaEoq9Km%2BNew%3D&from=876277922',
   '[耶]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/167a2c32c7874da889fc902f8cf4500a?lk3s=343af0a2&x-expires=2073823200&x-signature=8G9vpxSGru7R5E1oeaB9oBDnnrY%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f00c1c8054ff41768994256236d305b1?lk3s=343af0a2&x-expires=2091276000&x-signature=L8Crr2UnqjdsIFULvtr6KrUMyUQ%3D&from=876277922',
   '[打脸]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/91656d99d6d645a5995187454e3293f4?lk3s=343af0a2&x-expires=2073823200&x-signature=QxYr0l0hHysJgt6xC4nsV8aD5gc%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d00f39c3d5d54144a395ad4d7f8d4489?lk3s=343af0a2&x-expires=2091276000&x-signature=2xR%2Ff%2F8h%2BAgs97To3fp62oQOOb4%3D&from=876277922',
   '[大笑]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e9078540aac945b4992ae19dbf4d0783?lk3s=343af0a2&x-expires=2073823200&x-signature=P%2BFMaF9E5roPh%2F42VgPOv63LebY%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ce993ad237174993a2ed8de550a63772?lk3s=343af0a2&x-expires=2091276000&x-signature=Q%2BdRHAUzXPwx8A9Hz66Vzglrt4o%3D&from=876277922',
   '[机智]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3139a081129f4832a70da8d7808114fa?lk3s=343af0a2&x-expires=2073823200&x-signature=PKEjUtbE6KhpGfJqzCFuBpqVuBg%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ca113e21412d4609ae38032b3befddb9?lk3s=343af0a2&x-expires=2091276000&x-signature=9j5zkUgWCjb5Lqb0EO8AGpv%2B%2BPA%3D&from=876277922',
   '[送心]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c6605942715f4717805101c311b41f24?lk3s=343af0a2&x-expires=2073823200&x-signature=%2FtiFDyczT60uNH7tM2ZFhKJirPI%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/72211d3eadb64791a967f43ab340a55a?lk3s=343af0a2&x-expires=2091276000&x-signature=C2rQdXMVqlbpigBaQxJXaR4Qpl0%3D&from=876277922',
   '[666]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/61267a18cbf847b3af73190bc52ae36a?lk3s=343af0a2&x-expires=2073823200&x-signature=s%2BzNmK8LiHuHDtNcJQmJyKe4B4Q%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/11a083f1a213461f859370ccbce074df?lk3s=343af0a2&x-expires=2091276000&x-signature=SGlTpyCAqSjTcHQuY3arIIMokzM%3D&from=876277922',
   '[闭嘴]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d3cbf267d0d8426e90edfb9c75059314?lk3s=343af0a2&x-expires=2073823200&x-signature=A2kH8cfWAK7cQcOxZdj%2BE8pNJOk%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d32f14b5edfd4489a4ea736a8ad39741?lk3s=343af0a2&x-expires=2091276000&x-signature=d1n84c7wqJxMxBbGrl50OkxwmYQ%3D&from=876277922',
   '[来看我]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6ed70f4a306a48bcbc12a138165fb09d?lk3s=343af0a2&x-expires=2073823200&x-signature=k1ImScXjzKfOwveGDrWGmlcG3yo%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/27059cc0891649a8b2b0860b5b08f540?lk3s=343af0a2&x-expires=2091276000&x-signature=KOKg56kUMQSvS3TLDetxOitegkg%3D&from=876277922',
   '[一起加油]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d525a68955854abda1c8bdf7f62ebadb?lk3s=343af0a2&x-expires=2073823200&x-signature=oQUxi%2B3lA92FjQREYe3Z%2BaoGGto%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/632214f7625a41ec8b558961929153f8?lk3s=343af0a2&x-expires=2091276000&x-signature=YvE70B4ReaCPtdF00tehbY5KIMg%3D&from=876277922',
   '[哈欠]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e4b71ab984154f0ab1709bd88e9defda?lk3s=343af0a2&x-expires=2073823200&x-signature=xCGrEIq%2FgcWfk8%2FRUePEd3Mt494%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/8ef4e9f6ef36449dab4c5ecde36f7d6b?lk3s=343af0a2&x-expires=2091276000&x-signature=Gr3X66EuzcXvuj3%2FoF9Cq%2Bg2cWs%3D&from=876277922',
   '[震惊]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/55c305ac8ebe4f2a8e5fed639f188614?lk3s=343af0a2&x-expires=2073823200&x-signature=FFh6FGansgayucIoqPisAgAcJjw%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/7181d20e807f4c5787f484531d1d8468?lk3s=343af0a2&x-expires=2091276000&x-signature=vjCipSc9FsmxY4I7y5q7ifJgA%2BY%3D&from=876277922',
   '[晕]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4c0f3ba463734e50981103650f440be0?lk3s=343af0a2&x-expires=2073823200&x-signature=dWppJuqCgUqwP%2BVitO8VMK3Al1g%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2af8cb49d2854197b7dd9b87f9dd106b?lk3s=343af0a2&x-expires=2091276000&x-signature=oep833XnIKjMsVOzfQX%2FhIlbYuM%3D&from=876277922',
   '[衰]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a4d9f336b64f4554a0790eed0f0e1a71?lk3s=343af0a2&x-expires=2073823200&x-signature=kxOlK8KsZAPVscQaPW1h1YensDk%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/aa5c7f4a1d0c430a94934287cacd3c17?lk3s=343af0a2&x-expires=2091276000&x-signature=Dk07KE2LCENPBdPbV3M0ylrzOBU%3D&from=876277922',
   '[困]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4201288b0e1b47b59f9f031a53c3d687?lk3s=343af0a2&x-expires=2073823200&x-signature=VlgFXh2QjNQBLnC5Zs%2Bm16%2ByZvc%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/23cdce75a6d64bd8bb7ff87037db1be0?lk3s=343af0a2&x-expires=2091276000&x-signature=M7I81oNK6GAT2RReqmSitQ4q8I0%3D&from=876277922',
   '[疑问]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f840c0bdd606425a8dd1190b80126674?lk3s=343af0a2&x-expires=2073823200&x-signature=8en1du75I9aJ7d44Op9fPpO2Mo4%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9ea78ef420fa4bf1b7e544a01e75b830?lk3s=343af0a2&x-expires=2091276000&x-signature=pxv7EKPHGs7Ll7ITVfIMg%2FT30io%3D&from=876277922',
+  '[what]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9ea78ef420fa4bf1b7e544a01e75b830?lk3s=343af0a2&x-expires=2091276000&x-signature=pxv7EKPHGs7Ll7ITVfIMg%2FT30io%3D&from=876277922',
   '[泣不成声]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b379ea709e484581830373adf1bce572?lk3s=343af0a2&x-expires=2073823200&x-signature=yrcj1Kt6ftJ1bg3NSz8EJQ7fYxU%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/7fb67c323a0d410ea5573d4825e347eb?lk3s=343af0a2&x-expires=2091276000&x-signature=%2F6DtGCwOSfehIs6T9x9Yx4E8oqk%3D&from=876277922',
   '[小鼓掌]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d34c2cb72f9f45a1bd21669f832b9a94?lk3s=343af0a2&x-expires=2073823200&x-signature=Rlich7bcTFfiS%2FNlFlZuqtjCOiY%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/8f19f0db21324c7f9ce7b2dca984a309?lk3s=343af0a2&x-expires=2091276000&x-signature=CbxvQQaFCPHlkVi89BddyI3nw64%3D&from=876277922',
   '[大金牙]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/8cd39208016c428ca80d3468e24edb0a?lk3s=343af0a2&x-expires=2073823200&x-signature=x8M56ILIMiUy2f6gxeY127gbGHs%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b94090121f3e4549a3bee84e00515ed0?lk3s=343af0a2&x-expires=2091276000&x-signature=a53ARcWjjysoOInv%2FZY7RIp2x0g%3D&from=876277922',
   '[偷笑]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cf1a3c5b317f4c0399ed39888d73abe7?lk3s=343af0a2&x-expires=2073823200&x-signature=4J1OmigoCv9r8xmpth30JtfT0%2BM%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/817c931baafa4d06a120a8d67973b6f0?lk3s=343af0a2&x-expires=2091276000&x-signature=k5ZS62R%2FkSsMVySOobTE73AeDtg%3D&from=876277922',
   '[石化]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3c8520db7cbd418f95aea788ee6a7cf0?lk3s=343af0a2&x-expires=2073823200&x-signature=O7nTQ%2FQap6nv370L00famOd6FMU%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/88746458dcbd47b1aa801e3823e6c9a2?lk3s=343af0a2&x-expires=2091276000&x-signature=8vWR5uLJNufJRcFtfp%2FIJdNiiVE%3D&from=876277922',
   '[思考]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0e13c8681abe4239b3d468635b723d40?lk3s=343af0a2&x-expires=2073823200&x-signature=Wm0KhIf%2BWo2PCDN7cqacqFIcoT4%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c3e345069adf42f58036c349ecc20a00?lk3s=343af0a2&x-expires=2091276000&x-signature=8WhVlstzAbdapaUayF9L%2BanJF3M%3D&from=876277922',
   '[吐血]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/94c011b83a3e40cbbcfeb09c6adb2b43?lk3s=343af0a2&x-expires=2073823200&x-signature=s7b%2B2E3J9YNM7K4F%2BkbMTH%2BBO00%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/331299e25af844a38800ec75d8dd0a16?lk3s=343af0a2&x-expires=2091276000&x-signature=P7gmySpb%2FCFHwLJrjD%2FiZxQrlPs%3D&from=876277922',
   '[可怜]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e58ab050664b44eaa7a7c8b8d6fe9cf7?lk3s=343af0a2&x-expires=2073823200&x-signature=%2FxS8vYZUz1ZnIn4fVGEDWzeWLwI%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1369a30daa7d45d6b3fa5ab241938fd2?lk3s=343af0a2&x-expires=2091276000&x-signature=C9uAazx6ZYyVRcxjINm%2BWI2%2FdUk%3D&from=876277922',
   '[嘘]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cd619c9151a14094ab32f44f7487b980?lk3s=343af0a2&x-expires=2073823200&x-signature=cjn74PzyQEIjpMYqOTlvK3l4G2g%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/7c02d77ba7b44cfda223941529ccb2e6?lk3s=343af0a2&x-expires=2091276000&x-signature=85XPgZtHIjhLPNv11LoZnYpsY74%3D&from=876277922',
   '[撇嘴]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1691cd385ecd4fb6b888d000900d74bc?lk3s=343af0a2&x-expires=2073823200&x-signature=%2BxN4gisw58cinN3gy8DxdkDpu6A%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/784ef77ac9de4e4990a607166856cd38?lk3s=343af0a2&x-expires=2091276000&x-signature=ozpVZ1W6GRH1y3SZcTGjuoR8Uds%3D&from=876277922',
+  '[尴尬]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e36db4e2bf09465c8f3156151b83721f?lk3s=343af0a2&x-expires=2091276000&x-signature=aFLWtF1zOpGAin6B1qz2ZKQMsRA%3D&from=876277922',
+  '[黑线]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e36db4e2bf09465c8f3156151b83721f?lk3s=343af0a2&x-expires=2091276000&x-signature=aFLWtF1zOpGAin6B1qz2ZKQMsRA%3D&from=876277922',
   '[笑哭]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5d7d5f3c3f9548679fb73090a69f538a?lk3s=343af0a2&x-expires=2073823200&x-signature=yLQ8hBhBpf%2B7tUGZS1yJMt78knE%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e4f0c86449754bab8ae2cefe6317ceee?lk3s=343af0a2&x-expires=2091276000&x-signature=zQxg9sypWOnWqDEq4lndutoQ7Z0%3D&from=876277922',
+  '[生病]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/85ed58831dbe43afbf1bd024e71f60d7?lk3s=343af0a2&x-expires=2091276000&x-signature=eTXPcT4D14V2tOQz4Knw7FvFLMA%3D&from=876277922',
+  '[雾霾]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/85ed58831dbe43afbf1bd024e71f60d7?lk3s=343af0a2&x-expires=2091276000&x-signature=eTXPcT4D14V2tOQz4Knw7FvFLMA%3D&from=876277922',
   '[奸笑]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0431a35382c641679fe74f690241b533?lk3s=343af0a2&x-expires=2073823200&x-signature=aS6mrJOemPz07wJ9HtOwIVEItio%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6ac6247beb3a41d9b9e0e982e0225506?lk3s=343af0a2&x-expires=2091276000&x-signature=YlUezXOa5OSSfAeujDJYtX8ZIzI%3D&from=876277922',
   '[得意]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d15c89c9f3364485b514d51b43b16771?lk3s=343af0a2&x-expires=2073823200&x-signature=cHmIzbabbp%2FSOZQjibCGRt2uR0w%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b1b52b6e940a4ef8907819eb8e871c21?lk3s=343af0a2&x-expires=2091276000&x-signature=SZiIj5lVHCicYgY%2F1TApYOeJyho%3D&from=876277922',
   '[憨笑]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2d1fca45aceb46b8b3a8d55084977851?lk3s=343af0a2&x-expires=2073823200&x-signature=LsvFDv0pFNv4Is0JkeKG9rm%2BsY0%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/fceeae50c04b4343b44055ba9f9bb1a3?lk3s=343af0a2&x-expires=2091276000&x-signature=Sq4CB8c6c8xpX%2BY3ZO5mRqXnAjM%3D&from=876277922',
   '[坏笑]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b341f7cdcaea452a83a78eb81b5a30b4?lk3s=343af0a2&x-expires=2073823200&x-signature=3q2T9gVYiMvXQ0xFARa8nO4qMFc%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/eab59a94674f40358b412586f148aac6?lk3s=343af0a2&x-expires=2091276000&x-signature=0OIlxIKaeY5sEq4YEuL%2BSPUQ%2Byw%3D&from=876277922',
   '[抓狂]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1ec163608a2a49ffbbc766e505885bb1?lk3s=343af0a2&x-expires=2073823200&x-signature=QbL5JQMOi7du1qPRliiHqMeye3A%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e7ffd9db28e3455195872ebf666d2c66?lk3s=343af0a2&x-expires=2091276000&x-signature=LogUe8TOW1NDzJkEgKlxRQhXjNE%3D&from=876277922',
   '[泪奔]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9501220f825547d699c8409184846166?lk3s=343af0a2&x-expires=2073823200&x-signature=6N0oRLnHqA3eriL6yAbxi2MA5iY%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/20dbe8334dd64d028f943abc2ccde4d9?lk3s=343af0a2&x-expires=2091276000&x-signature=6OiZEQDpWVSgl2xlhMQDficiSZM%3D&from=876277922',
   '[钱]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/365405db173b45978ea6a45bd47e9d87?lk3s=343af0a2&x-expires=2073823200&x-signature=wMxkRSgozmYm7J6KeTM%2FhBsohTc%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9a45bb9c0b8a4963b858846b079cfe2f?lk3s=343af0a2&x-expires=2091276000&x-signature=xaTPb4%2BswRa7C9b0GjtGWRwaC3U%3D&from=876277922',
+  '[亲亲]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f66fef2768584dc89928cdc96e1dfa68?lk3s=343af0a2&x-expires=2091276000&x-signature=a1IDkckvuU1VxVvE4TmKhMTsa0M%3D&from=876277922',
+  '[吻]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f66fef2768584dc89928cdc96e1dfa68?lk3s=343af0a2&x-expires=2091276000&x-signature=a1IDkckvuU1VxVvE4TmKhMTsa0M%3D&from=876277922',
   '[恐惧]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b21a518ebd8b48caab9c814e40b63115?lk3s=343af0a2&x-expires=2073823200&x-signature=qwkVD3sqCsqJTHAVNjN0ZcKfKuU%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c12d025f50a047c2b064ce5f1a196f94?lk3s=343af0a2&x-expires=2091276000&x-signature=zUd5FzK8yqEIaQYh3ESn%2FVZcS%2BY%3D&from=876277922',
   '[愉快]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e7f9e93ae5da435884e17c57442729f1?lk3s=343af0a2&x-expires=2073823200&x-signature=PYIf7xIvhga56qxffHcJqL9HGUA%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/62266cefe5fe4422aceaeaeed9072b3b?lk3s=343af0a2&x-expires=2091276000&x-signature=HldWpk%2F5iHwACWgWmQxu5%2Be2nAs%3D&from=876277922',
+  '[笑]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/62266cefe5fe4422aceaeaeed9072b3b?lk3s=343af0a2&x-expires=2091276000&x-signature=HldWpk%2F5iHwACWgWmQxu5%2Be2nAs%3D&from=876277922',
   '[快哭了]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ad1d6ca9bc694b78b8b3ad816aaccf0d?lk3s=343af0a2&x-expires=2073823200&x-signature=e7DHoTs4US1MXjV296v4NgeuL4Q%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/79df79563eaf424e9eb7a26558236ff7?lk3s=343af0a2&x-expires=2091276000&x-signature=PSIHzXw8RzOsoxdEyX2GAn%2Bmdhw%3D&from=876277922',
   '[翻白眼]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/06df57cc81954ef8bf65dad06a01a69a?lk3s=343af0a2&x-expires=2073823200&x-signature=hl5skqLfe%2BjOQQSoLtQH4fp7q8M%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0e40da06368145848f7585edc937f34e?lk3s=343af0a2&x-expires=2091276000&x-signature=Adp4c9dWVjKUWKRUhC86yZiV4Mg%3D&from=876277922',
+  '[傲慢]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0e40da06368145848f7585edc937f34e?lk3s=343af0a2&x-expires=2091276000&x-signature=Adp4c9dWVjKUWKRUhC86yZiV4Mg%3D&from=876277922',
   '[互粉]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/bfa5963893bd41519ff31c7415f6956f?lk3s=343af0a2&x-expires=2073823200&x-signature=EnCcmE7lQUBcSQuVMkwAc8B2ePQ%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cb46843009fe47808953af2c9ab2fb9a?lk3s=343af0a2&x-expires=2091276000&x-signature=1ZTo42JG3%2FGcCL%2FrqMhvc2qTinM%3D&from=876277922',
   '[我想静静]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/49b5a54103ae43b0b02a564a3feec5a8?lk3s=343af0a2&x-expires=2073823200&x-signature=Zghzt46PPZfhxuZqf8BHqVM8N%2BQ%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/95d5d919b99c43f29d2fbc660ec873f0?lk3s=343af0a2&x-expires=2091276000&x-signature=6L0Y5ixDlWJPek40UHj9aN33eS8%3D&from=876277922',
   '[委屈]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4cd68b81179d421ebaf2c4e36b3630c6?lk3s=343af0a2&x-expires=2073823200&x-signature=INK%2FCB%2B%2BWeWqO%2Br80dCOy3YpnQ8%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2f7509f2cbe248889f279d19ea3fd649?lk3s=343af0a2&x-expires=2091276000&x-signature=jZdY4yA0rs%2FOBs7s1ywp6tOBKrY%3D&from=876277922',
   '[鄙视]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3e8a89ca5dc74cb88b4000551a1312a7?lk3s=343af0a2&x-expires=2073823200&x-signature=mq6Wgi8ysr5O2t45MUiJFCpoqZQ%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5c13cbb44f334122a9cd7cf4bcc6598e?lk3s=343af0a2&x-expires=2091276000&x-signature=o8m9Ct6Whau1y59MAWcbxpyerCM%3D&from=876277922',
   '[飞吻]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9a0887a55ff94cbbbadbbbdb14c7396a?lk3s=343af0a2&x-expires=2073823200&x-signature=B0mxHOoZ2ctxpxL4XLYHXlQ5Dqk%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6dcb7560c1c84d45b4abe2cb37ae7afb?lk3s=343af0a2&x-expires=2091276000&x-signature=gqhmDAK7jgKYpWcp7rhpqmcBjaQ%3D&from=876277922',
   '[再见]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2618a9c1f9424c78aaf7e6174f0242b4?lk3s=343af0a2&x-expires=2073823200&x-signature=jcxbiqxguBoi13nonyyurBBbsHc%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cae63f89c3eb478f8d1cca893b1b1a0c?lk3s=343af0a2&x-expires=2091276000&x-signature=v%2FYII1IGw6vYy56QHHRrUM8jBFw%3D&from=876277922',
   '[紫薇别走]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/616147770ba044a3abed4224c46fe605?lk3s=343af0a2&x-expires=2073823200&x-signature=VEkYHIMyZmJtQz7ojJLvMXIQ2lw%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1d921b6eff48473f872fa7d278d26926?lk3s=343af0a2&x-expires=2091276000&x-signature=bNUVggntMBnL487f8ay%2BLWevHiQ%3D&from=876277922',
   '[听歌]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/91aa9af22f664ba08ca3c66184f2a838?lk3s=343af0a2&x-expires=2073823200&x-signature=huGr%2Fi%2F1nxshUqX9uHLA2h%2FzAyE%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/82bed7a3182b4c6db21ca39417359fa1?lk3s=343af0a2&x-expires=2091276000&x-signature=WJtngauHvta%2Fl6Q6%2BhbkBe2QaZA%3D&from=876277922',
+  '[拥抱]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/de99b54c6be24f73a5aaef8366a55e99?lk3s=343af0a2&x-expires=2091276000&x-signature=QJgqcam%2FIh4bQwFkjLMQINvO3Ko%3D&from=876277922',
   '[求抱抱]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/fba1c2ac23394a31bc1c3405148bd363?lk3s=343af0a2&x-expires=2073823200&x-signature=LI42fCJ9vXou4ZguYX8zK4ihX7c%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/de99b54c6be24f73a5aaef8366a55e99?lk3s=343af0a2&x-expires=2091276000&x-signature=QJgqcam%2FIh4bQwFkjLMQINvO3Ko%3D&from=876277922',
   '[绝望的凝视]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d2a361001193458ab3250ab557c7ec4b?lk3s=343af0a2&x-expires=2073823200&x-signature=0zl6im2o8UHlm5QE5g0YUmRwGRY%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/19f6a9449e714d85bb393794daaf6d58?lk3s=343af0a2&x-expires=2091276000&x-signature=EE%2B2egC%2FKw%2FDKBWvWYUaPSpDRnU%3D&from=876277922',
   '[不失礼貌的微笑]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/47eb8964fef7479c80a1088f405beb43?lk3s=343af0a2&x-expires=2073823200&x-signature=VAP0k5NNshN05lVRgRxao8ctF0Y%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b7b842ba92e14fb8a8f328f25db91276?lk3s=343af0a2&x-expires=2091276000&x-signature=VMwesfneTAKqP6wDd43SzZbpxv0%3D&from=876277922',
   '[不看]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/dfaa3f289fd54142ad6c8088ee516852?lk3s=343af0a2&x-expires=2073823200&x-signature=aMh6C%2FnUlIbh2sJ1yVGE3f1IIyo%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/626f19e473d94e95b21b67f098599281?lk3s=343af0a2&x-expires=2091276000&x-signature=4jc0%2FLHJFoX6U6emkYfBRtLh8Ko%3D&from=876277922',
   '[裂开]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9eb467c1c4d849f39b45ad4e7beff0ce?lk3s=343af0a2&x-expires=2073823200&x-signature=PBaqUK4YcnnRf4jYniUxxOq6IxM%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e8c40bd4201e4afda065c55688971a2f?lk3s=343af0a2&x-expires=2091276000&x-signature=%2Bbtfa1vUp6qZEDGEpqxxZOO%2F8q8%3D&from=876277922',
   '[干饭人]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f68c5e1160c449508d55cbe2acc0bd47?lk3s=343af0a2&x-expires=2073823200&x-signature=e3usFgr2j2d9ffWbuKVGR8LvrFw%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0b0adfdffaea4c62a73302ae44d67a66?lk3s=343af0a2&x-expires=2091276000&x-signature=7QJFfILlqV5kGy8L8z%2BG6Ulr96k%3D&from=876277922',
   '[庆祝]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/18d02bf442484371bb918e1f07c43a05?lk3s=343af0a2&x-expires=2073823200&x-signature=QCj7vYvnw7FuHNoyloZVuo9YjUU%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9c1325e3650a4a4d96d8e299406d9d68?lk3s=343af0a2&x-expires=2091276000&x-signature=Vgjaw7e20ynpPOFIUSGCocR3epM%3D&from=876277922',
   '[吐舌]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b217d170f0c349fc8ea86615738a5c81?lk3s=343af0a2&x-expires=2073823200&x-signature=3zciBGo8boYuAOh7dYrqsYWdFkk%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e577535321324e68a0cc8fcff1a2f421?lk3s=343af0a2&x-expires=2091276000&x-signature=rwzZuIs4Fidhh9WXJ3c9h0x8M74%3D&from=876277922',
   '[呆无辜]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/003d8daaa58e4a2fb324bcd3baf4c785?lk3s=343af0a2&x-expires=2073823200&x-signature=3SUOwxvxN%2BtEyw8jx%2Bzf2El%2Bgys%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/98c368cc39b74b94bf7923b6d9c479b9?lk3s=343af0a2&x-expires=2091276000&x-signature=KA4uErmA5tWctt%2Bke8EF%2B6qvJFU%3D&from=876277922',
   '[白眼]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5faa8e1516204480b74b6f6a3122d578?lk3s=343af0a2&x-expires=2073823200&x-signature=V%2Bixb8SiuPQmi9cqLR1T%2Fdq2R6s%3D&from=876277922',
-  '[猪头]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6c3589f8daec4143bd9b9d9b41e802ec?lk3s=343af0a2&x-expires=2073823200&x-signature=4kHAxzxnHoagppvjaFVQcx6aAN4%3D&from=876277922',
-  '[冷漠]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/de102f5602824afb88009091971a862d?lk3s=343af0a2&x-expires=2073823200&x-signature=G8tssccHnf3MUWwg6GhcJiPSPL4%3D&from=876277922',
-  '[暗中观察]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/db6bb519e6bc4b9b819e04b05e194586?lk3s=343af0a2&x-expires=2073823200&x-signature=7UFtNGLN1HCQmEFoevHrdVkDDZY%3D&from=876277922',
-  '[二哈]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/54afb78ebf6a45a09c6dc7d77fc3d3fb?lk3s=343af0a2&x-expires=2073823200&x-signature=CDEheeIms9LhxhYajjnX5iDaijs%3D&from=876277922',
-  '[菜狗]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/bd5541fc02514e7e8aefde9b0aabc652?lk3s=343af0a2&x-expires=2073823200&x-signature=rl5RmB%2B94u0D0USjzlK7OT%2Bywrg%3D&from=876277922',
-  '[黑脸]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ddd30bbe0a194430af6bcd6fef98570f?lk3s=343af0a2&x-expires=2073823200&x-signature=AfM2suY7tsMlY3XNVw2nFaooyGQ%3D&from=876277922',
-  '[展开说说]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9ff343dc38e54a9f98e7fa896dd95715?lk3s=343af0a2&x-expires=2073823200&x-signature=UGHy6%2Fu37wO2JGzTbG%2FUmyGsuVk%3D&from=876277922',
-  '[蜜蜂狗]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f730fe9f0bd44b59b8f0ed5069a747dc?lk3s=343af0a2&x-expires=2073823200&x-signature=2%2FRvUz1Iy23dRs%2FDTYqXW1cox%2Fg%3D&from=876277922',
-  '[柴犬]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/603e30989b05474788e3709d7eebd4ef?lk3s=343af0a2&x-expires=2073823200&x-signature=5JBIot9jU%2Bvj3L9tWRdL46O1xPM%3D&from=876277922',
-  '[摸头]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ada62e0815f141cdbdc5a76e6781786d?lk3s=343af0a2&x-expires=2073823200&x-signature=k9pOfbC5oqvxHgwgjYsQ6FdbBqE%3D&from=876277922',
-  '[皱眉]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/fbbbf98a169642d386020f79d06af11c?lk3s=343af0a2&x-expires=2073823200&x-signature=V8JoV%2B3DZprDVp785veWW4bqb0Q%3D&from=876277922',
-  '[擦汗]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/29288834d417481f97eb63fee5c30b53?lk3s=343af0a2&x-expires=2073823200&x-signature=9E1nFXuyYcCv1i9hQ4CmfB1yZ8w%3D&from=876277922',
-  '[红脸]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e80c05fa6c4943759dba8486512901e0?lk3s=343af0a2&x-expires=2073823200&x-signature=oVIWkdilIRyd7XrZIIJVzkc2zLQ%3D&from=876277922',
-  '[做鬼脸]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3d13332de5da45498cd1ef193cc4afff?lk3s=343af0a2&x-expires=2073823200&x-signature=TmSkES0UKyqrnpmDhQVJONHDyUI%3D&from=876277922',
-  '[强]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/dcaa1bb24fed447b9ef155462db2a890?lk3s=343af0a2&x-expires=2073823200&x-signature=S3aKPrhXjKzfUByATtXX%2Bhf3q14%3D&from=876277922',
-  '[如花]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/aec920e3a21444c79a79defd76a45a75?lk3s=343af0a2&x-expires=2073823200&x-signature=5wrNF7hJZLzkdTrbQMIK%2BVCG0zs%3D&from=876277922',
-  '[吐]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/770948b40fe14c51a73e18dff5a8d29c?lk3s=343af0a2&x-expires=2073823200&x-signature=jQKO%2BK4oxQSo8rVshozpBmMIsaU%3D&from=876277922',
-  '[惊喜]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4364693f63a34e2999c54cbbc75df4e9?lk3s=343af0a2&x-expires=2073823200&x-signature=psDihmMkuOd24IGqjXe%2BWehlI4w%3D&from=876277922',
-  '[敲打]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/831ef27451104b0e9eb89660c3d7b716?lk3s=343af0a2&x-expires=2073823200&x-signature=QlxQ4sd3uDuk3yOUhK0d%2Bnz86d0%3D&from=876277922',
-  '[奋斗]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1f71ffdc4df041ac836cdc81940f68ff?lk3s=343af0a2&x-expires=2073823200&x-signature=hek2NOwUQuOGvq750km2uJVRQtk%3D&from=876277922',
-  '[吐彩虹]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cfeddc926d3846eabda23e750364e82d?lk3s=343af0a2&x-expires=2073823200&x-signature=XPHhSdAJ%2F9V7Sj4I2WFJBcW9Udg%3D&from=876277922',
-  '[大哭]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0043de2fff65408ab7522538f7b3292a?lk3s=343af0a2&x-expires=2073823200&x-signature=VJEjpeAW%2FxvhQGTmopJLdTtwBNQ%3D&from=876277922',
-  '[嘿哈]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0795718a5fe247b19ff80b064d02c66d?lk3s=343af0a2&x-expires=2073823200&x-signature=38Mw3Kh5zEtXf%2BJSsNqdCN8Aw78%3D&from=876277922',
-  '[惊恐]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/622ddf449a5d4ac6a0e15445356cfb94?lk3s=343af0a2&x-expires=2073823200&x-signature=L%2Bmuo%2FqoR52dPe5eoItZtgo3mBw%3D&from=876277922',
-  '[囧]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/600e9cfaf3a14174b451e2206baf1e0f?lk3s=343af0a2&x-expires=2073823200&x-signature=mJSYvUDYlujtRydA0JcUCk%2F4ThA%3D&from=876277922',
-  '[难过]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/072caed2f2bd4ed5ba35142965845d85?lk3s=343af0a2&x-expires=2073823200&x-signature=v4Ly7fFDlQ4LPFuRhPdfbsqzq%2BM%3D&from=876277922',
-  '[斜眼]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c10ec8abb6da4adbb3388d435a980568?lk3s=343af0a2&x-expires=2073823200&x-signature=xZcgmLVxhHmoKZQbWnoYNIm2zoo%3D&from=876277922',
-  '[阴险]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/33745171e4a544ad913b52ebb6b46b60?lk3s=343af0a2&x-expires=2073823200&x-signature=Pse2a0khxKqHhMn8dZWIzw%2B28eU%3D&from=876277922',
-  '[悠闲]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/7e79587db89a4404a0ebcf4aabba3d2d?lk3s=343af0a2&x-expires=2073823200&x-signature=tWdmhWxY36I4ZQyC4Rnw1G4GCyo%3D&from=876277922',
-  '[咒骂]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f266b481b9e14e588228016138913c75?lk3s=343af0a2&x-expires=2073823200&x-signature=YmJXrdbsN%2B67SiCIBjjjEb%2BzNsw%3D&from=876277922',
-  '[吃瓜群众]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b1c3d09acfe84b9280a28c4190fa0056?lk3s=343af0a2&x-expires=2073823200&x-signature=z%2B%2BWuRZhuHisrEixlJKMS9SuFw0%3D&from=876277922',
-  '[绿帽子]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/eb8d8e8a04e34db082437c083539dd2f?lk3s=343af0a2&x-expires=2073823200&x-signature=lejjxBFSZJ%2FMdRwhlk%2Bl12rUf20%3D&from=876277922',
-  '[敢怒不敢言]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1edc3de7713647c2b269f7f48b494b2d?lk3s=343af0a2&x-expires=2073823200&x-signature=mirAT54jPIW1Tj4M%2FmDRvhDKbhU%3D&from=876277922',
-  '[求求了]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4f6a86e4bfd14f8c8434f6d643782a41?lk3s=343af0a2&x-expires=2073823200&x-signature=JYAF%2F1A8l2lDAKPN%2FnOalWtJQYs%3D&from=876277922',
-  '[眼含热泪]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/fbd4350861fe49cd991e76e82e382715?lk3s=343af0a2&x-expires=2073823200&x-signature=K4wQKGKImDGG7EwQJnJcaGt4J30%3D&from=876277922',
-  '[叹气]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/28d74529207c43178cc72cba847daf12?lk3s=343af0a2&x-expires=2073823200&x-signature=KBfB%2Bost90eZPPxv7%2BrDqc%2BPjIU%3D&from=876277922',
-  '[好开心]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4ec5e9c2001249b79bf4ff0c6a431cae?lk3s=343af0a2&x-expires=2073823200&x-signature=0Bfje6pf8LMzkFNLDWhtuwKIX%2BI%3D&from=876277922',
-  '[不是吧]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/55656c6385754a35acce9f807c4afa32?lk3s=343af0a2&x-expires=2073823200&x-signature=pLrw7QjhfxWOAVJA3rAU1SIL7cQ%3D&from=876277922',
-  '[鞠躬]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cb9f16ad45d84f7ca4256f20048e422a?lk3s=343af0a2&x-expires=2073823200&x-signature=w6e1fY%2FcYskjx4GGKRujHyEUymc%3D&from=876277922',
-  '[躺平]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/aceb3d3827574b68a40f7c7ebf1e3049?lk3s=343af0a2&x-expires=2073823200&x-signature=k3s7fc%2BvUjE%2BOar41KmZd%2Bppyxs%3D&from=876277922',
-  '[九转大肠]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/52aeca47432745729c08609d46211ed1?lk3s=343af0a2&x-expires=2073823200&x-signature=GSL%2BJNMmSCvgMcRPC2aydfatXrU%3D&from=876277922',
-  '[不你不想]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/62d34256ab7845709616c5a7bf42aee1?lk3s=343af0a2&x-expires=2073823200&x-signature=rl6de0WflUYBK%2FzWnLeaWXrvi5I%3D&from=876277922',
-  '[一头乱麻]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/01ccc692f9094a0f9839706665c7e8bb?lk3s=343af0a2&x-expires=2073823200&x-signature=ax8yVubKHcOd0FV284PcMI4fhqY%3D&from=876277922',
-  '[kisskiss]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/434e5830fe874fdca427b0d8b23a751d?lk3s=343af0a2&x-expires=2073823200&x-signature=EAH8xUO5eqgSRMDUil57S%2Fnsfi4%3D&from=876277922',
-  '[你不大行]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/42fd189ab7ad4f478f220d34046916fb?lk3s=343af0a2&x-expires=2073823200&x-signature=oVmvoVCXf%2BRuaKxc4xuu93ONpGY%3D&from=876277922',
-  '[噢买尬]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6572851608ba4ab3acc0f0c879594d1b?lk3s=343af0a2&x-expires=2073823200&x-signature=p1kmuMl0u6dDOzJV6yvUJDcY%2Bv0%3D&from=876277922',
-  '[宕机]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/aca47d7bc40a442b933812e3f482549d?lk3s=343af0a2&x-expires=2073823200&x-signature=ep4FLHcol1DQXMtVrMC6E1mJgHE%3D&from=876277922',
-  '[苦涩]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/590d12b8677d4738ad9e989ea0280f81?lk3s=343af0a2&x-expires=2073823200&x-signature=f30VYvv%2BuCfgHMuYeyJH3ec5lHg%3D&from=876277922',
-  '[逞强落泪]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1eabd1db85dd4bddbbd842abe9cdce49?lk3s=343af0a2&x-expires=2073823200&x-signature=5pliCoX5xO%2FgW59MzjVtNVd3Wv8%3D&from=876277922',
-  '[求机位-黄脸]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f2efb004f2f842b1bc20284bd2e010e3?lk3s=343af0a2&x-expires=2073823200&x-signature=6AUuk8H7til2%2FnFjYNONW0mxhVU%3D&from=876277922',
-  '[求机位3]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c5c18a6bfb3d43f9a96f833f9a758d71?lk3s=343af0a2&x-expires=2073823200&x-signature=2%2FUGZnBssKcrzaA25HoTOAbEQJ0%3D&from=876277922',
-  '[点赞]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/45f8ce9a22b0466fbcd1bb2a841d2225?lk3s=343af0a2&x-expires=2073823200&x-signature=XjZ5kPVpmKoSWFajOq6r575r0NA%3D&from=876277922',
-  '[精选]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1482ac09926b45a1bab8f1dc98a68d22?lk3s=343af0a2&x-expires=2073823200&x-signature=15hrA3hoZeNZs70e%2B3gm2pIAwZU%3D&from=876277922',
-  '[强壮]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/8bb95fd220bf4efeb44c9b3e6c63afdf?lk3s=343af0a2&x-expires=2073823200&x-signature=LrXCst6n7bzJK1Oo6AEAClIPjbc%3D&from=876277922',
-  '[碰拳]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4f815c8c1795412cbb67233685d785a1?lk3s=343af0a2&x-expires=2073823200&x-signature=%2Ft7xf%2FsxdID5EtJR6kn8jgPm%2Fe0%3D&from=876277922',
-  '[OK]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/317a9b7fe5f94023a8b2987173708362?lk3s=343af0a2&x-expires=2073823200&x-signature=L8nu0rLsIpA9vDEwH0xcgiUOymk%3D&from=876277922',
-  '[击掌]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a4d28f23c10e4efaa979b4d119b7ade4?lk3s=343af0a2&x-expires=2073823200&x-signature=F6ortUW8TsvFOoNIKlQHCY8QmNo%3D&from=876277922',
-  '[左上]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/94266b5d083d45afb4309ed6ed905dd6?lk3s=343af0a2&x-expires=2073823200&x-signature=2a0K1xBSKzxko0%2BVaPwNLR5udkw%3D&from=876277922',
-  '[握手]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/613459694fa24ae689aa306fd07944f8?lk3s=343af0a2&x-expires=2073823200&x-signature=FX%2FeekAdrSuZJYaYgzq%2BLumhtas%3D&from=876277922',
-  '[抱拳]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/abf7cc107d4740e4bc1e238b770ac889?lk3s=343af0a2&x-expires=2073823200&x-signature=spbsMO81v18ScvM1DbVH4K7Cptg%3D&from=876277922',
-  '[勾引]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d8a316cb0427498b87e396350b83b504?lk3s=343af0a2&x-expires=2073823200&x-signature=hO9uicG80zFbnghT3gH1Vl2m%2FIM%3D&from=876277922',
-  '[拳头]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/54e9a10981a242dba426a4f63d4103ab?lk3s=343af0a2&x-expires=2073823200&x-signature=9BOG8UhqXrzceT56Dvzfx%2B8KHZg%3D&from=876277922',
-  '[弱]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6c80753d816442718d2f5ca44e1eb13a?lk3s=343af0a2&x-expires=2073823200&x-signature=Wv%2FAG7AetuVXhIXo4ySJG%2FMeFNg%3D&from=876277922',
-  '[胜利]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3b366738018343ae9831a79fa17b3dae?lk3s=343af0a2&x-expires=2073823200&x-signature=y8W3Y6DH%2Fstc81XmM9RF38iu5Ls%3D&from=876277922',
-  '[右边]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9a35f66a62804e90b31455ab6f0d99ee?lk3s=343af0a2&x-expires=2073823200&x-signature=XsviT1lgAS6hdBcP9OlVpuSyXCU%3D&from=876277922',
-  '[左边]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/54994d1e88d94722a71960508a8e9ce6?lk3s=343af0a2&x-expires=2073823200&x-signature=tOzTIEUBoXmXNh1TA0XO3a57v94%3D&from=876277922',
-  '[嘴唇]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/77a76f873a1f4e6ba5eeff343391b213?lk3s=343af0a2&x-expires=2073823200&x-signature=eXToZHi8L91S%2BFExYI9i4Ixmy3E%3D&from=876277922',
-  '[心碎]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0eb6e5cde36346289150a83a118bfa62?lk3s=343af0a2&x-expires=2073823200&x-signature=xYVszMrIUdzHhKqOwgTJeBPVvds%3D&from=876277922',
-  '[凋谢]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2b7cfe4c3c524b709bd3f15537c06911?lk3s=343af0a2&x-expires=2073823200&x-signature=m1sssxCa9BrqEL8ww%2Fg8OBRaVrk%3D&from=876277922',
-  '[愤怒]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/afa666d51d474fc6b2f0a10aca57c372?lk3s=343af0a2&x-expires=2073823200&x-signature=A7FPvWvx20W%2B3ZLc7TtniDvg8E8%3D&from=876277922',
-  '[垃圾]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/626ec790acdf4c10b5309a99ae75ecb1?lk3s=343af0a2&x-expires=2073823200&x-signature=7yLlnRJM8xlLq5aCPHkqTGjvlnI%3D&from=876277922',
-  '[啤酒]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ea97458fd890435c9fa6df3520f66b1f?lk3s=343af0a2&x-expires=2073823200&x-signature=uFvkoHyrPwbHvct4N1loeYzzSm4%3D&from=876277922',
-  '[咖啡]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4b5f538005d148248338d97c47e20f9e?lk3s=343af0a2&x-expires=2073823200&x-signature=g3ZUYrJrWeFPPu21jqHDabZtQX8%3D&from=876277922',
-  '[蛋糕]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c08640142c304d76959ee198cc8a2efd?lk3s=343af0a2&x-expires=2073823200&x-signature=DEPU1Ha%2FrS%2F%2BcTyW3oy7%2Fw8U6v0%3D&from=876277922',
-  '[礼物]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/08d888562e1f4ea086fc4f3eff2ef517?lk3s=343af0a2&x-expires=2073823200&x-signature=XzNhmpRz4V%2F5iJhO4rgtLsfm4oA%3D&from=876277922',
-  '[撒花]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/30d222de7c4a42cdb6d7a9ea7bea162b?lk3s=343af0a2&x-expires=2073823200&x-signature=zWmDKsapMkUxvoy8rTe1JCvIqw4%3D&from=876277922',
-  '[加一]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d9840b29c0d84082b758580ff6da0281?lk3s=343af0a2&x-expires=2073823200&x-signature=pcl%2FswZzMkdb3n78hkgyZkGYahg%3D&from=876277922',
-  '[减一]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/efa80a6e10f04dcc8de89092744b2bf9?lk3s=343af0a2&x-expires=2073823200&x-signature=3yQzzVCRDExUPwzpoPTc4d1CToA%3D&from=876277922',
-  '[okk]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/21b1e1cdd15742e9aacc6cfd764260cc?lk3s=343af0a2&x-expires=2073823200&x-signature=8yNKVqcSSP%2BHGJWCbKruFGyGqs8%3D&from=876277922',
-  '[V5]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/032007fd6c254a72a162d8c5bf78d512?lk3s=343af0a2&x-expires=2073823200&x-signature=3JgAigk71NRLOL15bkNDQJ3gAFA%3D&from=876277922',
-  '[绝]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5aaaff01fd1f493a82821b1a3943bf68?lk3s=343af0a2&x-expires=2073823200&x-signature=heH3RHhAQs25Qr3EHo0Hhm01AIM%3D&from=876277922',
-  '[给力]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/63b22c1e04f34e8a8816ba2b8ac46ae3?lk3s=343af0a2&x-expires=2073823200&x-signature=69A56ybEr8Cv6nzEdznLzyeWFBo%3D&from=876277922',
-  '[红包]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5defde4959044aaeae628e060e82043f?lk3s=343af0a2&x-expires=2073823200&x-signature=Urq0SkMudvrZ%2BOHs6wpX6Bkjm%2BU%3D&from=876277922',
-  '[屎]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cabe6bcd9889449daa87c2df765f379e?lk3s=343af0a2&x-expires=2073823200&x-signature=ruDQ9CaQ7QGDCMwNpQ%2Bx0led%2BL8%3D&from=876277922',
-  '[发]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/956e469de272416ebeb0aafd780bd78e?lk3s=343af0a2&x-expires=2073823200&x-signature=chJ12YxVq9%2Fjgh7QO4b835BT%2Fik%3D&from=876277922',
-  '[18禁]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/02fcc587c8b4499080e0c03994967511?lk3s=343af0a2&x-expires=2073823200&x-signature=qRwNe1bJHdT6bCsYxzE0uotie8c%3D&from=876277922',
-  '[炸弹]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/02a91594d67e462faf7c77e827a16eec?lk3s=343af0a2&x-expires=2073823200&x-signature=3wW17iqgdzNWRN9OMZAZJ%2FUwigY%3D&from=876277922',
-  '[西瓜]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d2c0b2c0484b4bd59d6b266c5a80c199?lk3s=343af0a2&x-expires=2073823200&x-signature=UKl4QP0rlvj7DlWC%2FaqQIJDaZKw%3D&from=876277922',
-  '[加鸡腿]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/45a1632fd059454b91c71d8d54e46a1b?lk3s=343af0a2&x-expires=2073823200&x-signature=kp3uDo3IN8WohamcwJax1mmkg7I%3D&from=876277922',
-  '[握爪]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ae9cd379b8c448d5a3c3aa107c3272d8?lk3s=343af0a2&x-expires=2073823200&x-signature=wXbJlJ%2FbK50ieNinqt%2BcT2OJTZg%3D&from=876277922',
-  '[太阳]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2fb7d94d6e7642349793def00e5b3e0c?lk3s=343af0a2&x-expires=2073823200&x-signature=sexZxrz6rPLuPGJTyFCTF9wa0ps%3D&from=876277922',
-  '[月亮]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/30d9ccb7e4ae4a43997e76fbabd6b5cd?lk3s=343af0a2&x-expires=2073823200&x-signature=Wsc0KXHN1dXKldYMXkb1gnqsQ0A%3D&from=876277922',
-  '[给跪了]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d3084c0ac6e74eae84dd39cbc26d990d?lk3s=343af0a2&x-expires=2073823200&x-signature=cenybaVN6h2qRcnNdWWgPA0hOWE%3D&from=876277922',
-  '[蕉绿]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5b0b93a490394665bed2a52ae67a2975?lk3s=343af0a2&x-expires=2073823200&x-signature=fe8l3%2FOeclvBJQDOlI1CaMUW4pg%3D&from=876277922',
-  '[扎心]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/8a054c74604844498fa9c4ae809f1c79?lk3s=343af0a2&x-expires=2073823200&x-signature=gzs6CFN58v9%2BftnQzEXNb1qzG1c%3D&from=876277922',
-  '[胡瓜]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ba6c382121e94f52bb44f41b9156f447?lk3s=343af0a2&x-expires=2073823200&x-signature=wjCqv7n1eknfyM7yA4me1h6eHi4%3D&from=876277922',
-  '[打call]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/77e480a1a9234d94bfcab3429f5f96bb?lk3s=343af0a2&x-expires=2073823200&x-signature=pauhqXGJCL3qdIU%2F%2BpxvBn1J2Os%3D&from=876277922',
-  '[栓Q]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6b280673ae0740e78d82178ee018a811?lk3s=343af0a2&x-expires=2073823200&x-signature=MbISzG5UsnbHPgB5RkQXArQzMnE%3D&from=876277922',
-  '[雪花]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/98c4f361b8cc49e2aeff0b546664af42?lk3s=343af0a2&x-expires=2073823200&x-signature=84KTEV8AEkjH9cbltrIhIWMst40%3D&from=876277922',
-  '[圣诞树]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/8260b9fef99e430aa08ff9259355e907?lk3s=343af0a2&x-expires=2073823200&x-signature=6WA7Av5%2FIhXJqFBF%2FO7o%2B5z33IA%3D&from=876277922',
-  '[平安果]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cc5884dd4b814d81a9982bbcee136e45?lk3s=343af0a2&x-expires=2073823200&x-signature=bL12wgtPYb5hw8ybU5p7bH6YnoE%3D&from=876277922',
-  '[圣诞帽]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4f1aeeedf61a4051aaf0bc96a6ead49f?lk3s=343af0a2&x-expires=2073823200&x-signature=XKzFM%2Bm%2FW9RP2dBNyGQY254k8iY%3D&from=876277922',
-  '[气球]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/24a048472a4c429c8d01d0401e846285?lk3s=343af0a2&x-expires=2073823200&x-signature=DBfoIXjG1kPxYkeakbSDY2aqH7A%3D&from=876277922',
-  '[烟花]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9ebf943dbb974a5e8dd13e5a339cff18?lk3s=343af0a2&x-expires=2073823200&x-signature=eF4DuejhmSOoaLp%2FIN9UxeUtDDk%3D&from=876277922',
-  '[福]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5cdc7b1819c3484db61fa60eeb989e2e?lk3s=343af0a2&x-expires=2073823200&x-signature=1if5UjjtxizX1flQ9nycUyGplaM%3D&from=876277922',
-  '[candy]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f75de5be772c458e9a5469b32c75413e?lk3s=343af0a2&x-expires=2073823200&x-signature=dwSKctHPISOMhTH4v9O8aoxR%2F4o%3D&from=876277922',
-  '[糖葫芦]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b67a198b447a45d0a36041196e26e447?lk3s=343af0a2&x-expires=2073823200&x-signature=2N8eig%2FHwYo5aw0gth%2By0OPHNZc%3D&from=876277922',
-  '[鞭炮]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/16c850aade5b475fa83b67e0266f0222?lk3s=343af0a2&x-expires=2073823200&x-signature=1GZjW3VazswnL%2Fag9FkKzoQLBAI%3D&from=876277922',
-  '[元宝]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c67bf9ed7bb34e00af6ef863d6ecfdad?lk3s=343af0a2&x-expires=2073823200&x-signature=5DvRjZ6SzFhtkLwkE8GifoJucFk%3D&from=876277922',
-  '[灯笼]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ea0d63f135594b82ac3e386cf684046a?lk3s=343af0a2&x-expires=2073823200&x-signature=%2Fz5r33jumBxWVDKwy30c6u0RuZw%3D&from=876277922',
-  '[锦鲤]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/fd24c9f2258f4640af610472b442f9ec?lk3s=343af0a2&x-expires=2073823200&x-signature=cdX1ylsUC9p1OxO%2Bz3y9eRy89A4%3D&from=876277922',
-  '[巧克力]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/71e20043b5f34b03b7dd85afb69f0503?lk3s=343af0a2&x-expires=2073823200&x-signature=HWqN1n86ItT8IJ%2FF6%2FH57eiHVc8%3D&from=876277922',
-  '[戒指]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/7d2da9bea4f0477aa530340355fda832?lk3s=343af0a2&x-expires=2073823200&x-signature=QyO3M6Wp6ymINhaiCMy6tBiFH6E%3D&from=876277922',
-  '[棒棒糖]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cd8647d2106b48fd9142c9c41562c8f7?lk3s=343af0a2&x-expires=2073823200&x-signature=pOHmeUFy4iZa04rU5RLbml18qXE%3D&from=876277922',
-  '[纸飞机]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0636e634f58f4410a8b22675d36f52a9?lk3s=343af0a2&x-expires=2073823200&x-signature=lpcT9r%2F0fkTagmfTrQ3CLxSyV7o%3D&from=876277922',
-  '[粽子]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1e8aef1795db468682f8b63521834f39?lk3s=343af0a2&x-expires=2073823200&x-signature=nx3iBGIU6YPbgU%2BK3F47VuMdj1Q%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a9d1ba597042412f9275369807147bee?lk3s=343af0a2&x-expires=2091276000&x-signature=8bMnuqlQvZcZSHkXC4xeEwcv93w%3D&from=876277922',
   '[熊吉]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/7faa93a109bf44108b68b3841623c2f7?lk3s=343af0a2&x-expires=2057403600&x-signature=RUm%2FL8A0RtlUgJuYzGHCbu4P6BQ%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4a553b19b99344b5873c0f22d8298ea1?lk3s=343af0a2&x-expires=2091276000&x-signature=qCIzz2cnGtdWjXApPSvihMcKA04%3D&from=876277922',
+  '[猪头]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4296ea156ee6479e9ad5c1381ec73cca?lk3s=343af0a2&x-expires=2091276000&x-signature=v3r9pyzCpo9Tel6hCzlnGVDnMU8%3D&from=876277922',
+  '[冷漠]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ba1d020f28a749e388fb1d15e52ac4ae?lk3s=343af0a2&x-expires=2091276000&x-signature=s0keNwyoP484GUTrsBlN4ltgDio%3D&from=876277922',
   '[微笑袋鼠]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/7b22a6234ee943479f567ba7225f5a70?lk3s=343af0a2&x-expires=2057403600&x-signature=STf%2Fu5WazKYYntC4kPmskKD6vsA%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/479fd0925622466bad76425d5bdccea5?lk3s=343af0a2&x-expires=2091276000&x-signature=CA%2FqakPj27tneCymj%2BlJZ3evjPw%3D&from=876277922',
   '[凝视]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/930f27d437fb4876ac0e18c82fc59098?lk3s=343af0a2&x-expires=2057403600&x-signature=ySzKBvaZ%2FuJzkv5jctqI%2BiaPpQw%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b2ab39883ee9470f93bde5810656f0bd?lk3s=343af0a2&x-expires=2091276000&x-signature=3PdgwY9JauIXhW7GObrX%2FxxExYU%3D&from=876277922',
+  '[暗中观察]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3cf77301823a4e969cc4c0a04d245f3d?lk3s=343af0a2&x-expires=2091276000&x-signature=LSHyzST7uTVMrrSO%2BbjfMQS1xwU%3D&from=876277922',
+  '[二哈]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2ddc8ae48fae4a4fb3767f666bb79d95?lk3s=343af0a2&x-expires=2091276000&x-signature=iG6eFr1Ob2oymPbzATaY%2FWLiz8I%3D&from=876277922',
+  '[菜狗]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/62baecf5a0084194ac383d3d199ab597?lk3s=343af0a2&x-expires=2091276000&x-signature=iOkPIXV8kDh3qVgJRSw14YRjQYg%3D&from=876277922',
+  '[骷髅]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c06fca9f73ac4f3fa9800f0ea2837787?lk3s=343af0a2&x-expires=2091276000&x-signature=aJc0m51chFIyLJ7epFd8sm%2FFn0I%3D&from=876277922',
+  '[黑脸]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b96c76ac689f44d09537583ca2357672?lk3s=343af0a2&x-expires=2091276000&x-signature=V08Q48f7dK9uyPMAnT9akm46wYI%3D&from=876277922',
+  '[展开说说]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/30f0c01ef9d24144a8ae05351485fe18?lk3s=343af0a2&x-expires=2091276000&x-signature=BkMOF2dS68yDMv4qL%2B2A9HlTxr0%3D&from=876277922',
+  '[蜜蜂狗]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d336f83b827b407d872bc48861a44c70?lk3s=343af0a2&x-expires=2091276000&x-signature=R9xofIJo2e6M6DvI5%2F4esqc8JEc%3D&from=876277922',
+  '[柴犬]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/764a5db2a67242c189f5fdabb1c75648?lk3s=343af0a2&x-expires=2091276000&x-signature=VgjTZV13888jI8ZIqm6a%2BPbKMCg%3D&from=876277922',
+  '[流汗]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/115749ed66be4cdeb99dc9c147593700?lk3s=343af0a2&x-expires=2091276000&x-signature=6yEBBtPXeQgS5mqnBq3cRE8pjkY%3D&from=876277922',
+  '[汗]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/115749ed66be4cdeb99dc9c147593700?lk3s=343af0a2&x-expires=2091276000&x-signature=6yEBBtPXeQgS5mqnBq3cRE8pjkY%3D&from=876277922',
+  '[摸头]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/10790e118cbc4d13b48cdc19c1eecb96?lk3s=343af0a2&x-expires=2091276000&x-signature=e8IZAcXaqiSfQb5UdptOR%2FfTlyk%3D&from=876277922',
+  '[皱眉]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d143738426054c9f88657ee97b779643?lk3s=343af0a2&x-expires=2091276000&x-signature=cC9X%2BhPFHC2l9xxfISp9plAKxgQ%3D&from=876277922',
+  '[擦汗]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0f7be11419c44d1ab158bbafa666101c?lk3s=343af0a2&x-expires=2091276000&x-signature=pVCePtatdaZE%2BBRdPbVMYdMKRgI%3D&from=876277922',
+  '[红脸]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/15efff0277f74e5b9e2b12c984eac159?lk3s=343af0a2&x-expires=2091276000&x-signature=DEpKXPp4pKxLB5f%2B9Qt2vY6IJQw%3D&from=876277922',
+  '[做鬼脸]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e8d099b1dc5b41b0b8535b47747a94f4?lk3s=343af0a2&x-expires=2091276000&x-signature=DXbVAUBpUQkp9e5nzfNr9imlQdM%3D&from=876277922',
+  '[强]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0b815bcdb647471b9281e3105d8d6c8e?lk3s=343af0a2&x-expires=2091276000&x-signature=S0gzDTfQylkItYPL9eTBpuOIoT0%3D&from=876277922',
+  '[如花]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/dd44ccdacbe6444a9515bdca3fb56d5f?lk3s=343af0a2&x-expires=2091276000&x-signature=KyBOmDYTU17iaePXwelJOXdmJXw%3D&from=876277922',
+  '[吐]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c0157bfb1fc548d097933c039d6952ae?lk3s=343af0a2&x-expires=2091276000&x-signature=qNLWxEV492kuKg2mHXjPKCesyzU%3D&from=876277922',
+  '[惊喜]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e718e4d7913c4bcf9c49560ff96386e9?lk3s=343af0a2&x-expires=2091276000&x-signature=P5eNshaBWjtemAqe%2By76UR88nUA%3D&from=876277922',
+  '[敲打]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/8067eb30b0d74ad29c15a8c5c7b11230?lk3s=343af0a2&x-expires=2091276000&x-signature=4BeB8chr1Ryrfhy0TOL34WWGPnY%3D&from=876277922',
+  '[奋斗]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/fb3fb08ab5204f2a83086d782944882d?lk3s=343af0a2&x-expires=2091276000&x-signature=omM2gXk7GOJV8kMy9RwruvMsZvk%3D&from=876277922',
+  '[吐彩虹]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0878b09fe3fa4d4a8f47c63748cf7762?lk3s=343af0a2&x-expires=2091276000&x-signature=IIXJRB5JL0FwlH5muSiP3KSrnXw%3D&from=876277922',
+  '[大哭]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/53246f7d51fa42e5b48b99c8074ca607?lk3s=343af0a2&x-expires=2091276000&x-signature=q8ZIaUV1CuqvLHfXrleWpJ6gNSc%3D&from=876277922',
+  '[嘿哈]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/af4e2e63b51f4d66a060ff0a42d0098b?lk3s=343af0a2&x-expires=2091276000&x-signature=rgfBxMx4aHUfE1KcInO3Pbg%2BMQ4%3D&from=876277922',
   '[加好友]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/662536093049443e8ee0330ce6cb5b01?lk3s=343af0a2&x-expires=2057403600&x-signature=snqjaeX1q5kAS7g5rwQecVOD9r8%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1513a18434b44accb1852eb5893a2386?lk3s=343af0a2&x-expires=2091276000&x-signature=C9XqUheCLVLIfPh7moXrl1%2B9BSg%3D&from=876277922',
+  '[惊恐]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/fd2f5745edbd4dadb6014096965d1c6c?lk3s=343af0a2&x-expires=2091276000&x-signature=WSWuyzrEDtC5TCGLNlAJGG1AHhk%3D&from=876277922',
   '[惊讶]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f2d1be5b50a54e9c8cee3019ee726b87?lk3s=343af0a2&x-expires=2057403600&x-signature=LGqOwZZX2Zasdnb7upm%2B4V7%2BSvA%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b2735184674e4db0bc3e49ff0e6807b4?lk3s=343af0a2&x-expires=2091276000&x-signature=iO3kBOs7aaR9Z4uiQkEGlk%2FveEM%3D&from=876277922',
+  '[囧]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4cd5a1e2c43341a9b4ac95ace6ed913e?lk3s=343af0a2&x-expires=2091276000&x-signature=svIesWT6Zq%2F3PRNJhtbaoQ2AKls%3D&from=876277922',
+  '[难过]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/697dc91cd453495d988628058582fed3?lk3s=343af0a2&x-expires=2091276000&x-signature=%2FC0E%2Fn89o2%2BONntfs5HrZ4NZRas%3D&from=876277922',
+  '[斜眼]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/63a00ad586eb4f9e81369a7e693b778b?lk3s=343af0a2&x-expires=2091276000&x-signature=sQrlFBG2m3y%2FWT19CoSc%2BYACexA%3D&from=876277922',
+  '[阴险]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/628bc8956092489399730d0c8178de5b?lk3s=343af0a2&x-expires=2091276000&x-signature=z2MmYu7V7WW1piQQfa%2BqnQvJBIs%3D&from=876277922',
+  '[左哼哼]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/be6c2ffebcb94a8992ed580f7aad6691?lk3s=343af0a2&x-expires=2091276000&x-signature=3e2iEGPhlT60AshjzJ9MKqyHq88%3D&from=876277922',
+  '[右哼哼]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c83a1eec83d2433bb21aff87051da24b?lk3s=343af0a2&x-expires=2091276000&x-signature=VTQNzI%2B5RSOob9OX%2BuWVl8TZio8%3D&from=876277922',
+  '[悠闲]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/989818a338bd4d718f0afc47f7c76a4c?lk3s=343af0a2&x-expires=2091276000&x-signature=Q5AUxo64gthjQFNGZlMBnwUtB%2BE%3D&from=876277922',
+  '[咒骂]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/44802ec1a8bd4ff2aac38cfcf97201cb?lk3s=343af0a2&x-expires=2091276000&x-signature=jINom6fPo212K6JmX03jtUlAAVg%3D&from=876277922',
+  '[吃瓜群众]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2e2059714acb489483735cbe63ff7dbc?lk3s=343af0a2&x-expires=2091276000&x-signature=zPAm1jJsaY3CAR1wJckoRkORoe8%3D&from=876277922',
+  '[绿帽子]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d23e058bab744349ac636c45e9a3687f?lk3s=343af0a2&x-expires=2091276000&x-signature=DUWeMKd4P2Z2dT9XhQ%2BzICK9VfA%3D&from=876277922',
   '[真的会谢]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f2ed96c120404d9988d9a72fce692ba4?lk3s=343af0a2&x-expires=2057403600&x-signature=OAQIO2ScEwZDu0scQ7WX2AwJaf4%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/800e0e8df5d54bc29def678390e4e561?lk3s=343af0a2&x-expires=2091276000&x-signature=3m9%2FK4Dhk54e5V1%2F6qRSnuftBy0%3D&from=876277922',
   '[达咩]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b733115dcc764206bf1cb4ba50b57265?lk3s=343af0a2&x-expires=2057403600&x-signature=2ZiuC72RjKxZhBbt%2FVubVc0oDWM%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/8212d3a71fb146c5811263891776cd73?lk3s=343af0a2&x-expires=2091276000&x-signature=UP%2F6l8fJbnNQ0psADgZfYz4FYP0%3D&from=876277922',
+  '[敢怒不敢言]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/38b34096e69c41119b8d50cfd3a66882?lk3s=343af0a2&x-expires=2091276000&x-signature=GHk3ySZ0y2vAcJLUh8lx9%2F%2FU%2BNA%3D&from=876277922',
   '[投降]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/fa1f8dcac17046919da29ae5a0cb30ee?lk3s=343af0a2&x-expires=2057403600&x-signature=tUg161AO0RpDZvpduMr4rERUDg8%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/874dcac6c8054c4a941bb31b4093b2a5?lk3s=343af0a2&x-expires=2091276000&x-signature=zyNNL0TSft5n1UTCiRN3kQVyB04%3D&from=876277922',
+  '[求求了]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3b99deef770044d79182c18a854f4f27?lk3s=343af0a2&x-expires=2091276000&x-signature=REwNIIwJHlWAQDAGUJj2YwXaE6s%3D&from=876277922',
+  '[眼含热泪]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/daf0e01ed3404b8e88898f690533bb76?lk3s=343af0a2&x-expires=2091276000&x-signature=sEshm%2FTX6J87qPTLm1Z%2FbEkZHlQ%3D&from=876277922',
+  '[叹气]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d7c541c323de4272acf862f77bb8b8a2?lk3s=343af0a2&x-expires=2091276000&x-signature=E09Ror5bCMmQU%2Fd5PbifQ4TEkBs%3D&from=876277922',
+  '[好开心]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9b931359a63a42f693fdabe5934e95a9?lk3s=343af0a2&x-expires=2091276000&x-signature=JZlhr3KC3AdFA%2BiEBxBYruMTDaA%3D&from=876277922',
+  '[不是吧]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a854fc87af894fddb1e36f97867c8169?lk3s=343af0a2&x-expires=2091276000&x-signature=kZQrXonaVyKw3zGnFq8ghKCDUdg%3D&from=876277922',
   '[动动脑子]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/df9a5bb012a64008a06c938dadce5036?lk3s=343af0a2&x-expires=2057403600&x-signature=fmRO3bbn%2F9Nv9lvg94TZp3%2FtlXc%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c8df8ca9c3b448ada0169f09d20e4304?lk3s=343af0a2&x-expires=2091276000&x-signature=tibvKeBJW5ZOwca%2FXn2%2F9f2quk0%3D&from=876277922',
   '[表面微笑]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/7e53bc94c28d4c89bc12686c0ffe266c?lk3s=343af0a2&x-expires=2057403600&x-signature=aZJRx3iRlgJmW%2B3UwqGJAQlOnWA%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a7b329842b244d2fab6cfe0c0dc65eea?lk3s=343af0a2&x-expires=2091276000&x-signature=9lifl4WJoAAlX18shuF1TVEuoRc%3D&from=876277922',
   '[表面呲牙]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6554564453f545f6b022fe4a3ee324a0?lk3s=343af0a2&x-expires=2057403600&x-signature=N9j3projmk%2FEVseT%2Fy50SvH1x0Q%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/fe8b4d8a05d741d5a2f64d1b068d10a9?lk3s=343af0a2&x-expires=2091276000&x-signature=WOnWnWhforiKlmN%2FJHy9QQfblio%3D&from=876277922',
+  '[鞠躬]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/93ffc02b07174d15a0d602b7a4cbb87f?lk3s=343af0a2&x-expires=2091276000&x-signature=dNcvyhQJAgXb%2Ftk8lU6QIur2TPI%3D&from=876277922',
+  '[躺平]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/25625ce0678448fc9c556bd1ebcf638c?lk3s=343af0a2&x-expires=2091276000&x-signature=GV3JSP8vcS8KeJz2b0eRpNeKqRs%3D&from=876277922',
+  '[九转大肠]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ea89e25c77dd423d8403d20740f23bb7?lk3s=343af0a2&x-expires=2091276000&x-signature=i03hGaTAd9SOXxrf4WYVLC4ZPHk%3D&from=876277922',
   '[敲木鱼]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/09153d5c35a44be18a6bb4cd22d86913?lk3s=343af0a2&x-expires=2057403600&x-signature=dJgviLP8hg9r3ok53tsn1v8XmGs%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/20d5821386924bc28356e7c9e120578e?lk3s=343af0a2&x-expires=2091276000&x-signature=QmJBxBQbhtJL0ylTtpJ6g4X2VQ8%3D&from=876277922',
+  '[不你不想]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b4845baf417a404488e955464208cc3c?lk3s=343af0a2&x-expires=2091276000&x-signature=2%2FyXNXKhjlHjJuWvCyk31ckTMAg%3D&from=876277922',
+  '[一头乱麻]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/db393c6b9bba40f3b37d4e079d1cbf1e?lk3s=343af0a2&x-expires=2091276000&x-signature=yQt9P57EnKcsn%2F9NY5c3ArxTP%2FY%3D&from=876277922',
+  '[kisskiss]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f971f6f859b24829a15196c5a0738df1?lk3s=343af0a2&x-expires=2091276000&x-signature=sBQXbsNayiqfoSZaFrqrd77QdTo%3D&from=876277922',
+  '[你不大行]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0f2d07ea48a94bf0a57818056392bb42?lk3s=343af0a2&x-expires=2091276000&x-signature=kJuTP0cYhyPwMuZiD%2B2nDwDZDyk%3D&from=876277922',
+  '[噢买尬]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/af75834bf58e44c88b1825f85d50b7da?lk3s=343af0a2&x-expires=2091276000&x-signature=cNVbq6pWjoQ0HYCHQ02xuKUbnto%3D&from=876277922',
+  '[宕机]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/561341b97e7844148b6f040241357122?lk3s=343af0a2&x-expires=2091276000&x-signature=nCmRRFIsC0u44HnoS5FswxXLrwU%3D&from=876277922',
   '[还得是我]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f9a2ecc1a7d942bd828450245f1aa79b?lk3s=343af0a2&x-expires=2057403600&x-signature=XLbEzMkh4oJ2scTLGW7G3dnjVBs%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a5462b3a0849421cb934dc66a9eb5167?lk3s=343af0a2&x-expires=2091276000&x-signature=1y9xEfwd5RsHq5OQXbPUa1zTaJQ%3D&from=876277922',
   '[6]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/56dbd98917054f5cb198cfe687cbe296?lk3s=343af0a2&x-expires=2057403600&x-signature=d90nehb3Kwmxc1HdsudRHiHXqSI%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/86a52a4174f940ff92da1b0f8c8e3259?lk3s=343af0a2&x-expires=2091276000&x-signature=Ft0m0dzzeoyi92Wlluf1hmqfnLw%3D&from=876277922',
   '[脸疼]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9f7aeea39c924e939afaee59ca1ddc46?lk3s=343af0a2&x-expires=2057403600&x-signature=JsmvJZMi4bJegoC9HKNE0P2GLaw%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/df7aca3c339e4d0781d498e56d1f2b7c?lk3s=343af0a2&x-expires=2091276000&x-signature=c9Uu%2FKPFFCp1m2sPaCBTDLmEaLg%3D&from=876277922',
   '[他急了]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d601858037ef44498d1395be54e591f9?lk3s=343af0a2&x-expires=2057403600&x-signature=o9oWB%2FiThjD9eztv4DUpTAbTkjI%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/eb9570efafd147b1a2a4a32092920cae?lk3s=343af0a2&x-expires=2091276000&x-signature=u4ut4cjxb%2F0%2B7O3O9Ap9zY7aQc0%3D&from=876277922',
+  '[苦涩]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e72ce46a6ab640b38c7686f4b77fb7e4?lk3s=343af0a2&x-expires=2091276000&x-signature=spgRzZSRkecUMsQN%2FUoKC89UyMI%3D&from=876277922',
+  '[逞强落泪]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/67b9bcd2e1d64888bf57fa433e5b4717?lk3s=343af0a2&x-expires=2091276000&x-signature=%2FN%2B9fSPwPeI84MRfdCSLZI5hIZU%3D&from=876277922',
+  '[求机位-黄脸]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/66e8109018b64af1b87ce68ff2bfc18e?lk3s=343af0a2&x-expires=2091276000&x-signature=lWEUIzdLB5YpyM795tCn1K9Xh2U%3D&from=876277922',
+  '[求机位1]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/914f49ba29054cfb8c80dc10e8c48d73?lk3s=343af0a2&x-expires=2091276000&x-signature=ohfx8jb8sHF0Zq8EOb%2BF7cQG1qs%3D&from=876277922',
+  '[求机位2]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/7d8b5cf12fde41309875a811bd07d9dc?lk3s=343af0a2&x-expires=2091276000&x-signature=pryRkS1G1AW6jvANynXIMG4dwBc%3D&from=876277922',
+  '[求机位3]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ec3d99650c114cb49f22cda9ce06d25f?lk3s=343af0a2&x-expires=2091276000&x-signature=e89Ge7QRkfnPxWWZjAPV20ZPx5I%3D&from=876277922',
+  '[求机位-ip]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/562c6ec44b014ee4aa02f94f8fbff801?lk3s=343af0a2&x-expires=2091276000&x-signature=IeMLMVO9BOlLoHpUHeMVt3x0Dhg%3D&from=876277922',
+  '[助威]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/658f1c0e25ed4c5fbffe53396e4136ed?lk3s=343af0a2&x-expires=2091276000&x-signature=j4HLA3oOHIfIYJUVydwTS8vqM4Q%3D&from=876277922',
+  '[夺金]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e6a1db534ec0417f95144bcbf26f9d51?lk3s=343af0a2&x-expires=2091276000&x-signature=V4VRr20DmlQzznwmqH3ry9uPlm4%3D&from=876277922',
+  '[点赞]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/8e7e1b35d32b4623a0240552dc784b0f?lk3s=343af0a2&x-expires=2091276000&x-signature=CneipC7NfLklMur5zNPRa%2Fo0cpo%3D&from=876277922',
+  '[细糠]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e9c10ec4da8646889134292c392fe91a?lk3s=343af0a2&x-expires=2091276000&x-signature=EBw2jbPkIdr5tH0EzbzRjamY8Ig%3D&from=876277922',
+  '[精选]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/8d72402dd91a4a3a8cf4591b266ddb14?lk3s=343af0a2&x-expires=2091276000&x-signature=GodMSgGUw8q%2BR7RljXwptOQqb1M%3D&from=876277922',
+  '[买买买]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/da7e86f3cf354ce3b9c8424d10db003e?lk3s=343af0a2&x-expires=2091276000&x-signature=IXES6S0FXuwvki186Fc3pz%2FjqZ8%3D&from=876277922',
+  '[好想要]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9f52fcbdf35d49ea992b33c5b505bccf?lk3s=343af0a2&x-expires=2091276000&x-signature=aRsxdhCIe%2BZccjVpVhjab1truXo%3D&from=876277922',
+  '[含泪剁手]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f2a7e406354040e0a57007ba0c74f4dc?lk3s=343af0a2&x-expires=2091276000&x-signature=Es7Sc9ZHLZiT%2Biw%2BDlFUM21ABz8%3D&from=876277922',
+  '[带我去]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3d31b9fc700e4bc3a018bd41723e6089?lk3s=343af0a2&x-expires=2091276000&x-signature=sywuwNGlk65d3g2m5YSsGjqc9s8%3D&from=876277922',
+  '[好想吃]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2b0fac36a83a433781961c31f541839a?lk3s=343af0a2&x-expires=2091276000&x-signature=zeoeS3ak%2FE7dJpCZfwcRg1J%2BgBA%3D&from=876277922',
+  '[安排]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/bfa6d5756101467f8e54e3687325759c?lk3s=343af0a2&x-expires=2091276000&x-signature=Dk4fVk%2FIiGb4qgzLrRw5kTgHMFQ%3D&from=876277922',
+  '[码住]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c3cbe135d1bc4a58932698a5e9c21567?lk3s=343af0a2&x-expires=2091276000&x-signature=nGuDqj%2B1QuAk5rcuXTSXiC6BqKk%3D&from=876277922',
+  '[种草]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e8fb94cb912e42fdb3f56fad4c486cc3?lk3s=343af0a2&x-expires=2091276000&x-signature=LMjkeXZFJQpxcSLXJ1LLt6Sjfps%3D&from=876277922',
+  '[上链接]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ff3908596aef4b46a0e434881cad011c?lk3s=343af0a2&x-expires=2091276000&x-signature=pReDVQHt0NHdXF7b9%2Fs2qbRIXOI%3D&from=876277922',
+  '[强壮]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/41a493d326e7475fb8f1ef0c614dbf25?lk3s=343af0a2&x-expires=2091276000&x-signature=%2FuTWoN6JOyyvivjMHKySG5FjhCs%3D&from=876277922',
+  '[加油]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/41a493d326e7475fb8f1ef0c614dbf25?lk3s=343af0a2&x-expires=2091276000&x-signature=%2FuTWoN6JOyyvivjMHKySG5FjhCs%3D&from=876277922',
+  '[碰拳]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2bba2a8b361e467288d796c1581fec60?lk3s=343af0a2&x-expires=2091276000&x-signature=SJHEUbQXU%2Foxx1Q0U4ZwEkAEt0E%3D&from=876277922',
+  '[OK]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/28dd2b330ea74d4cac2388f617177fe1?lk3s=343af0a2&x-expires=2091276000&x-signature=7mORbYO9YfnuEMU1x2gYCZtCJgY%3D&from=876277922',
+  '[ok]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/28dd2b330ea74d4cac2388f617177fe1?lk3s=343af0a2&x-expires=2091276000&x-signature=7mORbYO9YfnuEMU1x2gYCZtCJgY%3D&from=876277922',
+  '[击掌]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d3f83268e073468fbe8759638beb42ef?lk3s=343af0a2&x-expires=2091276000&x-signature=FZ65NC3BoHf%2BaBbQFOponTY8Fvs%3D&from=876277922',
+  '[左上]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cf670dd2a4c2487181ee834aa0b048fa?lk3s=343af0a2&x-expires=2091276000&x-signature=Ckv9xa2PuZ7FQp1gMzXPVrpNGTM%3D&from=876277922',
+  '[握手]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4550a48b841144d7b37fff3d02ec8a25?lk3s=343af0a2&x-expires=2091276000&x-signature=TZ4XszGguMu5rhd32b46RYJzmcM%3D&from=876277922',
+  '[抱拳]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5c6a7e331b7441ecb615e0adab43935a?lk3s=343af0a2&x-expires=2091276000&x-signature=b%2Flsa%2FJ6SiNLjrCckhZvNYn1bdU%3D&from=876277922',
+  '[勾引]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6db49f314c1d4754a8205c3231edd396?lk3s=343af0a2&x-expires=2091276000&x-signature=jTx5GGB3LQkq5J1th9GE1kXe2wU%3D&from=876277922',
+  '[拳头]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5bede8c4134b4be798c924faee784650?lk3s=343af0a2&x-expires=2091276000&x-signature=GNiqVynPEtZ88sq1F5QwIdRVsuA%3D&from=876277922',
+  '[弱]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5028f8d3638a488b987008c384745afc?lk3s=343af0a2&x-expires=2091276000&x-signature=sUkoXM%2BvH1UnaislWnkY42YsPw4%3D&from=876277922',
+  '[胜利]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/85abaf2fa4b940879a7b3bfdb45c3299?lk3s=343af0a2&x-expires=2091276000&x-signature=gJDDRFUJF3yRBO1PsRH8wfMNELM%3D&from=876277922',
+  '[右边]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/11aadc9ed7b643279c38f94e8ed347c0?lk3s=343af0a2&x-expires=2091276000&x-signature=6bNgpXV4Ku2QE6rSvrHv7kkjDTc%3D&from=876277922',
+  '[左边]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/bed344e70c214bf281db6a7944ef909a?lk3s=343af0a2&x-expires=2091276000&x-signature=0cGMUOp%2FH%2BktEqo7QEEBkcypi14%3D&from=876277922',
+  '[足球]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c17f6c35b56141bda7456046c8b9e47c?lk3s=343af0a2&x-expires=2091276000&x-signature=uOEN8NFR7C2J1Mw3aGbIZPU%2FApI%3D&from=876277922',
+  '[球鞋]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5d914a34780e42c39d3aabbb979645e9?lk3s=343af0a2&x-expires=2091276000&x-signature=uyVoQpEzKX4v86u7prvnjsXG3Aw%3D&from=876277922',
+  '[手套]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0e2b32d099804c2683f8c8e03381c1dc?lk3s=343af0a2&x-expires=2091276000&x-signature=aAR1mgaRcIajgZfWpvTlMV5%2BRI4%3D&from=876277922',
+  '[亚运鼓掌]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a71bc57882144963b6638eff624bff1d?lk3s=343af0a2&x-expires=2091276000&x-signature=n%2BW96ikU4r2mTVqrAO6gZtE%2Bb3k%3D&from=876277922',
+  '[金牌]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0653c9667a924dd08536426f97d1c688?lk3s=343af0a2&x-expires=2091276000&x-signature=%2FU%2FK6QCJzmf1An6cgKlZnDcOZ6o%3D&from=876277922',
+  '[手花]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d85dedc2f19d41dbaca0db4008f63b47?lk3s=343af0a2&x-expires=2091276000&x-signature=GaCQ4H9866D9W%2FcBSLd5Y3yYZ8Y%3D&from=876277922',
+  '[嘴唇]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b1b3824e7b6c482b8d52b1c3b5577849?lk3s=343af0a2&x-expires=2091276000&x-signature=d42N8jl7N6NT8BwQmsysJyW38OE%3D&from=876277922',
+  '[kiss]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b1b3824e7b6c482b8d52b1c3b5577849?lk3s=343af0a2&x-expires=2091276000&x-signature=d42N8jl7N6NT8BwQmsysJyW38OE%3D&from=876277922',
+  '[心碎]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/371bb866809f454597ef538f604bd25a?lk3s=343af0a2&x-expires=2091276000&x-signature=%2Frmutxa2x3i4VIXftEoQ396AgkY%3D&from=876277922',
+  '[凋谢]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c93a47ad594b4be3a8c288aff0d7543b?lk3s=343af0a2&x-expires=2091276000&x-signature=Pzhlb1nFFseNYgmOET3plGYNFDQ%3D&from=876277922',
+  '[愤怒]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6dd1d010b5fd4f5197c1ecad3ce6796b?lk3s=343af0a2&x-expires=2091276000&x-signature=xyHuhLGfSzINVpWtBktXsL3IKhE%3D&from=876277922',
+  '[垃圾]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d7d09280091445aabfd912bcca4d9a89?lk3s=343af0a2&x-expires=2091276000&x-signature=%2ByBbeQCNxUP9ivm%2B9z7CJoWKrao%3D&from=876277922',
+  '[啤酒]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a8ae1c4c2e0f467dbff1ba0964e0175d?lk3s=343af0a2&x-expires=2091276000&x-signature=Mu%2B4HkMKtlIJvJPcE82kf3a34vE%3D&from=876277922',
+  '[咖啡]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/dcbcf5d7ca07490a950a37ff66a5be74?lk3s=343af0a2&x-expires=2091276000&x-signature=j0oVhrFcK2Gddf%2BuxmQUTgPfpho%3D&from=876277922',
+  '[蛋糕]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1153a12fbb514977b3a5349d3dcc509b?lk3s=343af0a2&x-expires=2091276000&x-signature=UMOdGNyUFdJWxNfgw51Fk3LELAU%3D&from=876277922',
+  '[礼物]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e8e086e0f6544f9b87117abebd96e840?lk3s=343af0a2&x-expires=2091276000&x-signature=4k0l6keg%2B%2FJ%2BmGT4kAdg%2BLZ4c4w%3D&from=876277922',
+  '[撒花]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/8cefd1b8c16b412298657b6e1d81f8ab?lk3s=343af0a2&x-expires=2091276000&x-signature=2paRFun5%2FfK2eOc97dYvnQ70%2BZg%3D&from=876277922',
+  '[加一]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/496076e82fd74be793ab16d2940e8f8c?lk3s=343af0a2&x-expires=2091276000&x-signature=j1lfJ%2BQyj%2Fex11FOkBiFSyczwnY%3D&from=876277922',
+  '[减一]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ffc25006163e4ecfa70968744d1be61e?lk3s=343af0a2&x-expires=2091276000&x-signature=ieEHwaPexk0DqP1Ifjd7mNCGRmc%3D&from=876277922',
+  '[okk]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9309aa3f9bed475b88538346f56fc6e6?lk3s=343af0a2&x-expires=2091276000&x-signature=6TBGLaDJZMNza0oM4%2FMBAt%2BICr0%3D&from=876277922',
+  '[V5]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cddffb522b2d421d81eb9da0f7f3cbb1?lk3s=343af0a2&x-expires=2091276000&x-signature=IeYQdbvp06l9WUae2vBTLqr08DQ%3D&from=876277922',
+  '[绝]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f1e1a02468b7420c841733c780ec2576?lk3s=343af0a2&x-expires=2091276000&x-signature=eP8%2FyEnaqj20cdfEhScWLXTzQ3E%3D&from=876277922',
+  '[给力]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5387fc1361634b579946fbac7c4ea5f4?lk3s=343af0a2&x-expires=2091276000&x-signature=tnASE9xGIne7tEkUzmPHR3%2BhtHw%3D&from=876277922',
   '[yes]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/92ce1d7ac9e2460ebc5a113dae2aa19d?lk3s=343af0a2&x-expires=2057403600&x-signature=8cAAEleYjhv%2FAhuQYQZsTw8PAAs%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/68b8d8c1dc29478791146fe773988053?lk3s=343af0a2&x-expires=2091276000&x-signature=xvxB1nfcsoWMgY1cU7hDcmEFgQw%3D&from=876277922',
   '[no]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ea61d2857e7744bcbc7a4e5039b379c1?lk3s=343af0a2&x-expires=2057403600&x-signature=AGOZm5q6zBZfq11rf4NC1SATwxg%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/25dfe5e128cd4da99344bae26bd6013e?lk3s=343af0a2&x-expires=2091276000&x-signature=iggGr6sR90CGtOYbwbjjk15EfXs%3D&from=876277922',
+  '[红包]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3e78d79aa4964404bb78b445f34c78fd?lk3s=343af0a2&x-expires=2091276000&x-signature=qs2E3YkIkccEBhD%2Fhgg03jRsuLQ%3D&from=876277922',
+  '[屎]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/eae0730620d644bdbb91985bd9cfff4e?lk3s=343af0a2&x-expires=2091276000&x-signature=HDJjHUQevsEbqBVa1lEzsrB2mCI%3D&from=876277922',
+  '[发]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ee4f3e944a62429e8e963bd187d00536?lk3s=343af0a2&x-expires=2091276000&x-signature=vsobusczp5REWDcY24e0y48aL%2Fk%3D&from=876277922',
   '[我太难了]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f92ababb5ffe4156a9b7d6aff3016733?lk3s=343af0a2&x-expires=2057403600&x-signature=0sx4WmU4SeYr981MV51zgXk1bwM%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cae0329a093c41fa9997dd3dd84b00ed?lk3s=343af0a2&x-expires=2091276000&x-signature=SEWQo1yRr5o5HUt7sz0q5kVheB0%3D&from=876277922',
+  '[18禁]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/40724dd5538c474693ec54d34a14c613?lk3s=343af0a2&x-expires=2091276000&x-signature=DyYKWrSZPRizmh2jx1CJ2gaZxhM%3D&from=876277922',
+  '[炸弹]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a309a1e9a10049d88b1c9848f5f7b287?lk3s=343af0a2&x-expires=2091276000&x-signature=ktozA%2BGLArVq%2BemjLTQQiFv72IU%3D&from=876277922',
   '[去污粉]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d55260523c79424a8ee1213e7e77a221?lk3s=343af0a2&x-expires=2057403600&x-signature=Zm9ITmEN0T0dZB6Y4a2WUVW8DNg%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4755713448b7479a8ba37d95dbba0b66?lk3s=343af0a2&x-expires=2091276000&x-signature=Eah%2BlEbrPMwb0UFc7KxnZHr5OuA%3D&from=876277922',
+  '[西瓜]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/39ca333313da4187bd5651a5404aed26?lk3s=343af0a2&x-expires=2091276000&x-signature=CkYZxLgeWYsY7%2F%2F6S9jFll215h0%3D&from=876277922',
+  '[菜刀]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9bcf92eef129456c98675df9fc655917?lk3s=343af0a2&x-expires=2091276000&x-signature=hArM35Eu1XKQLqA17vPpWDW%2FW6g%3D&from=876277922',
+  '[刀]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9bcf92eef129456c98675df9fc655917?lk3s=343af0a2&x-expires=2091276000&x-signature=hArM35Eu1XKQLqA17vPpWDW%2FW6g%3D&from=876277922',
+  '[心]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/427b632213784532a4076c3b0ab269fb?lk3s=343af0a2&x-expires=2091276000&x-signature=UQ95KKM5Eod1kqRQ4hYGxBdFS14%3D&from=876277922',
+  '[伤心]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/371bb866809f454597ef538f604bd25a?lk3s=343af0a2&x-expires=2091276000&x-signature=%2Frmutxa2x3i4VIXftEoQ396AgkY%3D&from=876277922',
+  '[便便]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/eae0730620d644bdbb91985bd9cfff4e?lk3s=343af0a2&x-expires=2091276000&x-signature=HDJjHUQevsEbqBVa1lEzsrB2mCI%3D&from=876277922',
+  '[加鸡腿]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1391aac43d004af986f2202f43253f94?lk3s=343af0a2&x-expires=2091276000&x-signature=EAauvFvpQeLaVGrb3EN%2BPnBN%2FBs%3D&from=876277922',
   '[我酸了]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1b5427c7cbdf4dd7bb5777945a2ebcf3?lk3s=343af0a2&x-expires=2057403600&x-signature=%2FiDHWIlWVcGpOmIhWXFhD4uVeqs%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/49c3017c6cda4028aba77ae15b6c718b?lk3s=343af0a2&x-expires=2091276000&x-signature=ZyXvAgzEfHPS7SViqq4I3Xw5v68%3D&from=876277922',
+  '[握爪]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/966210d6153146e8b58686aa1cc763ca?lk3s=343af0a2&x-expires=2091276000&x-signature=mwPDQxESBFspst6DrJ7NeKtxY%2FI%3D&from=876277922',
+  '[太阳]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5c9e5b67fc524f14b4ae49b5977afd9d?lk3s=343af0a2&x-expires=2091276000&x-signature=XCQ4tvjMX%2Bp67VFnljgBryyFKT0%3D&from=876277922',
+  '[月亮]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cfa03e7f7b534eb2a9bc16fec54ed23f?lk3s=343af0a2&x-expires=2091276000&x-signature=x7%2F0k%2Fk7Qp0RhrYijob1952VHYk%3D&from=876277922',
+  '[给跪了]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/21d2a8bbe630496d88c03fa9179b17cb?lk3s=343af0a2&x-expires=2091276000&x-signature=l9T1wyGfD2njXo0YzgjPFuQ4ud0%3D&from=876277922',
+  '[蕉绿]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ac2d04da5bf54c8bb12628510d8718ba?lk3s=343af0a2&x-expires=2091276000&x-signature=rKR%2Fe8TtJOpoVH7GCmOpNSGxcNc%3D&from=876277922',
+  '[扎心]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e6121879b6de4bd08d35a312574f6563?lk3s=343af0a2&x-expires=2091276000&x-signature=v0faZ%2FN805q1f4V0VrwDhkwsJas%3D&from=876277922',
+  '[胡瓜]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5f3bb76347cd49e4935300b507353f68?lk3s=343af0a2&x-expires=2091276000&x-signature=PiIdtYPcBLIo9EA9h0%2Fv0IZI3%2F4%3D&from=876277922',
   '[yyds]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a48bd145c7ef4fbb999c4f7bf025ce8a?lk3s=343af0a2&x-expires=2057403600&x-signature=0Kdoof0FSbYfoGft96vfJJjpqhQ%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0b6bd27533224e56bd2d7a8ebf189192?lk3s=343af0a2&x-expires=2091276000&x-signature=Do7rsv1IhFYCq5DiOmI9BEgsxrM%3D&from=876277922',
   '[emo]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/193224b4f72e4362b8ac9af72b0a7b90?lk3s=343af0a2&x-expires=2057403600&x-signature=H5Y7NozKwH1W8sk7e%2FfvFiri6%2Bs%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/006ba371312a42279d0e8ae951b27159?lk3s=343af0a2&x-expires=2091276000&x-signature=fHRrELSZlaWLXUbRY1tH8Ih3K2A%3D&from=876277922',
   '[开心兔]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/29aedfe988944db39fc19ed6f486bc3c?lk3s=343af0a2&x-expires=2057403600&x-signature=wS5CWJKpJcfYsZKltmoDWauRiDY%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/bd668854f119428aa707061d44e4a4a2?lk3s=343af0a2&x-expires=2091276000&x-signature=RcNAuf%2FP7L6%2FFRn6cuUUkmbQUXA%3D&from=876277922',
   '[招财兔]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/85bfd42eacd941e390ba1a8001e76df0?lk3s=343af0a2&x-expires=2057403600&x-signature=I78OP7afRb2CP6DGuuSFQAXPwDo%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/41416ef2adba4587951cec2ef2f3a5d6?lk3s=343af0a2&x-expires=2091276000&x-signature=%2FobkRoAE17lN7xG3%2BVq8ZJfMvF8%3D&from=876277922',
   '[年兽兔]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a854a9fe4cc648b0a7c12c7cc1e26ac9?lk3s=343af0a2&x-expires=2057403600&x-signature=vpcCkZMV46C19wVXyTnv2WSqjRc%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9ff81643b5904fd788f7ddeb6c672279?lk3s=343af0a2&x-expires=2091276000&x-signature=ewPGHpJoADp8zrL9qbZlx4g02RY%3D&from=876277922',
+  '[打call]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/31a1efcf7c97414fae43d1d08058b0ee?lk3s=343af0a2&x-expires=2091276000&x-signature=U%2B%2BMdguq5NMDtYvTutY6TDeAezM%3D&from=876277922',
+  '[栓Q]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a948fa11ae344a1d91276235ab6bf70b?lk3s=343af0a2&x-expires=2091276000&x-signature=wqURxU2M7%2BHZzkGeuZiKoncYRxs%3D&from=876277922',
   '[无语]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b61d0415493a4f74893956e02ab6a700?lk3s=343af0a2&x-expires=2057403600&x-signature=GKQy3hDO64g81X51Lw%2BpaTNKkYw%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/747505d5ca8744adbfd88f8cc2dba5a8?lk3s=343af0a2&x-expires=2091276000&x-signature=%2BFBSjRQhaeLZqZOSe%2FPxHPNfAe4%3D&from=876277922',
   '[雪人]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/49ea8233d34f4688b52446a4c99e0648?lk3s=343af0a2&x-expires=2057403600&x-signature=AAgV8L3avmXv%2FdGEulUa7aqtZlY%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f3cce9ff217448109c3a25bab922f596?lk3s=343af0a2&x-expires=2091276000&x-signature=O9%2F3b0FHK1v7hnf%2FTo6vmG%2F4ZPs%3D&from=876277922',
+  '[雪花]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5144febc02ad42c082b83980d9159e13?lk3s=343af0a2&x-expires=2091276000&x-signature=sD53czzadVnk03CZSXejhe%2BhimE%3D&from=876277922',
+  '[圣诞树]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9d3184f19a0042f2886922fd6d1b6823?lk3s=343af0a2&x-expires=2091276000&x-signature=zInFp0QlCNAoOeIIe3nALHWbBO4%3D&from=876277922',
+  '[平安果]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0855a7b63f1f437db4eaa3519d5dd4d5?lk3s=343af0a2&x-expires=2091276000&x-signature=kcY21qTsM5VfbCjAU%2FgjbzeB7MQ%3D&from=876277922',
+  '[圣诞帽]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/71d0ea5435d443519eafc2d72eee07c7?lk3s=343af0a2&x-expires=2091276000&x-signature=9W1eG81W3q%2FI1b1YZkY2jCJDRsc%3D&from=876277922',
+  '[气球]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2eb779c7734345979bd3f866989a167f?lk3s=343af0a2&x-expires=2091276000&x-signature=AQmQ1LvSBZycQ7YelTmGIBE4TGw%3D&from=876277922',
   '[干杯]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/21c3a197cdf1423b8315478d5ea40bb4?lk3s=343af0a2&x-expires=2057403600&x-signature=AVCjAA5GeEE5GCj8oVD6%2BkneD0g%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/05a094376d97419ca08c625706053940?lk3s=343af0a2&x-expires=2091276000&x-signature=lkmltxv6zWjWtEevPeDzP10xI9I%3D&from=876277922',
+  '[烟花]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e679017985b54d19b23668fc3437a1a1?lk3s=343af0a2&x-expires=2091276000&x-signature=gOJR7N9noGKJ4AcQw4oYvgvxhmU%3D&from=876277922',
+  '[福]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c5dd439d89754e4aa6c553a244aacc4b?lk3s=343af0a2&x-expires=2091276000&x-signature=TniW%2FcH%2FfKJ0BZ7g7qsDsyZzJKY%3D&from=876277922',
+  '[candy]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cce110c8f9f74a898a21ab413fb6cc63?lk3s=343af0a2&x-expires=2091276000&x-signature=FhdN0atZvo75gnqR9EclJMNiyJo%3D&from=876277922',
+  '[糖葫芦]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f99e62388e6c4553974f1fe44f602456?lk3s=343af0a2&x-expires=2091276000&x-signature=2yzSb9kSTN8z5IUjNr6Rn%2BmeGGg%3D&from=876277922',
   '[虎头]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e022ebce80bc41d281d9e7d1d177037a?lk3s=343af0a2&x-expires=2057403600&x-signature=2mk6NPl%2FtLeUp9OSH5pV0LxtCzI%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f1bafb835ed644ce9be8223f1e916dfb?lk3s=343af0a2&x-expires=2091276000&x-signature=AWPDBRh%2BYndrMq3Xv4vCYAsvHrY%3D&from=876277922',
   '[饺子]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/fa5a8d41bd9749c680122e179549e5cb?lk3s=343af0a2&x-expires=2057403600&x-signature=QgdE1zBPvepc8Re63UslUlTbtTM%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5b4270c3da0844fab96e85b2dae51cc9?lk3s=343af0a2&x-expires=2091276000&x-signature=Jgqslek2LOBJE6Px7crIrUmy3SQ%3D&from=876277922',
+  '[鞭炮]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/237a828fd0964b2b9510c15de33383ad?lk3s=343af0a2&x-expires=2091276000&x-signature=to3ApVHGd4rBI%2B8mUQUTB3f40XE%3D&from=876277922',
+  '[元宝]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6c0ebb50021a4b9e84cb5908be4eb5ef?lk3s=343af0a2&x-expires=2091276000&x-signature=rVV6hxl02B3VDLbNAr4eMx114Dw%3D&from=876277922',
+  '[灯笼]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a7a43e8805fc425990fed26d8be5b7b6?lk3s=343af0a2&x-expires=2091276000&x-signature=D3I8LRWAjEWPD93RCkZU5ZUh4hI%3D&from=876277922',
+  '[锦鲤]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f88e3e8d639b438aaa084549086fbb46?lk3s=343af0a2&x-expires=2091276000&x-signature=0%2BKY0LHlU9S2BbDSWIDgux3limk%3D&from=876277922',
+  '[巧克力]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c6db9180292c47779624a865d80f67e7?lk3s=343af0a2&x-expires=2091276000&x-signature=qBvkMVseWEVgURYPbwHLMfoa8xE%3D&from=876277922',
   '[汤圆]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/7bc339abf7b8457cb7efe49c1621fa69?lk3s=343af0a2&x-expires=2057403600&x-signature=yo90RLmWafwsw%2Fw%2B5o%2BjK%2FKDq7A%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2544dd1ba8fb42959df0ee55070901e5?lk3s=343af0a2&x-expires=2091276000&x-signature=iPV6Fur1QLxPF5KhTogn4ViZZQg%3D&from=876277922',
   '[情书]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0dad04e0ff6d452eb14ed93786dd70e9?lk3s=343af0a2&x-expires=2057403600&x-signature=M72tk1k36w%2FhrpXVjFLcL9j4fZY%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4f331ae1c0954822901d71e9af35f0c5?lk3s=343af0a2&x-expires=2091276000&x-signature=Ifp7VptPw%2BeQWCeaJUhPSXdYfns%3D&from=876277922',
   '[iloveyou]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1328fccef0d0449d9757453631e19e0a?lk3s=343af0a2&x-expires=2057403600&x-signature=EQ6kq%2B%2FWxCr46W6yUmUUreiwCpk%3D&from=876277922',
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cde6cae2774b49f8be42dd59e447abe0?lk3s=343af0a2&x-expires=2091276000&x-signature=LgoUyhpdGnYCkcbS2Fp4v%2Fu7c40%3D&from=876277922',
+  '[戒指]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f8eb6c5b5d6640cc82de8ecd4acd33d0?lk3s=343af0a2&x-expires=2091276000&x-signature=guymXo%2FsJMu%2BeHdA4McLEWdY1OY%3D&from=876277922',
+  '[派对]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/8cefd1b8c16b412298657b6e1d81f8ab?lk3s=343af0a2&x-expires=2091276000&x-signature=2paRFun5%2FfK2eOc97dYvnQ70%2BZg%3D&from=876277922',
+  '[过年鼠]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b7132b6e1b4c411bab0376c6ab92c1ba?lk3s=343af0a2&x-expires=2091276000&x-signature=1R46YYdxBr4QaKWqv8AXbgumBzg%3D&from=876277922',
   '[小黄鸭]':
-    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6fe6e534c642429195d1dd2f75e44808?lk3s=343af0a2&x-expires=2057403600&x-signature=FmKo%2BexHjWHE1R6HHCPgLodgBYQ%3D&from=876277922'
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c504f4ded26d4db38de65bfa6467f731?lk3s=343af0a2&x-expires=2091276000&x-signature=IBJyYDPzD5ZshRNJamhSEiaIgwE%3D&from=876277922',
+  '[棒棒糖]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/38fd079e306a40e4953bdf4a5d8a16db?lk3s=343af0a2&x-expires=2091276000&x-signature=O2Z6YR4RJpLysYutMCKRvoIsPnQ%3D&from=876277922',
+  '[纸飞机]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c0e6de9ee9d646d0a0d01831f3870787?lk3s=343af0a2&x-expires=2091276000&x-signature=sjISmwU6tdq38CVv4gFeK3tPK7A%3D&from=876277922',
+  '[必胜]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4a462ef7af09457886bd5798574f58e5?lk3s=343af0a2&x-expires=2091276000&x-signature=o50JSRsSQh2NbOrDI9ifeUkbVKo%3D&from=876277922',
+  '[粽子]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ce5e59e1376d440b98bb738c90e1a6e1?lk3s=343af0a2&x-expires=2091276000&x-signature=62CTBQk1fXl8blhGWJPIU1b2rzo%3D&from=876277922',
+  '[象]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/630854cafd2b4d0f81abb7485828300f?lk3s=343af0a2&x-expires=2091276000&x-signature=GAiZI5cCenNfyTKIcydtNLyiYWc%3D&from=876277922',
+  '[小红花]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9c13dfcfbbf840c6a17b9ea02d8c2222?lk3s=343af0a2&x-expires=2091276000&x-signature=EvmAcXdRRMfi4S2cEQhLyPG%2BA6k%3D&from=876277922',
+  '[罗三炮]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b27fbadf84f643d5b0ab23d869b3448b?lk3s=343af0a2&x-expires=2091276000&x-signature=N7S1ZA55RY5%2FVKk1xmpFjvmCBLc%3D&from=876277922',
+  '[戳一戳]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f8ff4061c6a54e7981afaa63060ab12d?lk3s=343af0a2&x-expires=2091276000&x-signature=y5B2V8HZzAgKeDf4VDpTjLo41eE%3D&from=876277922',
+  '[🎌]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2c837114666f426f8c5df97a81052594?lk3s=343af0a2&x-expires=2091276000&x-signature=iqrU4ZGX0OmXHiBhvWqkejgPdeg%3D&from=876277922',
+  '[爱了爱了]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b0fd0519c5cf4661a2268bd86c229713?lk3s=343af0a2&x-expires=2091276000&x-signature=YtQktawU1aCDBGwkBP0H%2FwMfd2k%3D&from=876277922',
+  '[狗头坏笑]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5edded76cb644da1960340d6a93e5387?lk3s=343af0a2&x-expires=2091276000&x-signature=LgPSsQ6wq8mKqQqHsr001bRMfOs%3D&from=876277922',
+  '[绝了]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1188f82251654238b467ab0b1d7311ac?lk3s=343af0a2&x-expires=2091276000&x-signature=U1sPJxRbTpoHXtmvi%2B246NPSvfc%3D&from=876277922',
+  '[厉害了]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/0e25f22b818d4ef09ef28e682ad00906?lk3s=343af0a2&x-expires=2091276000&x-signature=lbefwouE%2BKozPgJJJ9VG16MPT9k%3D&from=876277922',
+  '[么么哒]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/11f37e1251b7425f8d09fb8a53037bb3?lk3s=343af0a2&x-expires=2091276000&x-signature=dZ5t17PxlumsL5q8ZpSBtcp10Y4%3D&from=876277922',
+  '[啪啪打脸]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ccb5140c179941e3b32d7990f3b50475?lk3s=343af0a2&x-expires=2091276000&x-signature=hdg7ksLrvkFtzaufKTIwKtr9tCs%3D&from=876277922',
+  '[小心心]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5fbf25235a4047929c1752cf2ee407ea?lk3s=343af0a2&x-expires=2091276000&x-signature=uKS94iDBCMQygmXW36BMc6VP5xQ%3D&from=876277922',
+  '[在线吃瓜]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1cbfa8bb633a484b96086bfd3460ee9b?lk3s=343af0a2&x-expires=2091276000&x-signature=T0oJGV992LUBad17s3tSUonb3D4%3D&from=876277922',
+  '[来聊天]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/773cb893526e480b80adbde22825d781?lk3s=343af0a2&x-expires=2091276000&x-signature=9gqMNT4yzq%2FGtoONo65MfTKnkuU%3D&from=876277922',
+  '[电量耗尽]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/433faac39f4141a9b3fa40aa8ee04679?lk3s=343af0a2&x-expires=2091276000&x-signature=cjPfLQ9RI4Z%2Fa8IX5QGbmZ5o8AQ%3D&from=876277922',
+  '[别发癫了]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/cf625f9110fb4ba38d8a363e7c6bcf0e?lk3s=343af0a2&x-expires=2091276000&x-signature=rD%2BPfjIaYUXsGP%2By7YdvBEJH6JE%3D&from=876277922',
+  '[nonono]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e7780b187efe4026a268539a5699244f?lk3s=343af0a2&x-expires=2091276000&x-signature=ZqU6DPG2Yl2ArhIferFfJnnz6%2BM%3D&from=876277922',
+  '[看赴山海]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/02cd13a9621848dbbbfd7d1123140322?lk3s=343af0a2&x-expires=2091276000&x-signature=Ddq6wbjzyd%2FJQvt59DctEw1z3g8%3D&from=876277922',
+  '[敬礼]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/80b7bc0e108d4f65bdd5c55515ca946b?lk3s=343af0a2&x-expires=2091276000&x-signature=1hvYEyUeFWwdFmupgpAPesn2JUY%3D&from=876277922',
+  '[红旗]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b69b996eeab14f87885773b85af06a4c?lk3s=343af0a2&x-expires=2091276000&x-signature=%2BR0xJ4FJGF%2BBPFIVKumkavGRQsA%3D&from=876277922',
+  '[吃月饼]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/fb067e15025342b98f2addbed6b7b227?lk3s=343af0a2&x-expires=2091276000&x-signature=DEsqUj8mZ37zd24qdE3meTR3td8%3D&from=876277922',
+  '[玉兔]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/23069ea62f8b4d26877d31c8cc113427?lk3s=343af0a2&x-expires=2091276000&x-signature=%2F2u7%2BpB7E99fhzQ2VEk7AehwqKY%3D&from=876277922',
+  '[斜刘海]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f7fef01a033648dd81271d4b4294f405?lk3s=343af0a2&x-expires=2091276000&x-signature=Z4IWGSGHe%2BUQHkjrTn93yHfg%2FhQ%3D&from=876277922',
+  '[绿发]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/65dee37bbb884a08a79c3b382e6cf3da?lk3s=343af0a2&x-expires=2091276000&x-signature=1QMD%2FS1JLrRcnsHhyPuAEfcZAAM%3D&from=876277922',
+  '[黄发]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/df40498b4dec4dc4a124ce2a8e8ed7f2?lk3s=343af0a2&x-expires=2091276000&x-signature=7o%2B86ruW%2B%2Bsx%2BE2gVMUaPstEBFM%3D&from=876277922',
+  '[装酷]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b2849ea785df463bb0bb86c8e20b237d?lk3s=343af0a2&x-expires=2091276000&x-signature=ZeRiXjKrYFtE6Ey1qlMaUMGFCUE%3D&from=876277922',
+  '[粉发]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/25c77c7ee8b2413185248c640e145daf?lk3s=343af0a2&x-expires=2091276000&x-signature=dJAwfukNyM5NDSJemuAhZpxSKBc%3D&from=876277922',
+  '[求好运]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6bdc1f4179174284bb7ebe0e181d5f16?lk3s=343af0a2&x-expires=2091276000&x-signature=%2FFN3pKfzQZYS%2FPGNrP%2BKoszNKE0%3D&from=876277922',
+  '[超人]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4f738603a3324ddb9be8dfdc6ca993ba?lk3s=343af0a2&x-expires=2091276000&x-signature=H0N9b2VWlv3B7hqOrVPAHOmO%2B40%3D&from=876277922',
+  '[小丑]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9920f9b737e940bb8d2f7e714f69196e?lk3s=343af0a2&x-expires=2091276000&x-signature=72qG2sS6IkwOmPcSlQlALEMOco0%3D&from=876277922',
+  '[小鬼]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/6dd9b55993bf4866b695cf68e8a5ca1b?lk3s=343af0a2&x-expires=2091276000&x-signature=wqqxUUceCQ9r3VHcLug0bfb8Zp8%3D&from=876277922',
+  '[雪球]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5be98f02f30744a18a64ef5930028917?lk3s=343af0a2&x-expires=2091276000&x-signature=RdK3jbKiw2tARKpz7oqeeADjkUM%3D&from=876277922',
+  '[喜羊羊]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/d79e854b16d24e2db925eab08f790426?lk3s=343af0a2&x-expires=2091276000&x-signature=QKDMgUNyfRHZmq6xQSCFxdHMuKY%3D&from=876277922',
+  '[美羊羊]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/65414eae81ca4545bb3ce812f92eabe1?lk3s=343af0a2&x-expires=2091276000&x-signature=FOiEejfOky9UvbdRUqVCTn7vToA%3D&from=876277922',
+  '[懒羊羊]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/bc0c3c142996488b8e0babe83b046c2a?lk3s=343af0a2&x-expires=2091276000&x-signature=tlvBHXO8H6zDMcqR%2BnMdiNYn5HA%3D&from=876277922',
+  '[暖羊羊]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9bf4b217234b4b34ba858c6a1071bf87?lk3s=343af0a2&x-expires=2091276000&x-signature=dCGKSSubR%2F5%2BIKhdr5LUSy69CWQ%3D&from=876277922',
+  '[沸羊羊]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/c604b7dc48e140b6953e5e495edd1fa3?lk3s=343af0a2&x-expires=2091276000&x-signature=bB%2BmFKLrkH4keOfhhNkD4lT8T3g%3D&from=876277922',
+  '[灰太狼]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/9992f18d591f45be9d2a1ad50db52560?lk3s=343af0a2&x-expires=2091276000&x-signature=fQELNoeZkU9zlyB%2F4QIxAg1zvSo%3D&from=876277922',
+  '[红太狼]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/2662f833229545279534c8799dcc8d49?lk3s=343af0a2&x-expires=2091276000&x-signature=rJOjrxWIOLfc%2BROMB3g0E4EJ%2Fuw%3D&from=876277922',
+  '[举重]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/ff57acfd5330444eb2192a077a38c429?lk3s=343af0a2&x-expires=2091276000&x-signature=9Oyuz8LsCh82DL%2FuKaGilYvsbSI%3D&from=876277922',
+  '[乒乓球]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/7f62ba434ea34dfabacd7a6e41433c5c?lk3s=343af0a2&x-expires=2091276000&x-signature=c5HzQWgvrRDynClycggrsEWb%2FNo%3D&from=876277922',
+  '[篮球]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/888203eee90348c4b36ee4d5da4618c2?lk3s=343af0a2&x-expires=2091276000&x-signature=eeKEOyCJ52NtjTKakon8vUZbGDU%3D&from=876277922',
+  '[激情]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/f337cfe533a6466392f60874fbec88e0?lk3s=343af0a2&x-expires=2091276000&x-signature=mdplYZGj3P0iUQcg7UK4%2F%2FjlKo8%3D&from=876277922',
+  '[奖牌]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/a661f356624e4334b063589eee2d8162?lk3s=343af0a2&x-expires=2091276000&x-signature=t28GG4yWlvPJP62H3NTJ6vpZPgk%3D&from=876277922',
+  '[毛雪人]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/dba43bc32fd84a32a2122657176c23ee?lk3s=343af0a2&x-expires=2091276000&x-signature=thHdVhDRaHWcZbAVwrd7a02HRf4%3D&from=876277922',
+  '[毛手套]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/1882f0301cbe4c88aa3d96b8a84c1d73?lk3s=343af0a2&x-expires=2091276000&x-signature=LPWxoo2e2cL510IdV0rkRigx%2FWU%3D&from=876277922',
+  '[火锅]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/3af74472aaf643b8ab3451563f91e986?lk3s=343af0a2&x-expires=2091276000&x-signature=V1oEzio6g2g64L6%2BcR8KeGK%2F9m0%3D&from=876277922',
+  '[奶茶]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/4c884bb3e0ab456bbc74688164dd17e8?lk3s=343af0a2&x-expires=2091276000&x-signature=ylbuLc9N8h3POKBpdCWwe1gfv%2Fw%3D&from=876277922',
+  '[追剧]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/858a8ee843c34cf6a7327b512e3541c9?lk3s=343af0a2&x-expires=2091276000&x-signature=Tjr73GTW3%2BeWlVaNv4zKEGqesg0%3D&from=876277922',
+  '[下雪]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/736ddfdd1d9c47b09e95892a19048339?lk3s=343af0a2&x-expires=2091276000&x-signature=kViUKUuPB%2Fi1vZTQS0ShLUx12Js%3D&from=876277922',
+  '[尼克]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/13320cae8fe340c09a8b67b55aeca542?lk3s=343af0a2&x-expires=2091276000&x-signature=rBl5WEPbCj2a53WpkNgeH5wkMJA%3D&from=876277922',
+  '[朱迪]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/b895902c250f4385b5cbaa63c3549ca8?lk3s=343af0a2&x-expires=2091276000&x-signature=dJciVAXG0rNA2Fhn%2Fc2G0GUV1wc%3D&from=876277922',
+  '[盖瑞]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/e98b4b0b0b574bd79de8dee3ca1d1a54?lk3s=343af0a2&x-expires=2091276000&x-signature=AJ%2BLDmibR1O9X28DaNfTJckCCOs%3D&from=876277922',
+  '[夏奇羊]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/689fe7bb7291471cb05be07d6a7685f0?lk3s=343af0a2&x-expires=2091276000&x-signature=QDBnktR6nFp15sGNOxJvDdUvosg%3D&from=876277922',
+  '[马市长]':
+    'https://p3-pc-sign.douyinpic.com/obj/tos-cn-i-tsj2vxp0zn/5f9dbd9af23d4e04b132b7360ae5734e?lk3s=343af0a2&x-expires=2091276000&x-signature=rY3o4kP2WDKwCxXDLY7HLo6evJQ%3D&from=876277922'
 };

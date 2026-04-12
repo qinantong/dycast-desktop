@@ -15,7 +15,8 @@
       <label class="nickname">[{{ user?.name ? user.name : 'unknown' }}]：</label>
       <template v-for="item in doms">
         <span v-if="item.node === 'text'" class="text">{{ item.text }}</span>
-        <span v-if="item.node === 'user'" class="touser">{{ item.text }}</span>
+        <span v-if="item.node === 'user'" class="atuser">{{ item.text }}</span>
+        <span v-if="item.node === 'touser'" class="touser">{{ item.text }}</span>
         <img v-if="item.node === 'icon'" class="icon" :title="item.text" :src="item.url" :alt="item.text" />
         <img v-if="item.node === 'emoji'" class="emoji" alt="会员表情" :src="item.url" />
       </template>
@@ -26,10 +27,10 @@
 <script setup lang="ts">
 import { CastMethod, CastRtfContentType, type CastGift, type CastRtfContent, type CastUser } from '@/core/dycast';
 import { emojis } from '@/core/emoji';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 interface CastContentDOM {
-  node: 'text' | 'icon' | 'emoji' | 'user';
+  node: 'text' | 'icon' | 'emoji' | 'user' | 'touser';
   url?: string;
   text?: string;
 }
@@ -37,6 +38,7 @@ interface CastContentDOM {
 interface CastItemProps {
   method?: CastMethod;
   user?: CastUser;
+  toUser?: CastUser;
   gift?: CastGift;
   content?: string;
   rtfContent?: CastRtfContent[];
@@ -109,21 +111,43 @@ const doms = computed(() => {
       break;
     case CastMethod.GIFT:
       if (props.gift) {
-        list = [
-          {
-            node: 'text',
-            text: '送出了'
-          },
-          {
-            node: 'icon',
-            text: props.gift.name,
-            url: props.gift.icon
-          },
-          {
-            node: 'text',
-            text: `× ${props.gift.count}`
-          }
-        ];
+        if (props.toUser) {
+          list = [
+            {
+              node: 'text',
+              text: '送给'
+            },
+            {
+              node: 'touser',
+              text: props.toUser?.name
+            },
+            {
+              node: 'text',
+              text: `${props.gift.count} 个`
+            },
+            {
+              node: 'icon',
+              text: props.gift.name,
+              url: props.gift.icon
+            }
+          ];
+        } else {
+          list = [
+            {
+              node: 'text',
+              text: '送出了'
+            },
+            {
+              node: 'icon',
+              text: props.gift.name,
+              url: props.gift.icon
+            },
+            {
+              node: 'text',
+              text: `× ${props.gift.count}`
+            }
+          ];
+        }
       } else {
         list = [
           {
@@ -158,13 +182,15 @@ const doms = computed(() => {
 $prefixColor: #38b48b;
 $nameColor: #9079ad;
 $textColor: #6b798e;
-$toUserColor: #e95464;
+$atUserColor: #e95464;
+$toUserColor: #3271ae;
 
 $prefixDarkColor: #38b48b;
 $nameDarkColor: #83ccd2;
 $textDarkColor: #f7fcfe;
 
-$toUserDarkColor: #e83929;
+$atUserDarkColor: #e83929;
+$toUserDarkColor: #2ca9e1;
 
 $giftText: #eba825;
 
@@ -189,14 +215,19 @@ $giftText: #eba825;
     flex-shrink: 0;
   }
   .text,
+  .atuser,
   .touser {
     color: $textColor;
     // line-height: 1rem;
     word-break: break-all;
     white-space: normal;
   }
+  .atuser {
+    color: $atUserColor;
+  }
   .touser {
     color: $toUserColor;
+    margin: 0 3px;
   }
   .icon {
     width: 1.5rem;
@@ -244,6 +275,9 @@ $giftText: #eba825;
     }
     .text {
       color: $textDarkColor;
+    }
+    .atuser {
+      color: $atUserDarkColor;
     }
     .touser {
       color: $toUserDarkColor;

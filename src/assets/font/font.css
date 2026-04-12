@@ -1,7 +1,6 @@
 /* 抖音美好体 */
 @font-face {
   font-family: 'dymht';
-  ;
   src: url('./DouyinSansBold.otf') format('opentype');
 }
 
@@ -14,7 +13,7 @@
 /* 图标 */
 @font-face {
   font-family: "castfont";
-  src: url('castfont.ttf') format('truetype');
+  src: url('./castfont.ttf') format('truetype');
 }
 
 [class*=' ice-'],
@@ -32,6 +31,22 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.ice-keya:before {
+  content: "\e6b4";
+}
+
+.ice-key:before {
+  content: "\e66b";
+}
+
+.ice-logout:before {
+  content: "\e66c";
+}
+
+.ice-del:before {
+  content: "\e66d";
 }
 
 .ice-fullscreen:before {

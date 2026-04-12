@@ -11,9 +11,13 @@
         :user-count="userCount"
         :like-count="likeCount" />
       <div class="view-left-bottom">
+        <SidTool />
         <div class="view-left-tools">
-          <div class="view-left-tool" title="保存弹幕" @click.stop="saveCastToFile">
-            <i class="ice-save"></i>
+          <div class="view-left-tool feed-btn" title="投喂" @click.stop="openFeedDialog">
+            <i class="ice-coin icon"></i>
+          </div>
+          <div class="view-left-tool cm-btn" title="保存弹幕" @click.stop="saveCastToFile">
+            <i class="ice-save icon"></i>
           </div>
         </div>
         <hr class="hr" />
@@ -50,6 +54,8 @@
         <CastList ref="otherEl" :types="['social', 'like', 'member']" pos="left" no-prefix theme="dark" />
       </div>
     </div>
+    <!-- 投喂弹窗 -->
+    <FeedDialog v-model="fdVisible" />
   </div>
 </template>
 
@@ -58,6 +64,8 @@ import ConnectInput from '@/components/ConnectInput.vue';
 import LiveInfo from '@/components/LiveInfo.vue';
 import LiveStatusPanel from '@/components/LiveStatusPanel.vue';
 import CastList from '@/components/CastList.vue';
+import SidTool from '@/components/SidTool/SidTool.vue';
+import FeedDialog from '@/components/FeedDialog.vue';
 import {
   CastMethod,
   DyCast,
@@ -90,6 +98,9 @@ const relayUrl = ref<string>('');
 const relayInputRef = useTemplateRef('relayInput');
 // 状态面板
 const statusPanelRef = useTemplateRef('panel');
+
+// 投喂弹窗可见性
+const fdVisible = ref(false);
 
 /** 直播间信息 */
 const cover = ref<string>('');
@@ -184,8 +195,9 @@ const handleMessages = function (msgs: DyMessage[]) {
   try {
     for (const msg of msgs) {
       if (!msg.id) continue;
-      if (castSet.has(msg.id)) continue;
-      castSet.add(msg.id);
+      const msgId = `${msg.method}-${msg.id}`;
+      if (castSet.has(msgId)) continue;
+      castSet.add(msgId);
       switch (msg.method) {
         case CastMethod.CHAT:
           newCasts.push(msg);
@@ -428,6 +440,13 @@ const saveCastToFile = function () {
       CLog.error('弹幕保存出错了 =>', err);
     });
 };
+
+/**
+ * 打开投喂弹窗
+ */
+const openFeedDialog = function () {
+  fdVisible.value = true;
+};
 </script>
 
 <style lang="scss" scoped>
@@ -435,6 +454,7 @@ $bg: #f7f6f5;
 $bd: #b2bfc3;
 $theme: #68be8d;
 $tool: #8b968d;
+$gold: #e6b422;
 
 .index-view {
   position: relative;
@@ -486,18 +506,33 @@ $tool: #8b968d;
     align-items: center;
     justify-content: center;
     color: $tool;
-    transition: color 0.2s ease-in-out, background-color 0.3s ease-in-out, opacity 0.2s ease;
-    background-color: transparent;
-    border-radius: 0.4em;
-    i {
+    &.cm-btn {
+      transition:
+        color 0.2s ease-in-out,
+        background-color 0.3s ease-in-out,
+        opacity 0.2s ease;
+      background-color: transparent;
+      border-radius: 0.4em;
+      &:hover {
+        color: #fff;
+        background-color: $theme;
+      }
+      &:active {
+        opacity: 0.8;
+      }
+    }
+    &.feed-btn {
+      animation: coinAni 1s ease-in-out;
+      transition: color 0.2s ease-in-out;
+      &:hover {
+        color: $gold;
+      }
+      &:active {
+        animation: none;
+      }
+    }
+    .icon {
       font-size: 1em;
-    }
-    &:hover {
-      color: #fff;
-      background-color: $theme;
-    }
-    &:active {
-      opacity: 0.8;
     }
   }
   .view-center {
@@ -558,6 +593,21 @@ $tool: #8b968d;
       top: 150px;
       left: 0;
     }
+  }
+}
+
+@keyframes coinAni {
+  0% {
+    color: $gold;
+    transform: translateY(0%);
+  }
+  50% {
+    color: $gold;
+    transform: translateY(-120%) rotateY(360deg) scale(1.2);
+  }
+  100% {
+    color: $gold;
+    transform: translateY(0%);
   }
 }
 </style>

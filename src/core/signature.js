@@ -1,3 +1,5 @@
+import { VERSION } from './dycast';
+
 const stringToBytes = function (t) {
     t = decodeURIComponent(encodeURIComponent(t));
     let n = [];
@@ -21,7 +23,7 @@ const stringToBytes = function (t) {
   },
   bytesToHex = function (t) {
     let n = [];
-    for (let e = 0; e < t.length; e++) n.push((t[e] >>> 4).toString(16)), n.push((15 & t[e]).toString(16));
+    for (let e = 0; e < t.length; e++) (n.push((t[e] >>> 4).toString(16)), n.push((15 & t[e]).toString(16)));
     return n.join('');
   },
   _ff = function (t, n, e, p, r, o, i) {
@@ -58,7 +60,7 @@ function un(t, n) {
     l = 271733878;
   for (let t = 0; t < e.length; t++)
     e[t] = (16711935 & ((e[t] << 8) | (e[t] >>> 24))) | (4278255360 & ((e[t] << 24) | (e[t] >>> 8)));
-  (e[r >>> 5] |= 128 << r % 32), (e[14 + (((r + 64) >>> 9) << 4)] = r);
+  ((e[r >>> 5] |= 128 << (r % 32)), (e[14 + (((r + 64) >>> 9) << 4)] = r));
   let f = _ff,
     s = _gg,
     c = _hh,
@@ -68,7 +70,7 @@ function un(t, n) {
       _ = i,
       h = u,
       a = l;
-    (o = d(
+    ((o = d(
       (o = c(
         (o = c(
           (o = c(
@@ -321,7 +323,7 @@ function un(t, n) {
       (o = (o + g) >>> 0),
       (i = (i + _) >>> 0),
       (u = (u + h) >>> 0),
-      (l = (l + a) >>> 0);
+      (l = (l + a) >>> 0));
   }
   return endian([o, i, u, l]);
 }
@@ -337,7 +339,7 @@ function getSTUB(t) {
  * @return {string} signature
  */
 export const getSignature = function (roomId, uniqueId) {
-  const sdkVersion = '1.0.14-beta.0';
+  const sdkVersion = VERSION;
   const e = getSTUB(
     `live_id=1,aid=6383,version_code=180800,webcast_sdk_version=${sdkVersion},room_id=${roomId},sub_room_id=,sub_channel_id=,did_rule=3,user_unique_id=${uniqueId},device_platform=web,device_type=,ac=,identity=audience`
   );
@@ -356,7 +358,7 @@ export const getSignature = function (roomId, uniqueId) {
  * @returns
  */
 export const getMsToken = function (length = 182) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_=';
   let result = '';
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));

@@ -1,3 +1,4 @@
+import { getAbogus } from './abogus';
 import type { DyImInfo } from './dycast';
 import { decodeResponse } from './model';
 import { getMsToken } from './signature';
@@ -36,6 +37,24 @@ export const getLiveInfo = async function (id: string) {
     }
   } catch (err) {
     return Promise.reject(err);
+  }
+};
+
+/**
+ * 用户请求
+ *  - 用于增加cookie
+ */
+export const fetchUser = async function () {
+  try {
+    await fetch(`/dylive/webcast/user/`, {
+      method: 'HEAD',
+      headers: {
+        'X-Secsdk-Csrf-Request': '1',
+        'X-Secsdk-Csrf-Version': '1.2.22'
+      }
+    });
+  } catch (err) {
+    return Promise.reject(Error('Fetch Webcast User Error'));
   }
 };
 
@@ -100,8 +119,16 @@ export const fetchImInfo = async function (roomId: string, uniqueId: string) {
       room_id: roomId,
       user_unique_id: uniqueId
     });
+    const paramStr = makeUrlParams(
+      Object.assign({}, defaultIMFetchParams, {
+        room_id: roomId,
+        user_unique_id: uniqueId,
+        live_pc: roomId
+      })
+    );
     // 一个加密参数，须通过上侧 params 参数计算，感兴趣自己去逆向，这里不解析，不一定验证
-    const aBogus = '00000000';
+    // const aBogus = '00000000';
+    const aBogus = getAbogus(paramStr, USER_AGENT);
     Object.assign(params, {
       live_pc: roomId,
       a_bogus: aBogus
@@ -146,5 +173,115 @@ export const getImInfo = async function (roomId: string, uniqueId: string): Prom
       cursor: `r-7497180536918546638_d-1_u-1_fh-7497179772733760010_t-${now}`,
       internalExt: `internal_src:dim|wss_push_room_id:${roomId}|wss_push_did:${uniqueId}|first_req_ms:${reqMs}|fetch_time:${now}|seq:1|wss_info:0-${now}-0-0|wrds_v:7497180515443673855`
     };
+  }
+};
+
+/** 默认请求参数 */
+const defaultMeFetchParam = {
+  aid: '6383',
+  app_name: 'douyin_web',
+  browser_language: 'zh-CN',
+  browser_name: 'Edge',
+  browser_platform: 'Win32',
+  browser_version: '146.0.0.0',
+  cookie_enabled: 'true',
+  device_platform: 'web',
+  enter_from: 'web_live',
+  language: 'zh-CN',
+  live_id: '1',
+  os_name: 'Windows',
+  os_version: '10',
+  room_id: '0',
+  screen_height: '1080',
+  screen_width: '1920'
+};
+
+/**
+ * 获取当前登录用户信息
+ * @returns
+ */
+export const fetchMeInfo = async function () {
+  try {
+    const params = Object.assign({}, defaultMeFetchParam);
+    const paramStr = makeUrlParams(params);
+    const msToken = getMsToken(184);
+    const abogus = getAbogus(paramStr, USER_AGENT);
+    Object.assign(params, {
+      msToken,
+      a_bogus: abogus
+    });
+    const url = `/dylive/webcast/user/me/?${makeUrlParams(params)}`;
+    const res = await fetch(url).then(res => res.json());
+    if (res) return res;
+    else return Promise.reject(`Fetch Me Info Fail`);
+    if (res && res['status_code'] !== 0) {
+      const msg = res?.data?.message;
+      return Promise.reject(`Fetch Me Info Fail: status => ${res['status_code']}, msg => ${msg}`);
+    } else return res;
+  } catch (err) {
+    return Promise.reject(`Fetch Me Info Error: ${err}`);
+  }
+};
+
+interface DyResult<T> {
+  /** 状态码 */
+  code: number;
+  /** 状态描述 */
+  msg: string;
+  /** 数据 */
+  data: T;
+}
+
+interface DyMeInfo {
+  /** sec_uid */
+  uid: string;
+  /** display_id : 抖音号 */
+  did: string;
+  /** 昵称 */
+  nickname: string;
+  /** 头像 */
+  avatar: string;
+  /** follower_count : 粉丝数 */
+  follower: number;
+  /** following_count : 关注数 */
+  following: number;
+  /** signature : 个性签名 */
+  sign?: string;
+}
+
+/**
+ * 获取当前登录用户信息
+ */
+export const getMeInfo = async function (): Promise<DyResult<DyMeInfo | null>> {
+  try {
+    const res = await fetchMeInfo();
+    let code = 0;
+    let msg = '';
+    let info: DyMeInfo | null = null;
+    if (res['status_code'] !== 0) {
+      // 获取失败
+      const data = res?.data || {};
+      code = res['status_code'];
+      msg = data?.prompts || data?.message || 'get user info fail';
+    } else {
+      // 获取成功
+      const data = res.data || {};
+      info = {
+        uid: data.sec_uid || '',
+        did: data.display_id || '',
+        sign: data.signature || '',
+        nickname: data.nickname || '',
+        avatar: data.avatar_medium?.url_list?.[0] || '',
+        follower: data.follow_info?.follower_count || 0,
+        following: data.follow_info?.following_count || 0
+      };
+    }
+    return {
+      code,
+      msg,
+      data: info
+    };
+  } catch (err) {
+    return Promise.reject(err);
   }
 };
