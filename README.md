@@ -324,6 +324,23 @@ export enum CastMethod {
   ```
   
 
+- 桌面应用打包（Tauri）
+
+  本项目支持使用 Tauri 打包为桌面应用，目前支持 Windows、macOS 平台。
+
+  > 打包前请确保已安装 Rust 环境，参考 [Tauri 官方文档](https://v2.tauri.app/start/prerequisites/)
+
+  ```sh
+  # 构建 Tauri 桌面应用
+  npm run tauri-build
+  ```
+
+  - 构建过程会自动先执行 `npm run build` 打包前端资源，然后编译 Rust 后端
+  - 构建产物位于 `src-tauri/target/release/` 目录下
+  - Windows 平台会生成 `.msi` 安装包（在 `src-tauri/target/release/bundle/msi/`）及免安装的 `.exe` 可执行文件
+  - macOS 平台会生成 `.dmg` 安装包及 `.app` 应用
+
+
 ## Star History
 
 ![Star History Chart](https://api.star-history.com/svg?repos=skmcj/dycast&type=Date)

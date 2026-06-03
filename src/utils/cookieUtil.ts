@@ -52,6 +52,10 @@ interface CookieStoreItem {
   secure: boolean;
 }
 
+interface CookieStoreApi {
+  get(name: string): Promise<CookieStoreItem | null>;
+}
+
 type SameSiteMap = {
   [K in SameSite]: string;
 };
@@ -91,8 +95,9 @@ export const getCookieAsync = async function (name: string) {
   // 用正则匹配对应cookie项，包括path、expires等信息
   try {
     let cookie: CustomCookie | null = null;
-    if (window.cookieStore && window.cookieStore instanceof CookieStore) {
-      const ck = (await window.cookieStore.get(name)) as CookieStoreItem;
+    const cookieStore = (window as Window & { cookieStore?: CookieStoreApi }).cookieStore;
+    if (cookieStore) {
+      const ck = await cookieStore.get(name);
       if (ck) {
         cookie = {
           name: ck.name || name,

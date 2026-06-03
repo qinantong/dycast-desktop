@@ -1,16 +1,17 @@
 import { getAbogus } from './abogus';
-import type { DyImInfo } from './dycast';
+import type { DyImInfo, DyLiveInfo } from './dycast';
 import { decodeResponse } from './model';
 import { getMsToken } from './signature';
 import { makeUrlParams, parseLiveHtml } from './util';
+import { CLog } from '@/utils/logUtil';
+import { fetchBinary, fetchHead, fetchJson, fetchLiveHtml, fetchNativeLiveInfo, getApiBase } from '@/platform/http';
 
 /**
  * 请求直播间信息
  */
 export const fetchLiveInfo = async function (id: string) {
   try {
-    const html = await fetch(`/dylive/${id}`).then(res => res.text());
-    return html;
+    return await fetchLiveHtml(id);
   } catch (err) {
     return Promise.reject(Error('Fetch Live Info Error'));
   }
@@ -23,13 +24,12 @@ export const fetchLiveInfo = async function (id: string) {
  */
 export const getLiveInfo = async function (id: string) {
   try {
+    const nativeInfo = await fetchNativeLiveInfo(id);
+    if (nativeInfo) return nativeInfo;
     const html = await fetchLiveInfo(id);
     const first = parseLiveHtml(html);
     if (first) return first;
     else {
-      // 如第一次请求无 cookie => __ac_nonce，无法获得目标信息
-      // 但第一次请求会返回 cookie => __ac_nonce
-      // 请求第二次
       const realHtml = await fetchLiveInfo(id);
       const second = parseLiveHtml(realHtml);
       if (second) return second;
@@ -46,15 +46,13 @@ export const getLiveInfo = async function (id: string) {
  */
 export const fetchUser = async function () {
   try {
-    await fetch(`/dylive/webcast/user/`, {
-      method: 'HEAD',
-      headers: {
-        'X-Secsdk-Csrf-Request': '1',
-        'X-Secsdk-Csrf-Version': '1.2.22'
-      }
+    await fetchHead(`${getApiBase()}/webcast/user/`, {
+      'X-Secsdk-Csrf-Request': '1',
+      'X-Secsdk-Csrf-Version': '1.2.22'
     });
   } catch (err) {
-    return Promise.reject(Error('Fetch Webcast User Error'));
+    CLog.error('Fetch Webcast User Error:', err);
+    return Promise.reject(err);
   }
 };
 
@@ -133,15 +131,16 @@ export const fetchImInfo = async function (roomId: string, uniqueId: string) {
       live_pc: roomId,
       a_bogus: aBogus
     });
-    const url = `/dylive/webcast/im/fetch/?${makeUrlParams(params)}`;
+    const url = `${getApiBase()}/webcast/im/fetch/?${makeUrlParams(params)}`;
     // 不清楚接口是否有 referer 验证，需要的话，得在服务器跨域配置处设置，这里配置无效
     // const headers = {
     //   Referer: `https://live.douyin.com/${roomNum}`
     // };
-    const buffer = await fetch(url).then(res => res.arrayBuffer());
+    const buffer = await fetchBinary(url);
     return buffer;
   } catch (err) {
-    return Promise.reject(Error('Fetch Im Info Error'));
+    CLog.error('Fetch Im Info Error:', err);
+    return Promise.reject(err);
   }
 };
 
@@ -155,7 +154,6 @@ export const getImInfo = async function (roomId: string, uniqueId: string): Prom
   const reqMs = Date.now();
   try {
     const buffer = await fetchImInfo(roomId, uniqueId);
-    // 请求出错返回的可能为json
     const res = decodeResponse(new Uint8Array(buffer));
     return {
       cursor: res.cursor,
@@ -167,8 +165,8 @@ export const getImInfo = async function (roomId: string, uniqueId: string): Prom
       liveCursor: res.liveCursor
     };
   } catch (err) {
+    CLog.error('获取 IM 信息失败，尝试使用备用参数:', err);
     const now = Date.now();
-    // 确保能返回 cursor、internalExt
     return {
       cursor: `r-7497180536918546638_d-1_u-1_fh-7497179772733760010_t-${now}`,
       internalExt: `internal_src:dim|wss_push_room_id:${roomId}|wss_push_did:${uniqueId}|first_req_ms:${reqMs}|fetch_time:${now}|seq:1|wss_info:0-${now}-0-0|wrds_v:7497180515443673855`
@@ -210,8 +208,8 @@ export const fetchMeInfo = async function () {
       msToken,
       a_bogus: abogus
     });
-    const url = `/dylive/webcast/user/me/?${makeUrlParams(params)}`;
-    const res = await fetch(url).then(res => res.json());
+    const url = `${getApiBase()}/webcast/user/me/?${makeUrlParams(params)}`;
+    const res = await fetchJson<any>(url);
     if (res) return res;
     else return Promise.reject(`Fetch Me Info Fail`);
     if (res && res['status_code'] !== 0) {

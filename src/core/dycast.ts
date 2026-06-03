@@ -26,6 +26,7 @@ import type {
 } from './model';
 import { fetchUser, getImInfo, getLiveInfo } from './request';
 import { getSignature } from './signature';
+import { createSocket, getWsBase, type DySocket } from '@/platform/websocket';
 // import { logUserCast } from '@/utils/debugUtil';
 
 /**
@@ -311,7 +312,7 @@ enum PayloadType {
 /** API */
 // wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/  => version: 1.0.14-beta.0
 // wss://webcast100-ws-web-lq.douyin.com/webcast/im/push/v2/  => version: 1.0.15
-const BASE_URL = `${location.origin.replace(/^http/, 'ws')}/socket/webcast/im/push/v2/`;
+const BASE_URL = getWsBase();
 
 /** SDK 版本 */
 export const VERSION = '1.0.15';
@@ -361,7 +362,7 @@ export class DyCast {
   private imInfo: DyImInfo;
 
   /** WS客户端 */
-  private ws: WebSocket | undefined;
+  private ws: DySocket | undefined;
 
   /** 连接 url */
   private url: string | undefined;
@@ -497,22 +498,17 @@ export class DyCast {
       await this.fetchConnectInfo(this.roomNum);
       const params = this.getWssParam();
       if (this.isLiving()) {
-        // 连接中
         this.wsRoomStatus = WSRoomStatus.CONNECTING;
         this._connect(params);
       } else {
-        // 主播未开播
         const liveStatus = this.getLiveStatus();
         this.wsRoomStatus = WSRoomStatus.CLOSED;
         this.emitter.emit('close', DyCastCloseCode.LIVE_END, liveStatus.msg);
       }
     } catch (err) {
-      // 过程错误
       CLog.error('房间连接前错误 =>', err);
-      // 关闭
       this.emitter.emit('close', DyCastCloseCode.CONNECTING_ERROR, '房间连接前出错');
       this._afterClose();
-      // 报错
       this.emitter.emit('error', err as Error);
     }
   }
@@ -528,7 +524,7 @@ export class DyCast {
    * 实际连接逻辑
    * @param opts
    */
-  private _connect(opts: DyCastOptions) {
+  private async _connect(opts: DyCastOptions) {
     // 连接前的初始化
     this.options = opts;
     this.url = this._getSocketUrl(opts);
@@ -540,7 +536,7 @@ export class DyCast {
     this.lastReceiveTime = Date.now();
     this.pingCount = 0;
     try {
-      this.ws = new WebSocket(this.url);
+      this.ws = await createSocket(this.url);
       this.ws.binaryType = 'arraybuffer';
       this.ws.addEventListener('open', (ev: Event) => {
         // 可能初次打开，也可能是重连打开
@@ -559,7 +555,8 @@ export class DyCast {
         this.handleClose(ev);
       });
       this.ws.addEventListener('error', (ev: Event) => {
-        this.emitter.emit('error', Error(ev.type || 'Unknown Error'));
+        const msg = ev instanceof ErrorEvent ? ev.message : ev.type || 'Unknown Error';
+        this.emitter.emit('error', Error(msg));
       });
       this.ws.addEventListener('message', (ev: MessageEvent) => {
         this.handleMessage(ev.data);
@@ -614,7 +611,7 @@ export class DyCast {
       // 发送 ack
       const ack = this._ack(internalExt, frame?.logId);
       this.setCursor(cursor, internalExt);
-      if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      if (this.ws && this.ws.readyState === this.ws.OPEN) {
         this.ws.send(ack);
       } else {
         // 重连
@@ -641,7 +638,7 @@ export class DyCast {
    */
   private reconnect() {
     // 还未关闭
-    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+    if (this.ws && this.ws.readyState === this.ws.OPEN) {
       this.close(DyCastCloseCode.RECONNECTING, '因重连而关闭');
     }
     this.shouldReconnect = !1;
@@ -680,7 +677,7 @@ export class DyCast {
   private ping() {
     try {
       let dur = Math.max(10000, Number(this.heartbeatDuration));
-      if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      if (this.ws && this.ws.readyState === this.ws.OPEN) {
         // 连接正常
         // 发送心跳 => hb
         this.ws.send(this._ping());
