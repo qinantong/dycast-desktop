@@ -8,9 +8,13 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
-    "type-check": "vue-tsc --build"
+    "type-check": "vue-tsc --build",
+    "tauri": "tauri",
+    "tauri-dev": "tauri dev",
+    "tauri-build": "tauri build"
   },
   "dependencies": {
+    "@tauri-apps/api": "^2.11.0",
     "@types/vue-virtual-scroller": "npm:@earltp/vue-virtual-scroller@^1.0.1",
     "pako": "^2.1.0",
     "sass": "^1.87.0",
@@ -18,6 +22,7 @@
     "vue-virtual-scroller": "2.0.0-beta.8"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^2.11.2",
     "@tsconfig/node22": "^22.0.1",
     "@types/node": "^22.14.0",
     "@types/pako": "^2.0.3",

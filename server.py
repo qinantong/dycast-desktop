@@ -2,17 +2,20 @@ import asyncio
 import websockets
 import time
 
-async def echo(websocket, path):
+async def echo(websocket):
     async for message in websocket:
         print(f'[{time.ctime()}]: ')
         print(message)
         message = "服务端获取到消息: {}".format(message)
         await websocket.send(message)
 
-print('WebSocket服务启动成功，可通过 ws://localhost:8765 进行访问')
+async def main():
+    async with websockets.serve(echo, 'localhost', 8765):
+        print('WebSocket服务启动成功，可通过 ws://localhost:8765 进行访问')
+        await asyncio.Future()
 
-asyncio.get_event_loop().run_until_complete(websockets.serve(echo, 'localhost', 8765))
-asyncio.get_event_loop().run_forever()
+if __name__ == '__main__':
+    asyncio.run(main())
 
 '''
 # 创建一个WebSocket服务端
