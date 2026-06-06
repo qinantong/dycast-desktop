@@ -1,10 +1,10 @@
 [package]
-name = "dycast"
-version = "1.1.0"
-description = "抖音弹幕姬 - 一个用于获取抖音直播间弹幕的桌面应用"
-authors = ["SKMCJ"]
+name = "dycast-desktop"
+version = "1.2.0"
+description = "Dycast Desktop - 一个用于获取抖音直播间弹幕的桌面应用"
+authors = ["qinant"]
 license = "MIT"
-repository = "https://github.com/skmcj/dycast"
+repository = "https://github.com/qinant/dycast-desktop"
 edition = "2021"
 rust-version = "1.77.2"
 
@@ -30,3 +30,4 @@ base64 = "0.22"
 regex = "1"
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "gzip", "brotli", "deflate", "cookies", "charset", "http2"] }
 url = "2"
+rfd = "0.15"

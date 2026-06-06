@@ -4,11 +4,11 @@
 
 <script setup lang="ts">
 import IndexView from './views/IndexView.vue';
-import { printInfo, printSKMCJ } from './utils/logUtil';
+import { printBrand, printInfo } from './utils/logUtil';
 
 setTimeout(() => {
   console?.clear();
-  printSKMCJ();
+  printBrand();
   printInfo();
 }, 1500);
 </script>

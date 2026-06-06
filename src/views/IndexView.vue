@@ -13,7 +13,10 @@
       <div class="view-left-bottom">
         <SidTool />
         <div class="view-left-tools">
-          <div class="view-left-tool cm-btn" title="保存弹幕" @click.stop="saveCastToFile">
+          <div
+            :class="{ 'view-left-tool': true, 'cm-btn': true, 'is-recording': isRecording }"
+            :title="isRecording ? `停止记录(${recordingCount})` : '记录弹幕'"
+            @click.stop="toggleCastRecording">
             <i class="ice-save icon"></i>
           </div>
         </div>
@@ -77,7 +80,9 @@ import { getId } from '@/utils/idUtil';
 import { RelayCast } from '@/core/relay';
 import SkMessage from '@/components/Message';
 import { formatDate } from '@/utils/commonUtil';
-import FileSaver from '@/utils/fileUtil';
+import { JsonlRecorder } from '@/utils/jsonlRecorder';
+
+const MAX_DEDUPE_IDS = 10000;
 
 // 连接状态
 const connectStatus = ref<ConnectStatus>(0);
@@ -107,10 +112,12 @@ const likeCount = ref<string | number>('*****');
 const castRef = useTemplateRef('castEl');
 // 其它弹幕
 const otherRef = useTemplateRef('otherEl');
-// 所有弹幕
-const allCasts: DyMessage[] = [];
 // 记录弹幕
 const castSet = new Set<string>();
+const castIdQueue: string[] = [];
+const isRecording = ref(false);
+const recordingCount = ref(0);
+const castRecorder = new JsonlRecorder<DyMessage>();
 // 弹幕客户端
 let castWs: DyCast | undefined;
 // 转发客户端
@@ -176,6 +183,37 @@ const setRoomInfo = function (info?: DyLiveInfo) {
   if (info.nickname) nickname.value = info.nickname;
 };
 
+const addCastId = function (id: string) {
+  if (castSet.has(id)) return false;
+  castSet.add(id);
+  castIdQueue.push(id);
+
+  const overflow = castIdQueue.length - MAX_DEDUPE_IDS;
+  if (overflow > 0) {
+    const removed = castIdQueue.splice(0, overflow);
+    for (const item of removed) castSet.delete(item);
+  }
+
+  return true;
+};
+
+const writeRecordedCasts = function (casts: DyMessage[]) {
+  if (!castRecorder.isRecording || !casts.length) return;
+  castRecorder
+    .write(casts)
+    .then(count => {
+      recordingCount.value = count;
+    })
+    .catch(err => {
+      CLog.error('弹幕记录写入失败 =>', err);
+      SkMessage.error('弹幕记录写入失败，已停止记录');
+      isRecording.value = false;
+      castRecorder.stop().catch(closeErr => {
+        CLog.error('关闭弹幕记录文件失败 =>', closeErr);
+      });
+    });
+};
+
 /**
  * 处理消息列表
  */
@@ -187,8 +225,7 @@ const handleMessages = function (msgs: DyMessage[]) {
     for (const msg of msgs) {
       if (!msg.id) continue;
       const msgId = `${msg.method}-${msg.id}`;
-      if (castSet.has(msgId)) continue;
-      castSet.add(msgId);
+      if (!addCastId(msgId)) continue;
       switch (msg.method) {
         case CastMethod.CHAT:
           newCasts.push(msg);
@@ -236,8 +273,7 @@ const handleMessages = function (msgs: DyMessage[]) {
       }
     }
   } catch (err) {}
-  // 记录
-  allCasts.push(...newCasts);
+  writeRecordedCasts(newCasts);
   if (castRef.value) castRef.value.appendCasts(mainCasts);
   if (otherRef.value) otherRef.value.appendCasts(otherCasts);
   if (relayWs && relayWs.isConnected()) {
@@ -266,7 +302,7 @@ const addConsoleMessage = function (content: string) {
  */
 function clearMessageList() {
   castSet.clear();
-  allCasts.length = 0;
+  castIdQueue.length = 0;
   if (castRef.value) castRef.value.clearCasts();
   if (otherRef.value) otherRef.value.clearCasts();
 }
@@ -397,39 +433,57 @@ const stopRelayCast = function () {
   if (relayWs) relayWs.close(1000);
 };
 
-/** 将弹幕保存到本地文件 */
-const saveCastToFile = function () {
-  if (connectStatus.value === 1) {
-    SkMessage.warning('请断开连接后再保存');
+const startCastRecording = async function () {
+  if (isRecording.value) return;
+  if (!JsonlRecorder.isSupported()) {
+    SkMessage.error('当前环境不支持流式记录文件');
     return;
   }
-  const len = allCasts.length;
-  if (len <= 0) {
-    SkMessage.warning('暂无弹幕需要保存');
-    return;
-  }
+
   const date = formatDate(new Date(), 'yyyy-MM-dd_HHmmss');
-  const fileName = `[${roomNum.value}]${date}(${len})`;
-  const data = JSON.stringify(allCasts, null, 2);
-  FileSaver.save(data, {
-    name: fileName,
-    ext: '.json',
-    mimeType: 'application/json',
-    description: '弹幕数据',
-    existStrategy: 'new'
-  })
-    .then(res => {
-      if (res.success) {
-        SkMessage.success('弹幕保存成功');
-      } else {
-        SkMessage.error('弹幕保存失败');
-        CLog.error('弹幕保存失败 =>', res.message);
-      }
-    })
-    .catch(err => {
-      SkMessage.error('弹幕保存出错了');
-      CLog.error('弹幕保存出错了 =>', err);
+  const room = roomNum.value || 'unknown';
+  const fileName = `[${room}]${date}`;
+
+  try {
+    await castRecorder.start({
+      name: fileName,
+      ext: '.jsonl',
+      mimeType: 'application/x-ndjson',
+      description: '弹幕记录'
     });
+    recordingCount.value = 0;
+    isRecording.value = true;
+    SkMessage.success('已开始记录弹幕');
+    addConsoleMessage(`已开始记录弹幕: ${castRecorder.fileName}`);
+  } catch (err) {
+    if ((err as Error).name !== 'AbortError') {
+      CLog.error('开始记录弹幕失败 =>', err);
+      SkMessage.error('开始记录弹幕失败');
+    }
+  }
+};
+
+const stopCastRecording = async function () {
+  if (!isRecording.value) return;
+
+  try {
+    const count = await castRecorder.stop();
+    recordingCount.value = count;
+    isRecording.value = false;
+    SkMessage.success(`已停止记录，共 ${count} 条`);
+    addConsoleMessage(`弹幕记录已停止，共 ${count} 条`);
+  } catch (err) {
+    CLog.error('停止记录弹幕失败 =>', err);
+    SkMessage.error('停止记录弹幕失败');
+  }
+};
+
+const toggleCastRecording = function () {
+  if (isRecording.value) {
+    stopCastRecording();
+  } else {
+    startCastRecording();
+  }
 };
 
 </script>
@@ -497,6 +551,10 @@ $tool: #8b968d;
         opacity 0.2s ease;
       background-color: transparent;
       border-radius: 0.4em;
+      &.is-recording {
+        color: #fff;
+        background-color: #e83929;
+      }
       &:hover {
         color: #fff;
         background-color: $theme;

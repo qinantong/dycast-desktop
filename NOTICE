@@ -1,0 +1,10 @@
+Dycast Desktop
+
+This project is independently maintained by qinant and is derived from
+skmcj/dycast:
+
+https://github.com/skmcj/dycast
+
+This repository keeps the original attribution in the README and preserves
+the upstream commit history. The MIT License in this repository applies to
+the project as published here by its maintainer.

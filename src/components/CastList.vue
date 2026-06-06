@@ -71,6 +71,14 @@ const props = withDefaults(defineProps<CastListProps>(), {
   noPrefix: false,
   pos: 'center'
 });
+
+const MAX_CASTS = 3000;
+
+const trimCasts = function (list: DyMessage[]) {
+  const overflow = list.length - MAX_CASTS;
+  if (overflow > 0) list.splice(0, overflow);
+};
+
 // 类型控制器
 const typeMap: Map<CastMethod, boolean> = new Map();
 
@@ -129,6 +137,7 @@ const allCasts: DyMessage[] = [];
 const appendCasts = function (msgs: DyMessage[]) {
   if (!msgs || !msgs.length) return;
   allCasts.push(...msgs);
+  trimCasts(allCasts);
   addCasts(msgs);
 };
 /**
@@ -140,7 +149,10 @@ const addCasts = function (msgs: DyMessage[], isClear: boolean = false) {
     else return false;
   });
   if (isClear) casts.value = list;
-  else casts.value.push(...list);
+  else {
+    casts.value.push(...list);
+    trimCasts(casts.value);
+  }
   nextTick(() => {
     autoScrollToBottom();
   });

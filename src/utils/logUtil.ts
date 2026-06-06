@@ -256,7 +256,7 @@ class Logger {
 }
 
 function test() {
-  const MLog = new Logger({ prefix: 'dycast' });
+  const MLog = new Logger({ prefix: 'dycast-desktop' });
   MLog.debug('debug message');
   MLog.info('info message');
   MLog.warn('warning message');
@@ -270,8 +270,8 @@ function test() {
  * @param color
  */
 export const printInfo = function (
-  tip: string = '抖音弹幕姬',
-  link: string = 'https://github.com/skmcj/dycast',
+  tip: string = 'Dycast Desktop',
+  link: string = 'https://github.com/qinant/dycast-desktop',
   color: string = '#fe2c55'
 ) {
   console.log(
@@ -281,19 +281,9 @@ export const printInfo = function (
   );
 };
 
-export const printSKMCJ = function () {
-  const info = `
- ________  ___  __    _____ ______   ________        ___     
-|\\   ____\\|\\  \\|\\  \\ |\\   _ \\  _   \\|\\   ____\\      |\\  \\    
-\\ \\  \\___|\\ \\  \\/  /|\\ \\  \\\\\\__\\ \\  \\ \\  \\___|      \\ \\  \\   
- \\ \\_____  \\ \\   ___  \\ \\  \\\\|__| \\  \\ \\  \\       __ \\ \\  \\  
-  \\|____|\\  \\ \\  \\\\ \\  \\ \\  \\    \\ \\  \\ \\  \\____ |\\  \\\\_\\  \\ 
-    ____\\_\\  \\ \\__\\\\ \\__\\ \\__\\    \\ \\__\\ \\_______\\ \\________\\
-   |\\_________\\|__| \\|__|\\|__|     \\|__|\\|_______|\\|________|
-   \\|_________|
-  `;
-  console.log(`%c${info}`, `color: #00faf0`);
+export const printBrand = function () {
+  console.log('%cDycast Desktop', 'color: #00faf0; font-size: 20px; font-weight: bold;');
 };
 
-export const CLog = new Logger({ prefix: 'dycast' });
+export const CLog = new Logger({ prefix: 'dycast-desktop' });
 // RLog.setLevel(LogLevel.error);

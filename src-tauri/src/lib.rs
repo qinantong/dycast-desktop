@@ -1,9 +1,11 @@
+mod cast_record;
 mod live_info;
 mod ws_relay;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .manage(std::sync::Arc::new(cast_record::CastRecordState::new()))
         .manage(std::sync::Arc::new(live_info::HttpState::new()))
         .manage(std::sync::Arc::new(std::sync::Mutex::new(
             ws_relay::WsState::new(),
@@ -13,6 +15,9 @@ pub fn run() {
             live_info::fetch_head,
             live_info::fetch_live_html,
             live_info::fetch_live_info,
+            cast_record::cast_record_start,
+            cast_record::cast_record_write,
+            cast_record::cast_record_stop,
             ws_relay::ws_connect,
             ws_relay::ws_send,
             ws_relay::ws_close
