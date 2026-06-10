@@ -3,7 +3,7 @@ export const isTauri = (): boolean => {
 };
 
 export const isDev = (): boolean => {
-  return window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  return import.meta.env.DEV;
 };
 
 export const isTauriProd = (): boolean => isTauri() && !isDev();

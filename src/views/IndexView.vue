@@ -1,5 +1,5 @@
 <template>
-  <div class="index-view">
+  <div :class="['index-view', `theme-${appTheme}`]">
     <div class="view-left">
       <LiveInfo
         :cover="cover"
@@ -19,6 +19,15 @@
             @click.stop="toggleCastRecording">
             <i class="ice-save icon"></i>
           </div>
+          <div
+            class="view-left-tool cm-btn"
+            title="设置"
+            @click.stop="showSettings = true">
+            <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </div>
         </div>
         <hr class="hr" />
         <LiveStatusPanel ref="panel" :status="connectStatus" />
@@ -26,7 +35,7 @@
     </div>
     <div class="view-center">
       <!-- 主要弹幕：聊天、礼物 -->
-      <CastList :types="['chat', 'gift']" ref="castEl" />
+      <CastList :types="['chat', 'gift']" ref="castEl" :theme="appTheme" />
     </div>
     <div class="view-right">
       <div class="view-input">
@@ -51,9 +60,10 @@
       </div>
       <div class="view-other">
         <!-- 其它弹幕：关注、点赞、进入、控制台等 -->
-        <CastList ref="otherEl" :types="['social', 'like', 'member']" pos="left" no-prefix theme="dark" />
+        <CastList ref="otherEl" :types="['social', 'like', 'member']" pos="left" no-prefix :theme="appTheme" />
       </div>
     </div>
+    <SettingsPanel :visible="showSettings" @close="showSettings = false" />
   </div>
 </template>
 
@@ -63,6 +73,7 @@ import LiveInfo from '@/components/LiveInfo.vue';
 import LiveStatusPanel from '@/components/LiveStatusPanel.vue';
 import CastList from '@/components/CastList.vue';
 import SidTool from '@/components/SidTool/SidTool.vue';
+import SettingsPanel from '@/components/SettingsPanel.vue';
 import {
   CastMethod,
   DyCast,
@@ -74,13 +85,14 @@ import {
   type LiveRoom
 } from '@/core/dycast';
 import { verifyRoomNum, verifyWsUrl } from '@/utils/verifyUtil';
-import { ref, useTemplateRef } from 'vue';
+import { computed, ref, useTemplateRef, onMounted } from 'vue';
 import { CLog } from '@/utils/logUtil';
 import { getId } from '@/utils/idUtil';
 import { RelayCast } from '@/core/relay';
 import SkMessage from '@/components/Message';
 import { formatDate } from '@/utils/commonUtil';
 import { JsonlRecorder } from '@/utils/jsonlRecorder';
+import { settings } from '@/hooks/useSettings';
 
 const MAX_DEDUPE_IDS = 10000;
 
@@ -122,6 +134,19 @@ const castRecorder = new JsonlRecorder<DyMessage>();
 let castWs: DyCast | undefined;
 // 转发客户端
 let relayWs: RelayCast | undefined;
+// 设置面板
+const showSettings = ref(false);
+const appTheme = computed(() => settings.theme);
+
+onMounted(() => {
+  // Restore remembered values
+  if (settings.rememberRoom && settings.lastRoomId) {
+    roomNum.value = settings.lastRoomId;
+  }
+  if (settings.rememberRelay && settings.lastRelayUrl) {
+    relayUrl.value = settings.lastRelayUrl;
+  }
+});
 
 /**
  * 验证房间号
@@ -314,6 +339,10 @@ function clearMessageList() {
  */
 const connectLive = function () {
   try {
+    // Save room number for next session
+    if (settings.rememberRoom) {
+      settings.lastRoomId = roomNum.value;
+    }
     // 清空上一次连接的消息
     clearMessageList();
     CLog.debug('正在连接:', roomNum.value);
@@ -393,6 +422,10 @@ const disconnectLive = function () {
 /** 连接转发房间 */
 const relayCast = async function () {
   try {
+    // Save relay URL for next session
+    if (settings.rememberRelay) {
+      settings.lastRelayUrl = relayUrl.value;
+    }
     CLog.info('正在连接转发中 =>', relayUrl.value);
     SkMessage.info(`转发连接中: ${relayUrl.value}`);
     const cast = new RelayCast(relayUrl.value);
@@ -494,17 +527,13 @@ const toggleCastRecording = function () {
 </script>
 
 <style lang="scss" scoped>
-$bg: #f7f6f5;
-$bd: #b2bfc3;
-$theme: #68be8d;
-$tool: #8b968d;
-
 .index-view {
   position: relative;
-  background-color: $bg;
+  background-color: var(--app-bg);
   display: flex;
   width: 100%;
   height: 100%;
+  transition: background-color 0.2s ease;
   .view-left,
   .view-center,
   .view-right {
@@ -517,7 +546,7 @@ $tool: #8b968d;
   }
   .view-left {
     flex-grow: 2.5;
-    border-right: 1px solid $bd;
+    border-right: 1px solid var(--app-border);
     justify-content: space-between;
   }
   .view-left-bottom {
@@ -529,7 +558,7 @@ $tool: #8b968d;
     .hr {
       height: 0;
       border: 0;
-      border-top: 1px solid $bd;
+      border-top: 1px solid var(--app-border);
       margin: 5px 0;
     }
   }
@@ -548,7 +577,7 @@ $tool: #8b968d;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: $tool;
+    color: var(--app-text-muted);
     &.cm-btn {
       transition:
         color 0.2s ease-in-out,
@@ -558,11 +587,11 @@ $tool: #8b968d;
       border-radius: 0.4em;
       &.is-recording {
         color: #fff;
-        background-color: #e83929;
+        background-color: var(--app-danger);
       }
       &:hover {
         color: #fff;
-        background-color: $theme;
+        background-color: var(--app-accent);
       }
       &:active {
         opacity: 0.8;
@@ -578,7 +607,7 @@ $tool: #8b968d;
   }
   .view-right {
     flex-grow: 3;
-    border-left: 1px solid $bd;
+    border-left: 1px solid var(--app-border);
     padding: 18px 12px;
     gap: 12px;
   }

@@ -69,13 +69,6 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-$defaultIcon: #f08300;
-$successIcon: #3eb370;
-$errorIcon: #e60033;
-$iconBd: #455765;
-$textColor: #8b968d;
-$timeColor: #9079ad;
-
 .live-status-panel {
   width: 100%;
   display: flex;
@@ -87,21 +80,21 @@ $timeColor: #9079ad;
   &.status-default {
     .panel-main {
       .icon {
-        background-color: $defaultIcon;
+        background-color: var(--app-warning);
       }
     }
   }
   &.status-ok {
     .panel-main {
       .icon {
-        background-color: $successIcon;
+        background-color: var(--app-accent-strong);
       }
     }
   }
   &.status-fail {
     .panel-main {
       .icon {
-        background-color: $errorIcon;
+        background-color: var(--app-danger);
       }
     }
   }
@@ -111,7 +104,7 @@ $timeColor: #9079ad;
     font-family: 'mkwxy';
     font-size: 1.4rem;
     font-weight: bold;
-    color: $timeColor;
+    color: #9079ad;
   }
   .panel-main {
     display: flex;
@@ -124,15 +117,15 @@ $timeColor: #9079ad;
       height: 1rem;
       box-sizing: border-box;
       border-radius: 50%;
-      border: 1px solid $iconBd;
-      background-color: $defaultIcon;
+      border: 1px solid var(--app-border-strong);
+      background-color: var(--app-warning);
       transition: background-color 0.3s ease-in-out;
     }
 
     .text {
       font-size: 0.9rem;
       font-family: 'mkwxy';
-      color: $textColor;
+      color: var(--app-text-muted);
     }
   }
 }

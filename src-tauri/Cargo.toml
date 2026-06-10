@@ -1,6 +1,6 @@
 [package]
 name = "dycast-desktop"
-version = "1.3.0"
+version = "1.3.1"
 description = "Dycast Desktop - 一个用于获取抖音直播间弹幕的桌面应用"
 authors = ["qinant"]
 license = "MIT"
@@ -23,6 +23,8 @@ serde = { version = "1.0", features = ["derive"] }
 log = "0.4"
 tauri = { version = "2.11.2", features = [] }
 tauri-plugin-log = "2"
+tauri-plugin-updater = "2"
+tauri-plugin-process = "2"
 tokio = { version = "1", features = ["full"] }
 tokio-tungstenite = { version = "0.26", features = ["rustls-tls-webpki-roots"] }
 futures-util = "0.3"

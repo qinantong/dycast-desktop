@@ -12,6 +12,7 @@ jobs:
       contents: write
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         include:
           - platform: windows-latest
@@ -56,18 +57,19 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           tagName: v__VERSION__
           releaseName: 'Dycast Desktop v__VERSION__'
           releaseBody: |
             ## 重点更新
 
-            - 优化弹幕解析模型加载，将大型 protobuf 模型拆分为按需加载模块，降低首屏负担。
-            - 优化弹幕列表渲染和滚动状态判断，降低大量消息场景下的响应式开销。
-            - 改进 Tauri HTTP 和 WebSocket 适配，增强直播间信息获取、转发连接和异常状态处理。
-            - 修复 WebSocket 转发在桌面端以二进制帧发送 JSON 的问题，现在转发数据以 text message 发送。
-            - 补充 WebSocket 转发数据结构文档，明确直播间信息对象和 `DyMessage[]` 弹幕批次格式。
-            - 压缩内置 emoji 映射数据，减少源码体积。
+            - 新增自动更新能力，应用启动时可检查新版本，并支持下载、安装和重启生效。
+            - 新增设置面板，可开启或关闭启动时自动检查更新，并支持手动检查更新。
+            - 新增更新提示弹窗，展示新版本号、更新内容、下载状态和安装结果。
+            - 修复 Tauri updater 发布配置，确保 release 生成可用的 `latest.json` 和签名更新包。
+            - 修复生产环境更新检查判断，避免 Tauri 生产包被误判为开发环境而跳过更新。
 
             ## 下载
 
@@ -77,3 +79,31 @@ jobs:
           prerelease: false
           tauriScript: npm run tauri
           args: ${{ matrix.args }}
+          includeUpdaterJson: true
+          updaterJsonPreferNsis: true
+
+  verify-updater:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify updater manifest
+        run: |
+          set -e
+          TAG="v$(node -p "require('./package.json').version")"
+          URL="https://github.com/qinant/dycast-desktop/releases/download/${TAG}/latest.json"
+          curl -sfL "$URL" -o latest.json
+          node -e "
+            const fs = require('fs');
+            const data = JSON.parse(fs.readFileSync('latest.json', 'utf8'));
+            const required = ['windows-x86_64', 'linux-x86_64', 'darwin-x86_64', 'darwin-aarch64'];
+            for (const platform of required) {
+              const entry = data.platforms?.[platform];
+              if (!entry?.url || !entry?.signature) {
+                console.error('Missing updater platform entry:', platform);
+                process.exit(1);
+              }
+            }
+            console.log('Verified updater manifest for', required.join(', '));
+          "

@@ -23,6 +23,8 @@ pub fn run() {
             ws_relay::ws_send_text,
             ws_relay::ws_close
         ])
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         .setup(|_app| {
             #[cfg(debug_assertions)]
             {

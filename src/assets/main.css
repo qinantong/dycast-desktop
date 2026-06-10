@@ -1,11 +1,49 @@
 @import url('./font/font.css');
 
+:root {
+  --app-bg: #f7f6f5;
+  --app-surface: #ffffff;
+  --app-surface-soft: #f5f3f2;
+  --app-surface-muted: #ececec;
+  --app-border: #b2bfc3;
+  --app-border-strong: #9aa7b1;
+  --app-text: #1e2732;
+  --app-text-muted: #8b968d;
+  --app-text-subtle: #b4b5af;
+  --app-accent: #68be8d;
+  --app-accent-strong: #3eb370;
+  --app-danger: #e95464;
+  --app-warning: #f08300;
+  --app-shadow: 0 12px 36px rgba(30, 39, 50, 0.18);
+  --app-overlay: rgba(30, 39, 50, 0.28);
+}
+
+:root[data-theme='dark'] {
+  --app-bg: #222426;
+  --app-surface: #2f3234;
+  --app-surface-soft: #282b2d;
+  --app-surface-muted: #1f2123;
+  --app-border: #50585c;
+  --app-border-strong: #687378;
+  --app-text: #edf0ed;
+  --app-text-muted: #b4beb8;
+  --app-text-subtle: #7d8782;
+  --app-accent: #7cc89d;
+  --app-accent-strong: #68be8d;
+  --app-danger: #f0717e;
+  --app-warning: #f6a53a;
+  --app-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  --app-overlay: rgba(0, 0, 0, 0.45);
+}
+
 html,
 body {
   width: 100%;
   height: 100%;
   margin: 0;
   font-size: 16px;
+  background: var(--app-bg);
+  color: var(--app-text);
 }
 
 

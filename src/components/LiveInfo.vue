@@ -86,12 +86,6 @@ const handleCoverError = function () {
 </script>
 
 <style lang="scss" scoped>
-$loadingBgA: #eae5e3;
-$loadingBgB: #fff;
-$tipColor: #b9b7b5;
-$titleColor: #1e2732;
-$errorText: #e94829;
-
 .live-info {
   width: 100%;
   display: flex;
@@ -112,7 +106,7 @@ $errorText: #e94829;
 
 .live-info-cover_main {
   position: relative;
-  background-color: $loadingBgA;
+  background-color: var(--app-surface-soft);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,7 +123,12 @@ $errorText: #e94829;
     left: 0;
     width: 400%;
     height: 100%;
-    background: linear-gradient(-45deg, $loadingBgA 25%, $loadingBgB 45%, $loadingBgA 65%);
+    background: linear-gradient(
+      -45deg,
+      var(--app-surface-soft) 25%,
+      var(--app-surface) 45%,
+      var(--app-surface-soft) 65%
+    );
     background-size: 100% 100%;
     animation: skeletonLoading 1.2s ease-in-out infinite;
     will-change: transform;
@@ -167,7 +166,7 @@ $errorText: #e94829;
     }
     span {
       z-index: 1;
-      color: $errorText;
+      color: var(--app-danger);
     }
   }
   img {
@@ -178,7 +177,7 @@ $errorText: #e94829;
   span {
     font-size: 0.8rem;
     font-family: 'mkwxy';
-    color: $tipColor;
+    color: var(--app-text-subtle);
     letter-spacing: 2px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -204,7 +203,7 @@ $errorText: #e94829;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  color: $titleColor;
+  color: var(--app-text);
 }
 
 .live-info-list {

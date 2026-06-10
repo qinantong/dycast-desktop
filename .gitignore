@@ -31,3 +31,7 @@ coverage
 
 test/
 CLAUDE.md
+
+# Tauri updater signing keys
+update-key
+update-key.pub

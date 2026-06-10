@@ -165,16 +165,6 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-$bg: #f5f3f2;
-$bd: #9aa7b1;
-$focusBdColor: #81a380;
-$labelColor: #81a380;
-$inputColor: #576470;
-$placeholder: #b4b5af;
-$confirmColor: #68be8d;
-$cancelColor: #e95464;
-$testColor: $cancelColor;
-
 .connect-input {
   position: relative;
   display: inline-flex;
@@ -193,17 +183,17 @@ $testColor: $cancelColor;
   transition: all 0.2s;
   gap: 5px;
   border-radius: 18px;
-  border: 1px solid $bd;
-  background-color: $bg;
+  border: 1px solid var(--app-border-strong);
+  background-color: var(--app-surface-soft);
   font-family: 'mkwxy';
   overflow: hidden;
   &:has(.input-inner:focus) {
-    border-color: $focusBdColor;
+    border-color: var(--app-accent);
   }
   .label {
     flex-shrink: 0;
     font-size: 16px;
-    color: $labelColor;
+    color: var(--app-accent-strong);
     user-select: none;
   }
   .input-inner {
@@ -216,7 +206,7 @@ $testColor: $cancelColor;
     font-size: 16px;
     font-family: 'mkwxy';
     letter-spacing: 1px;
-    color: $inputColor;
+    color: var(--app-text-muted);
     transition: opacity 0.2s;
     &:focus {
       background: none;
@@ -226,7 +216,7 @@ $testColor: $cancelColor;
       text-overflow: ellipsis;
     }
     &::placeholder {
-      color: $placeholder;
+      color: var(--app-text-subtle);
       font-size: 14px;
     }
     &:disabled {
@@ -241,7 +231,7 @@ $testColor: $cancelColor;
     user-select: none;
     font-size: 16px;
     cursor: pointer;
-    color: $confirmColor;
+    color: var(--app-accent);
     transition: opacity 0.2s, transform cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s;
     display: flex;
     flex-direction: column;
@@ -269,7 +259,7 @@ $testColor: $cancelColor;
       cursor: not-allowed;
     }
     .cancel-text {
-      color: $cancelColor;
+      color: var(--app-danger);
     }
   }
 }
@@ -282,7 +272,7 @@ $testColor: $cancelColor;
   width: 100%;
   height: 18px;
   font-size: 12px;
-  color: $testColor;
+  color: var(--app-danger);
   span {
     animation: slide-top 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
   }

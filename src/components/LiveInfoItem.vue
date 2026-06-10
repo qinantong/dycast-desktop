@@ -3,7 +3,7 @@
     <label class="title">{{ title }}：</label>
     <div class="live-info-item-main">
       <img v-if="cover" :src="cover" alt="avatar" class="avatar" />
-      <span class="text" title="{text}">{{ text }}</span>
+      <span class="text" :title="String(text)">{{ text }}</span>
     </div>
   </div>
 </template>
@@ -21,9 +21,6 @@ const props = withDefaults(defineProps<LiveInfoItemProps>(), {
 </script>
 
 <style lang="scss" scoped>
-$titleColor: #1e2732;
-$textColor: #6b798e;
-
 .live-info-item {
   width: 100%;
   display: flex;
@@ -36,7 +33,7 @@ $textColor: #6b798e;
     font-family: 'mkwxy';
     font-size: 1rem;
     font-weight: bold;
-    color: $titleColor;
+    color: var(--app-text);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -52,7 +49,7 @@ $textColor: #6b798e;
   .text {
     user-select: none;
     font-size: 0.9rem;
-    color: $textColor;
+    color: var(--app-text-muted);
     font-family: 'dymht';
     overflow: hidden;
     text-overflow: ellipsis;
