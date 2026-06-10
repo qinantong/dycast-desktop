@@ -7,6 +7,7 @@
         :disabled="inputDisabled"
         :placeholder="placeholder"
         v-model="inputValue"
+        @input="handleInput"
         @blur="handleBlur"
         @focus="handleFocus"
         @change="handleChange" />
@@ -29,7 +30,7 @@
 
 <script setup lang="ts">
 import { debounce } from '@/utils/loashUtil';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 
 interface TestRV {
   flag: boolean;
@@ -54,6 +55,8 @@ const props = withDefaults(defineProps<ConnectInputProps>(), {
 const inputDisabled = ref<boolean>(false);
 /** 按钮状态 */
 const btnDisabled = ref<boolean>(false);
+/** 等待连接结果时防止重复点击 */
+const actionPending = ref<boolean>(false);
 /** 连接状态 */
 const connectStatus = ref<boolean>(false);
 /** 验证提示 */
@@ -69,13 +72,34 @@ const emits = defineEmits<{
 
 /** 输入框值 */
 const inputValue = defineModel<string>('value');
+
+const runTest = (value?: string, showTip = true) => {
+  if (!props.test) return true;
+
+  const valid = props.test(value || '');
+  if (valid.flag) {
+    btnDisabled.value = false;
+    testTip.value = void 0;
+  } else {
+    btnDisabled.value = true;
+    if (showTip) testTip.value = valid.message;
+    else testTip.value = void 0;
+  }
+
+  return valid.flag;
+};
+
 /**
  * 按钮点击
  */
 const handleClick = () => {
+  if (actionPending.value) return;
+  if (!runTest(inputValue.value)) return;
+
   // 锁定输入
   inputDisabled.value = true;
   btnDisabled.value = true;
+  actionPending.value = true;
   if (connectStatus.value) {
     // 取消
     emits('cancel', inputValue.value);
@@ -86,18 +110,12 @@ const handleClick = () => {
 };
 // 处理验证
 const handleTest = debounce((value?: string) => {
-  if (props.test) {
-    const valid = props.test(value || '');
-    if (valid.flag) {
-      // 验证通过
-      btnDisabled.value = false;
-      testTip.value = void 0;
-    } else {
-      btnDisabled.value = true;
-      testTip.value = valid.message;
-    }
-  }
+  runTest(value);
 }, 200);
+
+const handleInput = () => {
+  handleTest(inputValue.value);
+};
 
 const handleBlur = (e: FocusEvent) => {
   props.testTime === 'blur' && handleTest(inputValue.value);
@@ -129,11 +147,12 @@ const setStatus = function (flag?: boolean) {
   }
   // 还原按钮状态
   btnDisabled.value = false;
+  actionPending.value = false;
 };
 
 /** 初始化数据 */
 const initData = function () {
-  if (props.test) btnDisabled.value = true;
+  runTest(inputValue.value, false);
 };
 
 onMounted(() => {
@@ -247,7 +266,6 @@ $testColor: $cancelColor;
     }
     &.disabled {
       opacity: 0.7;
-      pointer-events: none;
       cursor: not-allowed;
     }
     .cancel-text {

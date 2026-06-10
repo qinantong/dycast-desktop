@@ -1,4 +1,5 @@
 import { Emitter, type EventMap } from './emitter';
+import { createSocket, type DySocket } from '@/platform/websocket';
 
 interface RelayCastEvent extends EventMap {
   open: (ev: Event) => void;
@@ -8,13 +9,12 @@ interface RelayCastEvent extends EventMap {
 }
 
 /**
- * 弹幕转发器
- *  - 简单封装一下，有问题再优化
+ * 弹幕转发器（复用平台 WebSocket 抽象，兼容 Tauri 和浏览器环境）
  */
 export class RelayCast {
   private url: string;
 
-  private ws: WebSocket | undefined;
+  private ws: DySocket | undefined;
 
   private emitter: Emitter<RelayCastEvent>;
 
@@ -23,79 +23,49 @@ export class RelayCast {
     this.emitter = new Emitter();
   }
 
-  /**
-   * 监听
-   * @param event
-   * @param listener
-   */
   public on<K extends keyof RelayCastEvent>(event: K, listener: RelayCastEvent[K]) {
     this.emitter.on(event, listener);
   }
 
-  /**
-   * 取消监听
-   * @param event
-   * @param listener
-   */
   public off<K extends keyof RelayCastEvent>(event: K, listener: RelayCastEvent[K]) {
     this.emitter.off(event, listener);
   }
 
-  /**
-   * 一次性监听
-   *  - 如监听打开关闭
-   * @param event
-   * @param listener
-   */
   public once<K extends keyof RelayCastEvent>(event: K, listener: RelayCastEvent[K]) {
     this.emitter.once(event, listener);
   }
 
-  /**
-   * 连接
-   */
-  connect() {
+  async connect() {
     try {
-      this.ws = new WebSocket(this.url);
+      this.ws = await createSocket(this.url);
       this.ws.addEventListener('open', ev => {
         this.emitter.emit('open', ev);
       });
       this.ws.addEventListener('close', ev => {
-        this.emitter.emit('close', ev.code, ev.type);
+        this.emitter.emit('close', ev.code, ev.reason || ev.type);
       });
       this.ws.addEventListener('error', ev => {
-        this.emitter.emit('error', Error(ev.type));
+        this.emitter.emit('error', Error(ev instanceof ErrorEvent ? ev.message : (ev.type || 'Unknown')));
       });
       this.ws.addEventListener('message', ev => {
         this.emitter.emit('message', ev.data);
       });
+      return true;
     } catch (err) {
       this.emitter.emit('error', Error('转发服务器连接出错'));
       this.emitter.emit('close', 4002);
+      return false;
     }
   }
 
-  /**
-   * 是否连接
-   */
   isConnected() {
-    if (this.ws) return this.ws.readyState === WebSocket.OPEN;
-    else return false;
+    return !!(this.ws && this.ws.readyState === this.ws.OPEN);
   }
 
-  /**
-   * 发送消息
-   * @param data
-   */
   send(data: string | ArrayBuffer) {
-    if (this.ws && this.ws.readyState === WebSocket.OPEN) this.ws.send(data);
+    if (this.ws && this.ws.readyState === this.ws.OPEN) this.ws.send(data);
   }
 
-  /**
-   * 关闭转发
-   * @param code
-   * @param msg
-   */
   close(code: number = 1000, msg: string = 'close replay') {
     if (this.ws) {
       this.ws.close(code, msg);

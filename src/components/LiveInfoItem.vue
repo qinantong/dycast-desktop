@@ -27,8 +27,10 @@ $textColor: #6b798e;
 .live-info-item {
   width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 3px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
   box-sizing: border-box;
   .title {
     font-family: 'mkwxy';
@@ -38,24 +40,24 @@ $textColor: #6b798e;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex-shrink: 0;
   }
 }
 
 .live-info-item-main {
-  width: 100%;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   gap: 5px;
+  flex-shrink: 0;
   .text {
     user-select: none;
-    width: fit-content;
     font-size: 0.9rem;
     color: $textColor;
     font-family: 'dymht';
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-align: right;
   }
   .avatar {
     width: 2rem;

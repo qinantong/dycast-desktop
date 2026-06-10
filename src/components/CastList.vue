@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import CastTypeBtn from '@/components/CastTypeBtn/index.vue';
-import { computed, nextTick, onMounted, ref } from 'vue';
+import { computed, nextTick, onMounted, ref, shallowRef } from 'vue';
 import type { CastType } from './CastTypeBtn/type';
 import { getId } from '@/utils/idUtil';
 import CastItem from './CastItem.vue';
@@ -129,9 +129,9 @@ const setCastType = function (type: CastType, flag?: boolean) {
   }
 };
 
-/** 显示弹幕 */
-const casts = ref<DyMessage[]>([]);
-// 所有弹幕
+/** 显示弹幕（shallowRef 避免深层响应式追踪 3000+ 条消息） */
+const casts = shallowRef<DyMessage[]>([]);
+// 所有弹幕（保留完整数据集，用于类型切换重建）
 const allCasts: DyMessage[] = [];
 // 添加弹幕
 const appendCasts = function (msgs: DyMessage[]) {
@@ -150,7 +150,8 @@ const addCasts = function (msgs: DyMessage[], isClear: boolean = false) {
   });
   if (isClear) casts.value = list;
   else {
-    casts.value.push(...list);
+    // 用展开替换 push 以触发 shallowRef 的响应式更新
+    casts.value = [...casts.value, ...list];
     trimCasts(casts.value);
   }
   nextTick(() => {

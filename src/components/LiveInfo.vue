@@ -14,7 +14,7 @@
         <img :src="cover" alt="封面" @load="handleCoverLoaded" @error="handleCoverError" />
         <span>{{ coverLoadingTip }}</span>
       </div>
-      <label class="live-info-title">{{ title }}</label>
+      <label class="live-info-title" :title="title">{{ title }}</label>
     </div>
     <!-- 信息 -->
     <div class="live-info-list">
@@ -197,10 +197,13 @@ $errorText: #e94829;
   font-weight: bold;
   line-height: 24px;
   width: 100%;
-  height: 24px;
-  text-overflow: ellipsis;
+  min-height: 24px;
+  max-height: 48px;
   overflow: hidden;
-  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   color: $titleColor;
 }
 

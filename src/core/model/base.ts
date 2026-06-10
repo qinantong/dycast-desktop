@@ -1,7932 +1,12 @@
-import { Long } from './Long';
-
-export interface PushFrame {
-  seqId?: string;
-  logId?: string;
-  service?: string;
-  method?: string;
-  headersList?: { [key: string]: string };
-  payloadEncoding?: string;
-  payloadType?: string;
-  payload?: Uint8Array;
-  lodIdNew?: string;
-}
-
-export function encodePushFrame(message: PushFrame): Uint8Array {
-  let bb = popByteBuffer();
-  _encodePushFrame(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodePushFrame(message: PushFrame, bb: ByteBuffer): void {
-  // optional uint64 seqId = 1;
-  let $seqId = message.seqId;
-  if ($seqId !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, $seqId);
-  }
-
-  // optional uint64 logId = 2;
-  let $logId = message.logId;
-  if ($logId !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, $logId);
-  }
-
-  // optional uint64 service = 3;
-  let $service = message.service;
-  if ($service !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $service);
-  }
-
-  // optional uint64 method = 4;
-  let $method = message.method;
-  if ($method !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, $method);
-  }
-
-  // optional map<string, string> headersList = 5;
-  let map$headersList = message.headersList;
-  if (map$headersList !== undefined) {
-    for (let key in map$headersList) {
-      let nested = popByteBuffer();
-      let value = map$headersList[key];
-      writeVarint32(nested, 10);
-      writeString(nested, key);
-      writeVarint32(nested, 18);
-      writeString(nested, value);
-      writeVarint32(bb, 42);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional string payloadEncoding = 6;
-  let $payloadEncoding = message.payloadEncoding;
-  if ($payloadEncoding !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $payloadEncoding);
-  }
-
-  // optional string payloadType = 7;
-  let $payloadType = message.payloadType;
-  if ($payloadType !== undefined) {
-    writeVarint32(bb, 58);
-    writeString(bb, $payloadType);
-  }
-
-  // optional bytes payload = 8;
-  let $payload = message.payload;
-  if ($payload !== undefined) {
-    writeVarint32(bb, 66);
-    writeVarint32(bb, $payload.length), writeBytes(bb, $payload);
-  }
-
-  // optional string lodIdNew = 9;
-  let $lodIdNew = message.lodIdNew;
-  if ($lodIdNew !== undefined) {
-    writeVarint32(bb, 74);
-    writeString(bb, $lodIdNew);
-  }
-}
-
-export function decodePushFrame(binary: Uint8Array): PushFrame {
-  return _decodePushFrame(wrapByteBuffer(binary));
-}
-
-function _decodePushFrame(bb: ByteBuffer): PushFrame {
-  let message: PushFrame = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional uint64 seqId = 1;
-      case 1: {
-        message.seqId = readVarint64(bb, /* unsigned */ true);
-        break;
-      }
-
-      // optional uint64 logId = 2;
-      case 2: {
-        message.logId = readVarint64(bb, /* unsigned */ true);
-        break;
-      }
-
-      // optional uint64 service = 3;
-      case 3: {
-        message.service = readVarint64(bb, /* unsigned */ true);
-        break;
-      }
-
-      // optional uint64 method = 4;
-      case 4: {
-        message.method = readVarint64(bb, /* unsigned */ true);
-        break;
-      }
-
-      // optional map<string, string> headersList = 5;
-      case 5: {
-        let values = message.headersList || (message.headersList = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: string | undefined;
-        let value: string | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readString(bb, readVarint32(bb));
-              break;
-            }
-            case 2: {
-              value = readString(bb, readVarint32(bb));
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined) throw new Error('Invalid data for map: headersList');
-        values[key] = value;
-        bb.limit = outerLimit;
-        break;
-      }
-
-      // optional string payloadEncoding = 6;
-      case 6: {
-        message.payloadEncoding = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string payloadType = 7;
-      case 7: {
-        message.payloadType = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bytes payload = 8;
-      case 8: {
-        message.payload = readBytes(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string lodIdNew = 9;
-      case 9: {
-        message.lodIdNew = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface Response {
-  messages?: Message[];
-  cursor?: string;
-  fetchInterval?: string;
-  now?: string;
-  internalExt?: string;
-  fetchType?: number;
-  routeParams?: { [key: string]: string };
-  heartbeatDuration?: string;
-  needAck?: boolean;
-  pushServer?: string;
-  liveCursor?: string;
-  historyNoMore?: boolean;
-  proxyServer?: string;
-}
-
-export function encodeResponse(message: Response): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeResponse(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeResponse(message: Response, bb: ByteBuffer): void {
-  // repeated Message messages = 1;
-  let array$messages = message.messages;
-  if (array$messages !== undefined) {
-    for (let value of array$messages) {
-      writeVarint32(bb, 10);
-      let nested = popByteBuffer();
-      _encodeMessage(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional string cursor = 2;
-  let $cursor = message.cursor;
-  if ($cursor !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $cursor);
-  }
-
-  // optional int64 fetchInterval = 3;
-  let $fetchInterval = message.fetchInterval;
-  if ($fetchInterval !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $fetchInterval);
-  }
-
-  // optional int64 now = 4;
-  let $now = message.now;
-  if ($now !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, $now);
-  }
-
-  // optional string internalExt = 5;
-  let $internalExt = message.internalExt;
-  if ($internalExt !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $internalExt);
-  }
-
-  // optional int32 fetchType = 6;
-  let $fetchType = message.fetchType;
-  if ($fetchType !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($fetchType));
-  }
-
-  // optional map<string, string> routeParams = 7;
-  let map$routeParams = message.routeParams;
-  if (map$routeParams !== undefined) {
-    for (let key in map$routeParams) {
-      let nested = popByteBuffer();
-      let value = map$routeParams[key];
-      writeVarint32(nested, 10);
-      writeString(nested, key);
-      writeVarint32(nested, 18);
-      writeString(nested, value);
-      writeVarint32(bb, 58);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional int64 heartbeatDuration = 8;
-  let $heartbeatDuration = message.heartbeatDuration;
-  if ($heartbeatDuration !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, $heartbeatDuration);
-  }
-
-  // optional bool needAck = 9;
-  let $needAck = message.needAck;
-  if ($needAck !== undefined) {
-    writeVarint32(bb, 72);
-    writeByte(bb, $needAck ? 1 : 0);
-  }
-
-  // optional string pushServer = 10;
-  let $pushServer = message.pushServer;
-  if ($pushServer !== undefined) {
-    writeVarint32(bb, 82);
-    writeString(bb, $pushServer);
-  }
-
-  // optional string liveCursor = 11;
-  let $liveCursor = message.liveCursor;
-  if ($liveCursor !== undefined) {
-    writeVarint32(bb, 90);
-    writeString(bb, $liveCursor);
-  }
-
-  // optional bool historyNoMore = 12;
-  let $historyNoMore = message.historyNoMore;
-  if ($historyNoMore !== undefined) {
-    writeVarint32(bb, 96);
-    writeByte(bb, $historyNoMore ? 1 : 0);
-  }
-
-  // optional string proxyServer = 13;
-  let $proxyServer = message.proxyServer;
-  if ($proxyServer !== undefined) {
-    writeVarint32(bb, 106);
-    writeString(bb, $proxyServer);
-  }
-}
-
-export function decodeResponse(binary: Uint8Array): Response {
-  return _decodeResponse(wrapByteBuffer(binary));
-}
-
-function _decodeResponse(bb: ByteBuffer): Response {
-  let message: Response = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // repeated Message messages = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.messages || (message.messages = []);
-        values.push(_decodeMessage(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string cursor = 2;
-      case 2: {
-        message.cursor = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 fetchInterval = 3;
-      case 3: {
-        message.fetchInterval = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 now = 4;
-      case 4: {
-        message.now = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string internalExt = 5;
-      case 5: {
-        message.internalExt = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 fetchType = 6;
-      case 6: {
-        message.fetchType = readVarint32(bb);
-        break;
-      }
-
-      // optional map<string, string> routeParams = 7;
-      case 7: {
-        let values = message.routeParams || (message.routeParams = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: string | undefined;
-        let value: string | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readString(bb, readVarint32(bb));
-              break;
-            }
-            case 2: {
-              value = readString(bb, readVarint32(bb));
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined) throw new Error('Invalid data for map: routeParams');
-        values[key] = value;
-        bb.limit = outerLimit;
-        break;
-      }
-
-      // optional int64 heartbeatDuration = 8;
-      case 8: {
-        message.heartbeatDuration = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional bool needAck = 9;
-      case 9: {
-        message.needAck = !!readByte(bb);
-        break;
-      }
-
-      // optional string pushServer = 10;
-      case 10: {
-        message.pushServer = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string liveCursor = 11;
-      case 11: {
-        message.liveCursor = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool historyNoMore = 12;
-      case 12: {
-        message.historyNoMore = !!readByte(bb);
-        break;
-      }
-
-      // optional string proxyServer = 13;
-      case 13: {
-        message.proxyServer = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface Message {
-  method?: string;
-  payload?: Uint8Array;
-  msgId?: string;
-  msgType?: number;
-  offset?: string;
-  needWrdsStore?: boolean;
-  wrdsVersion?: string;
-  wrdsSubKey?: string;
-}
-
-export function encodeMessage(message: Message): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeMessage(message: Message, bb: ByteBuffer): void {
-  // optional string method = 1;
-  let $method = message.method;
-  if ($method !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $method);
-  }
-
-  // optional bytes payload = 2;
-  let $payload = message.payload;
-  if ($payload !== undefined) {
-    writeVarint32(bb, 18);
-    writeVarint32(bb, $payload.length), writeBytes(bb, $payload);
-  }
-
-  // optional int64 msgId = 3;
-  let $msgId = message.msgId;
-  if ($msgId !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $msgId);
-  }
-
-  // optional int32 msgType = 4;
-  let $msgType = message.msgType;
-  if ($msgType !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($msgType));
-  }
-
-  // optional int64 offset = 5;
-  let $offset = message.offset;
-  if ($offset !== undefined) {
-    writeVarint32(bb, 40);
-    writeVarint64(bb, $offset);
-  }
-
-  // optional bool needWrdsStore = 6;
-  let $needWrdsStore = message.needWrdsStore;
-  if ($needWrdsStore !== undefined) {
-    writeVarint32(bb, 48);
-    writeByte(bb, $needWrdsStore ? 1 : 0);
-  }
-
-  // optional int64 wrdsVersion = 7;
-  let $wrdsVersion = message.wrdsVersion;
-  if ($wrdsVersion !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, $wrdsVersion);
-  }
-
-  // optional string wrdsSubKey = 8;
-  let $wrdsSubKey = message.wrdsSubKey;
-  if ($wrdsSubKey !== undefined) {
-    writeVarint32(bb, 66);
-    writeString(bb, $wrdsSubKey);
-  }
-}
-
-export function decodeMessage(binary: Uint8Array): Message {
-  return _decodeMessage(wrapByteBuffer(binary));
-}
-
-function _decodeMessage(bb: ByteBuffer): Message {
-  let message: Message = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string method = 1;
-      case 1: {
-        message.method = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bytes payload = 2;
-      case 2: {
-        message.payload = readBytes(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 msgId = 3;
-      case 3: {
-        message.msgId = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 msgType = 4;
-      case 4: {
-        message.msgType = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 offset = 5;
-      case 5: {
-        message.offset = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional bool needWrdsStore = 6;
-      case 6: {
-        message.needWrdsStore = !!readByte(bb);
-        break;
-      }
-
-      // optional int64 wrdsVersion = 7;
-      case 7: {
-        message.wrdsVersion = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string wrdsSubKey = 8;
-      case 8: {
-        message.wrdsSubKey = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface ChatMessage {
-  common?: Common;
-  user?: User;
-  content?: string;
-  visibleToSender?: boolean;
-  backgroundImage?: Image;
-  fullScreenTextColor?: string;
-  backgroundImageV2?: Image;
-  publicAreaCommon?: PublicAreaCommon;
-  giftImage?: Image;
-  agreeMsgId?: string;
-  priorityLevel?: number;
-  landscapeAreaCommon?: LandscapeAreaCommon;
-  eventTime?: string;
-  sendReview?: boolean;
-  fromIntercom?: boolean;
-  intercomHideUserCard?: boolean;
-  chatTags?: number;
-  chatBy?: string;
-  individualChatPriority?: number;
-  rtfContent?: Text;
-  rtfContentV2?: Text;
-}
-
-export function encodeChatMessage(message: ChatMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeChatMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeChatMessage(message: ChatMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional User user = 2;
-  let $user = message.user;
-  if ($user !== undefined) {
-    writeVarint32(bb, 18);
-    let nested = popByteBuffer();
-    _encodeUser($user, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string content = 3;
-  let $content = message.content;
-  if ($content !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $content);
-  }
-
-  // optional bool visibleToSender = 4;
-  let $visibleToSender = message.visibleToSender;
-  if ($visibleToSender !== undefined) {
-    writeVarint32(bb, 32);
-    writeByte(bb, $visibleToSender ? 1 : 0);
-  }
-
-  // optional Image backgroundImage = 5;
-  let $backgroundImage = message.backgroundImage;
-  if ($backgroundImage !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodeImage($backgroundImage, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string fullScreenTextColor = 6;
-  let $fullScreenTextColor = message.fullScreenTextColor;
-  if ($fullScreenTextColor !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $fullScreenTextColor);
-  }
-
-  // optional Image backgroundImageV2 = 7;
-  let $backgroundImageV2 = message.backgroundImageV2;
-  if ($backgroundImageV2 !== undefined) {
-    writeVarint32(bb, 58);
-    let nested = popByteBuffer();
-    _encodeImage($backgroundImageV2, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional PublicAreaCommon publicAreaCommon = 9;
-  let $publicAreaCommon = message.publicAreaCommon;
-  if ($publicAreaCommon !== undefined) {
-    writeVarint32(bb, 74);
-    let nested = popByteBuffer();
-    _encodePublicAreaCommon($publicAreaCommon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Image giftImage = 10;
-  let $giftImage = message.giftImage;
-  if ($giftImage !== undefined) {
-    writeVarint32(bb, 82);
-    let nested = popByteBuffer();
-    _encodeImage($giftImage, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 agreeMsgId = 11;
-  let $agreeMsgId = message.agreeMsgId;
-  if ($agreeMsgId !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, $agreeMsgId);
-  }
-
-  // optional int32 priorityLevel = 12;
-  let $priorityLevel = message.priorityLevel;
-  if ($priorityLevel !== undefined) {
-    writeVarint32(bb, 96);
-    writeVarint64(bb, intToLong($priorityLevel));
-  }
-
-  // optional LandscapeAreaCommon landscapeAreaCommon = 13;
-  let $landscapeAreaCommon = message.landscapeAreaCommon;
-  if ($landscapeAreaCommon !== undefined) {
-    writeVarint32(bb, 106);
-    let nested = popByteBuffer();
-    _encodeLandscapeAreaCommon($landscapeAreaCommon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 eventTime = 15;
-  let $eventTime = message.eventTime;
-  if ($eventTime !== undefined) {
-    writeVarint32(bb, 120);
-    writeVarint64(bb, $eventTime);
-  }
-
-  // optional bool sendReview = 16;
-  let $sendReview = message.sendReview;
-  if ($sendReview !== undefined) {
-    writeVarint32(bb, 128);
-    writeByte(bb, $sendReview ? 1 : 0);
-  }
-
-  // optional bool fromIntercom = 17;
-  let $fromIntercom = message.fromIntercom;
-  if ($fromIntercom !== undefined) {
-    writeVarint32(bb, 136);
-    writeByte(bb, $fromIntercom ? 1 : 0);
-  }
-
-  // optional bool intercomHideUserCard = 18;
-  let $intercomHideUserCard = message.intercomHideUserCard;
-  if ($intercomHideUserCard !== undefined) {
-    writeVarint32(bb, 144);
-    writeByte(bb, $intercomHideUserCard ? 1 : 0);
-  }
-
-  // optional int32 chatTags = 19;
-  let $chatTags = message.chatTags;
-  if ($chatTags !== undefined) {
-    writeVarint32(bb, 152);
-    writeVarint64(bb, intToLong($chatTags));
-  }
-
-  // optional int64 chatBy = 20;
-  let $chatBy = message.chatBy;
-  if ($chatBy !== undefined) {
-    writeVarint32(bb, 160);
-    writeVarint64(bb, $chatBy);
-  }
-
-  // optional int32 individualChatPriority = 21;
-  let $individualChatPriority = message.individualChatPriority;
-  if ($individualChatPriority !== undefined) {
-    writeVarint32(bb, 168);
-    writeVarint64(bb, intToLong($individualChatPriority));
-  }
-
-  // optional Text rtfContent = 40;
-  let $rtfContent = message.rtfContent;
-  if ($rtfContent !== undefined) {
-    writeVarint32(bb, 322);
-    let nested = popByteBuffer();
-    _encodeText($rtfContent, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Text rtfContentV2 = 41;
-  let $rtfContentV2 = message.rtfContentV2;
-  if ($rtfContentV2 !== undefined) {
-    writeVarint32(bb, 330);
-    let nested = popByteBuffer();
-    _encodeText($rtfContentV2, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeChatMessage(binary: Uint8Array): ChatMessage {
-  return _decodeChatMessage(wrapByteBuffer(binary));
-}
-
-function _decodeChatMessage(bb: ByteBuffer): ChatMessage {
-  let message: ChatMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional User user = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        message.user = _decodeUser(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string content = 3;
-      case 3: {
-        message.content = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool visibleToSender = 4;
-      case 4: {
-        message.visibleToSender = !!readByte(bb);
-        break;
-      }
-
-      // optional Image backgroundImage = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.backgroundImage = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string fullScreenTextColor = 6;
-      case 6: {
-        message.fullScreenTextColor = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional Image backgroundImageV2 = 7;
-      case 7: {
-        let limit = pushTemporaryLength(bb);
-        message.backgroundImageV2 = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional PublicAreaCommon publicAreaCommon = 9;
-      case 9: {
-        let limit = pushTemporaryLength(bb);
-        message.publicAreaCommon = _decodePublicAreaCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Image giftImage = 10;
-      case 10: {
-        let limit = pushTemporaryLength(bb);
-        message.giftImage = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 agreeMsgId = 11;
-      case 11: {
-        message.agreeMsgId = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 priorityLevel = 12;
-      case 12: {
-        message.priorityLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional LandscapeAreaCommon landscapeAreaCommon = 13;
-      case 13: {
-        let limit = pushTemporaryLength(bb);
-        message.landscapeAreaCommon = _decodeLandscapeAreaCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 eventTime = 15;
-      case 15: {
-        message.eventTime = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional bool sendReview = 16;
-      case 16: {
-        message.sendReview = !!readByte(bb);
-        break;
-      }
-
-      // optional bool fromIntercom = 17;
-      case 17: {
-        message.fromIntercom = !!readByte(bb);
-        break;
-      }
-
-      // optional bool intercomHideUserCard = 18;
-      case 18: {
-        message.intercomHideUserCard = !!readByte(bb);
-        break;
-      }
-
-      // optional int32 chatTags = 19;
-      case 19: {
-        message.chatTags = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 chatBy = 20;
-      case 20: {
-        message.chatBy = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 individualChatPriority = 21;
-      case 21: {
-        message.individualChatPriority = readVarint32(bb);
-        break;
-      }
-
-      // optional Text rtfContent = 40;
-      case 40: {
-        let limit = pushTemporaryLength(bb);
-        message.rtfContent = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Text rtfContentV2 = 41;
-      case 41: {
-        let limit = pushTemporaryLength(bb);
-        message.rtfContentV2 = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface EmojiChatMessage {
-  common?: Common;
-  user?: User;
-  emojiId?: string;
-  emojiContent?: Text;
-  defaultContent?: string;
-  backgroundImage?: Image;
-  fromIntercom?: boolean;
-  intercomHideUserCard?: boolean;
-  publicAreaCommon?: PublicAreaCommon;
-}
-
-export function encodeEmojiChatMessage(message: EmojiChatMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeEmojiChatMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeEmojiChatMessage(message: EmojiChatMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional User user = 2;
-  let $user = message.user;
-  if ($user !== undefined) {
-    writeVarint32(bb, 18);
-    let nested = popByteBuffer();
-    _encodeUser($user, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 emojiId = 3;
-  let $emojiId = message.emojiId;
-  if ($emojiId !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $emojiId);
-  }
-
-  // optional Text emojiContent = 4;
-  let $emojiContent = message.emojiContent;
-  if ($emojiContent !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeText($emojiContent, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string defaultContent = 5;
-  let $defaultContent = message.defaultContent;
-  if ($defaultContent !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $defaultContent);
-  }
-
-  // optional Image backgroundImage = 6;
-  let $backgroundImage = message.backgroundImage;
-  if ($backgroundImage !== undefined) {
-    writeVarint32(bb, 50);
-    let nested = popByteBuffer();
-    _encodeImage($backgroundImage, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional bool fromIntercom = 7;
-  let $fromIntercom = message.fromIntercom;
-  if ($fromIntercom !== undefined) {
-    writeVarint32(bb, 56);
-    writeByte(bb, $fromIntercom ? 1 : 0);
-  }
-
-  // optional bool intercomHideUserCard = 8;
-  let $intercomHideUserCard = message.intercomHideUserCard;
-  if ($intercomHideUserCard !== undefined) {
-    writeVarint32(bb, 64);
-    writeByte(bb, $intercomHideUserCard ? 1 : 0);
-  }
-
-  // optional PublicAreaCommon publicAreaCommon = 9;
-  let $publicAreaCommon = message.publicAreaCommon;
-  if ($publicAreaCommon !== undefined) {
-    writeVarint32(bb, 74);
-    let nested = popByteBuffer();
-    _encodePublicAreaCommon($publicAreaCommon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeEmojiChatMessage(binary: Uint8Array): EmojiChatMessage {
-  return _decodeEmojiChatMessage(wrapByteBuffer(binary));
-}
-
-function _decodeEmojiChatMessage(bb: ByteBuffer): EmojiChatMessage {
-  let message: EmojiChatMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional User user = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        message.user = _decodeUser(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 emojiId = 3;
-      case 3: {
-        message.emojiId = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional Text emojiContent = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.emojiContent = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string defaultContent = 5;
-      case 5: {
-        message.defaultContent = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional Image backgroundImage = 6;
-      case 6: {
-        let limit = pushTemporaryLength(bb);
-        message.backgroundImage = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional bool fromIntercom = 7;
-      case 7: {
-        message.fromIntercom = !!readByte(bb);
-        break;
-      }
-
-      // optional bool intercomHideUserCard = 8;
-      case 8: {
-        message.intercomHideUserCard = !!readByte(bb);
-        break;
-      }
-
-      // optional PublicAreaCommon publicAreaCommon = 9;
-      case 9: {
-        let limit = pushTemporaryLength(bb);
-        message.publicAreaCommon = _decodePublicAreaCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RoomUserSeqMessage {
-  common?: Common;
-  ranks?: RoomUserSeqMessage_Contributor[];
-  total?: string;
-  popStr?: string;
-  seats?: RoomUserSeqMessage_Contributor[];
-  popularity?: string;
-  totalUser?: string;
-  totalUserStr?: string;
-  totalStr?: string;
-  onlineUserForAnchor?: string;
-  totalPvForAnchor?: string;
-  upRightStatsStr?: string;
-  upRightStatsStrComplete?: string;
-}
-
-export function encodeRoomUserSeqMessage(message: RoomUserSeqMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRoomUserSeqMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRoomUserSeqMessage(message: RoomUserSeqMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated RoomUserSeqMessage_Contributor ranks = 2;
-  let array$ranks = message.ranks;
-  if (array$ranks !== undefined) {
-    for (let value of array$ranks) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeRoomUserSeqMessage_Contributor(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional int64 total = 3;
-  let $total = message.total;
-  if ($total !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $total);
-  }
-
-  // optional string popStr = 4;
-  let $popStr = message.popStr;
-  if ($popStr !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $popStr);
-  }
-
-  // repeated RoomUserSeqMessage_Contributor seats = 5;
-  let array$seats = message.seats;
-  if (array$seats !== undefined) {
-    for (let value of array$seats) {
-      writeVarint32(bb, 42);
-      let nested = popByteBuffer();
-      _encodeRoomUserSeqMessage_Contributor(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional int64 popularity = 6;
-  let $popularity = message.popularity;
-  if ($popularity !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, $popularity);
-  }
-
-  // optional int64 totalUser = 7;
-  let $totalUser = message.totalUser;
-  if ($totalUser !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, $totalUser);
-  }
-
-  // optional string totalUserStr = 8;
-  let $totalUserStr = message.totalUserStr;
-  if ($totalUserStr !== undefined) {
-    writeVarint32(bb, 66);
-    writeString(bb, $totalUserStr);
-  }
-
-  // optional string totalStr = 9;
-  let $totalStr = message.totalStr;
-  if ($totalStr !== undefined) {
-    writeVarint32(bb, 74);
-    writeString(bb, $totalStr);
-  }
-
-  // optional string onlineUserForAnchor = 10;
-  let $onlineUserForAnchor = message.onlineUserForAnchor;
-  if ($onlineUserForAnchor !== undefined) {
-    writeVarint32(bb, 82);
-    writeString(bb, $onlineUserForAnchor);
-  }
-
-  // optional string totalPvForAnchor = 11;
-  let $totalPvForAnchor = message.totalPvForAnchor;
-  if ($totalPvForAnchor !== undefined) {
-    writeVarint32(bb, 90);
-    writeString(bb, $totalPvForAnchor);
-  }
-
-  // optional string upRightStatsStr = 12;
-  let $upRightStatsStr = message.upRightStatsStr;
-  if ($upRightStatsStr !== undefined) {
-    writeVarint32(bb, 98);
-    writeString(bb, $upRightStatsStr);
-  }
-
-  // optional string upRightStatsStrComplete = 13;
-  let $upRightStatsStrComplete = message.upRightStatsStrComplete;
-  if ($upRightStatsStrComplete !== undefined) {
-    writeVarint32(bb, 106);
-    writeString(bb, $upRightStatsStrComplete);
-  }
-}
-
-export function decodeRoomUserSeqMessage(binary: Uint8Array): RoomUserSeqMessage {
-  return _decodeRoomUserSeqMessage(wrapByteBuffer(binary));
-}
-
-function _decodeRoomUserSeqMessage(bb: ByteBuffer): RoomUserSeqMessage {
-  let message: RoomUserSeqMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated RoomUserSeqMessage_Contributor ranks = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.ranks || (message.ranks = []);
-        values.push(_decodeRoomUserSeqMessage_Contributor(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 total = 3;
-      case 3: {
-        message.total = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string popStr = 4;
-      case 4: {
-        message.popStr = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // repeated RoomUserSeqMessage_Contributor seats = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.seats || (message.seats = []);
-        values.push(_decodeRoomUserSeqMessage_Contributor(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 popularity = 6;
-      case 6: {
-        message.popularity = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 totalUser = 7;
-      case 7: {
-        message.totalUser = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string totalUserStr = 8;
-      case 8: {
-        message.totalUserStr = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string totalStr = 9;
-      case 9: {
-        message.totalStr = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string onlineUserForAnchor = 10;
-      case 10: {
-        message.onlineUserForAnchor = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string totalPvForAnchor = 11;
-      case 11: {
-        message.totalPvForAnchor = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string upRightStatsStr = 12;
-      case 12: {
-        message.upRightStatsStr = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string upRightStatsStrComplete = 13;
-      case 13: {
-        message.upRightStatsStrComplete = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RoomUserSeqMessage_Contributor {
-  score?: string;
-  user?: User;
-  rank?: string;
-  delta?: string;
-  isHidden?: boolean;
-  scoreDescription?: string;
-  exactlyScore?: string;
-}
-
-export function encodeRoomUserSeqMessage_Contributor(message: RoomUserSeqMessage_Contributor): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRoomUserSeqMessage_Contributor(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRoomUserSeqMessage_Contributor(message: RoomUserSeqMessage_Contributor, bb: ByteBuffer): void {
-  // optional int64 score = 1;
-  let $score = message.score;
-  if ($score !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, $score);
-  }
-
-  // optional User user = 2;
-  let $user = message.user;
-  if ($user !== undefined) {
-    writeVarint32(bb, 18);
-    let nested = popByteBuffer();
-    _encodeUser($user, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 rank = 3;
-  let $rank = message.rank;
-  if ($rank !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $rank);
-  }
-
-  // optional int64 delta = 4;
-  let $delta = message.delta;
-  if ($delta !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, $delta);
-  }
-
-  // optional bool isHidden = 5;
-  let $isHidden = message.isHidden;
-  if ($isHidden !== undefined) {
-    writeVarint32(bb, 40);
-    writeByte(bb, $isHidden ? 1 : 0);
-  }
-
-  // optional string scoreDescription = 6;
-  let $scoreDescription = message.scoreDescription;
-  if ($scoreDescription !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $scoreDescription);
-  }
-
-  // optional string exactlyScore = 7;
-  let $exactlyScore = message.exactlyScore;
-  if ($exactlyScore !== undefined) {
-    writeVarint32(bb, 58);
-    writeString(bb, $exactlyScore);
-  }
-}
-
-export function decodeRoomUserSeqMessage_Contributor(binary: Uint8Array): RoomUserSeqMessage_Contributor {
-  return _decodeRoomUserSeqMessage_Contributor(wrapByteBuffer(binary));
-}
-
-function _decodeRoomUserSeqMessage_Contributor(bb: ByteBuffer): RoomUserSeqMessage_Contributor {
-  let message: RoomUserSeqMessage_Contributor = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int64 score = 1;
-      case 1: {
-        message.score = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional User user = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        message.user = _decodeUser(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 rank = 3;
-      case 3: {
-        message.rank = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 delta = 4;
-      case 4: {
-        message.delta = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional bool isHidden = 5;
-      case 5: {
-        message.isHidden = !!readByte(bb);
-        break;
-      }
-
-      // optional string scoreDescription = 6;
-      case 6: {
-        message.scoreDescription = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string exactlyScore = 7;
-      case 7: {
-        message.exactlyScore = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface GiftMessage {
-  common?: Common;
-  giftId?: string;
-  fanTicketCount?: string;
-  groupCount?: string;
-  repeatCount?: string;
-  comboCount?: string;
-  user?: User;
-  toUser?: User;
-  repeatEnd?: number;
-  textEffect?: GiftMessage_TextEffect;
-  groupId?: string;
-  incomeTaskgifts?: string;
-  roomFanTicketCount?: string;
-  priority?: GiftIMPriority;
-  gift?: GiftStruct;
-  logId?: string;
-  sendType?: string;
-  publicAreaCommon?: PublicAreaCommon;
-  trayDisplayText?: Text;
-  bannedDisplayEffects?: string;
-  trayInfo?: GiftTrayInfo;
-  assetEffectMixInfo?: AssetEffectMixInfo;
-  displayForSelf?: boolean;
-  interactGiftInfo?: string;
-  diyItemInfo?: string;
-  minAssetSet?: string;
-  totalCount?: string;
-  clientGiftSource?: number;
-  anchorGift?: AnchorGiftData;
-  toUserIds?: string;
-  sendTime?: string;
-  forceDisplayEffects?: string;
-  traceId?: string;
-  effectDisplayTs?: string;
-  sendTogether?: SendTogether;
-  extraEffect?: ExtraEffect;
-  roomHotInfo?: RoomHotInfo;
-  GiftPlayParam?: string;
-  multiSendEffectLevel?: number;
-  seriesGiftData?: SeriesPlayGift[];
-  useRoomMessage?: boolean;
-  count?: string;
-  toOpenids?: string;
-}
-
-export function encodeGiftMessage(message: GiftMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeGiftMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeGiftMessage(message: GiftMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 giftId = 2;
-  let $giftId = message.giftId;
-  if ($giftId !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, $giftId);
-  }
-
-  // optional int64 fanTicketCount = 3;
-  let $fanTicketCount = message.fanTicketCount;
-  if ($fanTicketCount !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $fanTicketCount);
-  }
-
-  // optional int64 groupCount = 4;
-  let $groupCount = message.groupCount;
-  if ($groupCount !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, $groupCount);
-  }
-
-  // optional int64 repeatCount = 5;
-  let $repeatCount = message.repeatCount;
-  if ($repeatCount !== undefined) {
-    writeVarint32(bb, 40);
-    writeVarint64(bb, $repeatCount);
-  }
-
-  // optional int64 comboCount = 6;
-  let $comboCount = message.comboCount;
-  if ($comboCount !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, $comboCount);
-  }
-
-  // optional User user = 7;
-  let $user = message.user;
-  if ($user !== undefined) {
-    writeVarint32(bb, 58);
-    let nested = popByteBuffer();
-    _encodeUser($user, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional User toUser = 8;
-  let $toUser = message.toUser;
-  if ($toUser !== undefined) {
-    writeVarint32(bb, 66);
-    let nested = popByteBuffer();
-    _encodeUser($toUser, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int32 repeatEnd = 9;
-  let $repeatEnd = message.repeatEnd;
-  if ($repeatEnd !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($repeatEnd));
-  }
-
-  // optional GiftMessage_TextEffect textEffect = 10;
-  let $textEffect = message.textEffect;
-  if ($textEffect !== undefined) {
-    writeVarint32(bb, 82);
-    let nested = popByteBuffer();
-    _encodeGiftMessage_TextEffect($textEffect, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 groupId = 11;
-  let $groupId = message.groupId;
-  if ($groupId !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, $groupId);
-  }
-
-  // optional int64 incomeTaskgifts = 12;
-  let $incomeTaskgifts = message.incomeTaskgifts;
-  if ($incomeTaskgifts !== undefined) {
-    writeVarint32(bb, 96);
-    writeVarint64(bb, $incomeTaskgifts);
-  }
-
-  // optional int64 roomFanTicketCount = 13;
-  let $roomFanTicketCount = message.roomFanTicketCount;
-  if ($roomFanTicketCount !== undefined) {
-    writeVarint32(bb, 104);
-    writeVarint64(bb, $roomFanTicketCount);
-  }
-
-  // optional GiftIMPriority priority = 14;
-  let $priority = message.priority;
-  if ($priority !== undefined) {
-    writeVarint32(bb, 114);
-    let nested = popByteBuffer();
-    _encodeGiftIMPriority($priority, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional GiftStruct gift = 15;
-  let $gift = message.gift;
-  if ($gift !== undefined) {
-    writeVarint32(bb, 122);
-    let nested = popByteBuffer();
-    _encodeGiftStruct($gift, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string logId = 16;
-  let $logId = message.logId;
-  if ($logId !== undefined) {
-    writeVarint32(bb, 130);
-    writeString(bb, $logId);
-  }
-
-  // optional int64 sendType = 17;
-  let $sendType = message.sendType;
-  if ($sendType !== undefined) {
-    writeVarint32(bb, 136);
-    writeVarint64(bb, $sendType);
-  }
-
-  // optional PublicAreaCommon publicAreaCommon = 18;
-  let $publicAreaCommon = message.publicAreaCommon;
-  if ($publicAreaCommon !== undefined) {
-    writeVarint32(bb, 146);
-    let nested = popByteBuffer();
-    _encodePublicAreaCommon($publicAreaCommon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Text trayDisplayText = 19;
-  let $trayDisplayText = message.trayDisplayText;
-  if ($trayDisplayText !== undefined) {
-    writeVarint32(bb, 154);
-    let nested = popByteBuffer();
-    _encodeText($trayDisplayText, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 bannedDisplayEffects = 20;
-  let $bannedDisplayEffects = message.bannedDisplayEffects;
-  if ($bannedDisplayEffects !== undefined) {
-    writeVarint32(bb, 160);
-    writeVarint64(bb, $bannedDisplayEffects);
-  }
-
-  // optional GiftTrayInfo trayInfo = 21;
-  let $trayInfo = message.trayInfo;
-  if ($trayInfo !== undefined) {
-    writeVarint32(bb, 170);
-    let nested = popByteBuffer();
-    _encodeGiftTrayInfo($trayInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional AssetEffectMixInfo assetEffectMixInfo = 24;
-  let $assetEffectMixInfo = message.assetEffectMixInfo;
-  if ($assetEffectMixInfo !== undefined) {
-    writeVarint32(bb, 194);
-    let nested = popByteBuffer();
-    _encodeAssetEffectMixInfo($assetEffectMixInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional bool displayForSelf = 25;
-  let $displayForSelf = message.displayForSelf;
-  if ($displayForSelf !== undefined) {
-    writeVarint32(bb, 200);
-    writeByte(bb, $displayForSelf ? 1 : 0);
-  }
-
-  // optional string interactGiftInfo = 26;
-  let $interactGiftInfo = message.interactGiftInfo;
-  if ($interactGiftInfo !== undefined) {
-    writeVarint32(bb, 210);
-    writeString(bb, $interactGiftInfo);
-  }
-
-  // optional string diyItemInfo = 27;
-  let $diyItemInfo = message.diyItemInfo;
-  if ($diyItemInfo !== undefined) {
-    writeVarint32(bb, 218);
-    writeString(bb, $diyItemInfo);
-  }
-
-  // optional int64 minAssetSet = 28;
-  let $minAssetSet = message.minAssetSet;
-  if ($minAssetSet !== undefined) {
-    writeVarint32(bb, 224);
-    writeVarint64(bb, $minAssetSet);
-  }
-
-  // optional int64 totalCount = 29;
-  let $totalCount = message.totalCount;
-  if ($totalCount !== undefined) {
-    writeVarint32(bb, 232);
-    writeVarint64(bb, $totalCount);
-  }
-
-  // optional int32 clientGiftSource = 30;
-  let $clientGiftSource = message.clientGiftSource;
-  if ($clientGiftSource !== undefined) {
-    writeVarint32(bb, 240);
-    writeVarint64(bb, intToLong($clientGiftSource));
-  }
-
-  // optional AnchorGiftData anchorGift = 31;
-  let $anchorGift = message.anchorGift;
-  if ($anchorGift !== undefined) {
-    writeVarint32(bb, 250);
-    let nested = popByteBuffer();
-    _encodeAnchorGiftData($anchorGift, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 toUserIds = 32;
-  let $toUserIds = message.toUserIds;
-  if ($toUserIds !== undefined) {
-    writeVarint32(bb, 256);
-    writeVarint64(bb, $toUserIds);
-  }
-
-  // optional int64 sendTime = 33;
-  let $sendTime = message.sendTime;
-  if ($sendTime !== undefined) {
-    writeVarint32(bb, 264);
-    writeVarint64(bb, $sendTime);
-  }
-
-  // optional int64 forceDisplayEffects = 34;
-  let $forceDisplayEffects = message.forceDisplayEffects;
-  if ($forceDisplayEffects !== undefined) {
-    writeVarint32(bb, 272);
-    writeVarint64(bb, $forceDisplayEffects);
-  }
-
-  // optional string traceId = 35;
-  let $traceId = message.traceId;
-  if ($traceId !== undefined) {
-    writeVarint32(bb, 282);
-    writeString(bb, $traceId);
-  }
-
-  // optional int64 effectDisplayTs = 36;
-  let $effectDisplayTs = message.effectDisplayTs;
-  if ($effectDisplayTs !== undefined) {
-    writeVarint32(bb, 288);
-    writeVarint64(bb, $effectDisplayTs);
-  }
-
-  // optional SendTogether sendTogether = 37;
-  let $sendTogether = message.sendTogether;
-  if ($sendTogether !== undefined) {
-    writeVarint32(bb, 298);
-    let nested = popByteBuffer();
-    _encodeSendTogether($sendTogether, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional ExtraEffect extraEffect = 38;
-  let $extraEffect = message.extraEffect;
-  if ($extraEffect !== undefined) {
-    writeVarint32(bb, 306);
-    let nested = popByteBuffer();
-    _encodeExtraEffect($extraEffect, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional RoomHotInfo roomHotInfo = 39;
-  let $roomHotInfo = message.roomHotInfo;
-  if ($roomHotInfo !== undefined) {
-    writeVarint32(bb, 314);
-    let nested = popByteBuffer();
-    _encodeRoomHotInfo($roomHotInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string GiftPlayParam = 40;
-  let $GiftPlayParam = message.GiftPlayParam;
-  if ($GiftPlayParam !== undefined) {
-    writeVarint32(bb, 322);
-    writeString(bb, $GiftPlayParam);
-  }
-
-  // optional int32 multiSendEffectLevel = 41;
-  let $multiSendEffectLevel = message.multiSendEffectLevel;
-  if ($multiSendEffectLevel !== undefined) {
-    writeVarint32(bb, 328);
-    writeVarint64(bb, intToLong($multiSendEffectLevel));
-  }
-
-  // repeated SeriesPlayGift seriesGiftData = 42;
-  let array$seriesGiftData = message.seriesGiftData;
-  if (array$seriesGiftData !== undefined) {
-    for (let value of array$seriesGiftData) {
-      writeVarint32(bb, 338);
-      let nested = popByteBuffer();
-      _encodeSeriesPlayGift(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional bool useRoomMessage = 43;
-  let $useRoomMessage = message.useRoomMessage;
-  if ($useRoomMessage !== undefined) {
-    writeVarint32(bb, 344);
-    writeByte(bb, $useRoomMessage ? 1 : 0);
-  }
-
-  // optional int64 count = 44;
-  let $count = message.count;
-  if ($count !== undefined) {
-    writeVarint32(bb, 352);
-    writeVarint64(bb, $count);
-  }
-
-  // optional string toOpenids = 5000;
-  let $toOpenids = message.toOpenids;
-  if ($toOpenids !== undefined) {
-    writeVarint32(bb, 40002);
-    writeString(bb, $toOpenids);
-  }
-}
-
-export function decodeGiftMessage(binary: Uint8Array): GiftMessage {
-  return _decodeGiftMessage(wrapByteBuffer(binary));
-}
-
-function _decodeGiftMessage(bb: ByteBuffer): GiftMessage {
-  let message: GiftMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 giftId = 2;
-      case 2: {
-        message.giftId = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 fanTicketCount = 3;
-      case 3: {
-        message.fanTicketCount = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 groupCount = 4;
-      case 4: {
-        message.groupCount = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 repeatCount = 5;
-      case 5: {
-        message.repeatCount = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 comboCount = 6;
-      case 6: {
-        message.comboCount = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional User user = 7;
-      case 7: {
-        let limit = pushTemporaryLength(bb);
-        message.user = _decodeUser(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional User toUser = 8;
-      case 8: {
-        let limit = pushTemporaryLength(bb);
-        message.toUser = _decodeUser(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 repeatEnd = 9;
-      case 9: {
-        message.repeatEnd = readVarint32(bb);
-        break;
-      }
-
-      // optional GiftMessage_TextEffect textEffect = 10;
-      case 10: {
-        let limit = pushTemporaryLength(bb);
-        message.textEffect = _decodeGiftMessage_TextEffect(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 groupId = 11;
-      case 11: {
-        message.groupId = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 incomeTaskgifts = 12;
-      case 12: {
-        message.incomeTaskgifts = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 roomFanTicketCount = 13;
-      case 13: {
-        message.roomFanTicketCount = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional GiftIMPriority priority = 14;
-      case 14: {
-        let limit = pushTemporaryLength(bb);
-        message.priority = _decodeGiftIMPriority(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional GiftStruct gift = 15;
-      case 15: {
-        let limit = pushTemporaryLength(bb);
-        message.gift = _decodeGiftStruct(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string logId = 16;
-      case 16: {
-        message.logId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 sendType = 17;
-      case 17: {
-        message.sendType = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional PublicAreaCommon publicAreaCommon = 18;
-      case 18: {
-        let limit = pushTemporaryLength(bb);
-        message.publicAreaCommon = _decodePublicAreaCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Text trayDisplayText = 19;
-      case 19: {
-        let limit = pushTemporaryLength(bb);
-        message.trayDisplayText = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 bannedDisplayEffects = 20;
-      case 20: {
-        message.bannedDisplayEffects = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional GiftTrayInfo trayInfo = 21;
-      case 21: {
-        let limit = pushTemporaryLength(bb);
-        message.trayInfo = _decodeGiftTrayInfo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional AssetEffectMixInfo assetEffectMixInfo = 24;
-      case 24: {
-        let limit = pushTemporaryLength(bb);
-        message.assetEffectMixInfo = _decodeAssetEffectMixInfo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional bool displayForSelf = 25;
-      case 25: {
-        message.displayForSelf = !!readByte(bb);
-        break;
-      }
-
-      // optional string interactGiftInfo = 26;
-      case 26: {
-        message.interactGiftInfo = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string diyItemInfo = 27;
-      case 27: {
-        message.diyItemInfo = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 minAssetSet = 28;
-      case 28: {
-        message.minAssetSet = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 totalCount = 29;
-      case 29: {
-        message.totalCount = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 clientGiftSource = 30;
-      case 30: {
-        message.clientGiftSource = readVarint32(bb);
-        break;
-      }
-
-      // optional AnchorGiftData anchorGift = 31;
-      case 31: {
-        let limit = pushTemporaryLength(bb);
-        message.anchorGift = _decodeAnchorGiftData(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 toUserIds = 32;
-      case 32: {
-        message.toUserIds = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 sendTime = 33;
-      case 33: {
-        message.sendTime = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 forceDisplayEffects = 34;
-      case 34: {
-        message.forceDisplayEffects = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string traceId = 35;
-      case 35: {
-        message.traceId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 effectDisplayTs = 36;
-      case 36: {
-        message.effectDisplayTs = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional SendTogether sendTogether = 37;
-      case 37: {
-        let limit = pushTemporaryLength(bb);
-        message.sendTogether = _decodeSendTogether(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional ExtraEffect extraEffect = 38;
-      case 38: {
-        let limit = pushTemporaryLength(bb);
-        message.extraEffect = _decodeExtraEffect(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional RoomHotInfo roomHotInfo = 39;
-      case 39: {
-        let limit = pushTemporaryLength(bb);
-        message.roomHotInfo = _decodeRoomHotInfo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string GiftPlayParam = 40;
-      case 40: {
-        message.GiftPlayParam = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 multiSendEffectLevel = 41;
-      case 41: {
-        message.multiSendEffectLevel = readVarint32(bb);
-        break;
-      }
-
-      // repeated SeriesPlayGift seriesGiftData = 42;
-      case 42: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.seriesGiftData || (message.seriesGiftData = []);
-        values.push(_decodeSeriesPlayGift(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional bool useRoomMessage = 43;
-      case 43: {
-        message.useRoomMessage = !!readByte(bb);
-        break;
-      }
-
-      // optional int64 count = 44;
-      case 44: {
-        message.count = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string toOpenids = 5000;
-      case 5000: {
-        message.toOpenids = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface GiftMessage_TextEffect {
-  portrait?: GiftMessage_TextEffect_Detail;
-  landscape?: GiftMessage_TextEffect_Detail;
-}
-
-export function encodeGiftMessage_TextEffect(message: GiftMessage_TextEffect): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeGiftMessage_TextEffect(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeGiftMessage_TextEffect(message: GiftMessage_TextEffect, bb: ByteBuffer): void {
-  // optional GiftMessage_TextEffect_Detail portrait = 1;
-  let $portrait = message.portrait;
-  if ($portrait !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeGiftMessage_TextEffect_Detail($portrait, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional GiftMessage_TextEffect_Detail landscape = 2;
-  let $landscape = message.landscape;
-  if ($landscape !== undefined) {
-    writeVarint32(bb, 18);
-    let nested = popByteBuffer();
-    _encodeGiftMessage_TextEffect_Detail($landscape, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeGiftMessage_TextEffect(binary: Uint8Array): GiftMessage_TextEffect {
-  return _decodeGiftMessage_TextEffect(wrapByteBuffer(binary));
-}
-
-function _decodeGiftMessage_TextEffect(bb: ByteBuffer): GiftMessage_TextEffect {
-  let message: GiftMessage_TextEffect = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional GiftMessage_TextEffect_Detail portrait = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.portrait = _decodeGiftMessage_TextEffect_Detail(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional GiftMessage_TextEffect_Detail landscape = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        message.landscape = _decodeGiftMessage_TextEffect_Detail(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface GiftMessage_TextEffect_Detail {
-  text?: Text;
-  textFontSize?: number;
-  background?: Image;
-  start?: number;
-  duration?: number;
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  shadowDx?: number;
-  shadowDy?: number;
-  shadowRadius?: number;
-  shadowColor?: string;
-  strokeColor?: string;
-  strokeWidth?: number;
-}
-
-export function encodeGiftMessage_TextEffect_Detail(message: GiftMessage_TextEffect_Detail): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeGiftMessage_TextEffect_Detail(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeGiftMessage_TextEffect_Detail(message: GiftMessage_TextEffect_Detail, bb: ByteBuffer): void {
-  // optional Text text = 1;
-  let $text = message.text;
-  if ($text !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeText($text, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int32 textFontSize = 2;
-  let $textFontSize = message.textFontSize;
-  if ($textFontSize !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($textFontSize));
-  }
-
-  // optional Image background = 3;
-  let $background = message.background;
-  if ($background !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodeImage($background, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int32 start = 4;
-  let $start = message.start;
-  if ($start !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($start));
-  }
-
-  // optional int32 duration = 5;
-  let $duration = message.duration;
-  if ($duration !== undefined) {
-    writeVarint32(bb, 40);
-    writeVarint64(bb, intToLong($duration));
-  }
-
-  // optional int32 x = 6;
-  let $x = message.x;
-  if ($x !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($x));
-  }
-
-  // optional int32 y = 7;
-  let $y = message.y;
-  if ($y !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($y));
-  }
-
-  // optional int32 width = 8;
-  let $width = message.width;
-  if ($width !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, intToLong($width));
-  }
-
-  // optional int32 height = 9;
-  let $height = message.height;
-  if ($height !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($height));
-  }
-
-  // optional int32 shadowDx = 10;
-  let $shadowDx = message.shadowDx;
-  if ($shadowDx !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, intToLong($shadowDx));
-  }
-
-  // optional int32 shadowDy = 11;
-  let $shadowDy = message.shadowDy;
-  if ($shadowDy !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($shadowDy));
-  }
-
-  // optional int32 shadowRadius = 12;
-  let $shadowRadius = message.shadowRadius;
-  if ($shadowRadius !== undefined) {
-    writeVarint32(bb, 96);
-    writeVarint64(bb, intToLong($shadowRadius));
-  }
-
-  // optional string shadowColor = 13;
-  let $shadowColor = message.shadowColor;
-  if ($shadowColor !== undefined) {
-    writeVarint32(bb, 106);
-    writeString(bb, $shadowColor);
-  }
-
-  // optional string strokeColor = 14;
-  let $strokeColor = message.strokeColor;
-  if ($strokeColor !== undefined) {
-    writeVarint32(bb, 114);
-    writeString(bb, $strokeColor);
-  }
-
-  // optional int32 strokeWidth = 15;
-  let $strokeWidth = message.strokeWidth;
-  if ($strokeWidth !== undefined) {
-    writeVarint32(bb, 120);
-    writeVarint64(bb, intToLong($strokeWidth));
-  }
-}
-
-export function decodeGiftMessage_TextEffect_Detail(binary: Uint8Array): GiftMessage_TextEffect_Detail {
-  return _decodeGiftMessage_TextEffect_Detail(wrapByteBuffer(binary));
-}
-
-function _decodeGiftMessage_TextEffect_Detail(bb: ByteBuffer): GiftMessage_TextEffect_Detail {
-  let message: GiftMessage_TextEffect_Detail = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Text text = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.text = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 textFontSize = 2;
-      case 2: {
-        message.textFontSize = readVarint32(bb);
-        break;
-      }
-
-      // optional Image background = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.background = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 start = 4;
-      case 4: {
-        message.start = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 duration = 5;
-      case 5: {
-        message.duration = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 x = 6;
-      case 6: {
-        message.x = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 y = 7;
-      case 7: {
-        message.y = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 width = 8;
-      case 8: {
-        message.width = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 height = 9;
-      case 9: {
-        message.height = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 shadowDx = 10;
-      case 10: {
-        message.shadowDx = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 shadowDy = 11;
-      case 11: {
-        message.shadowDy = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 shadowRadius = 12;
-      case 12: {
-        message.shadowRadius = readVarint32(bb);
-        break;
-      }
-
-      // optional string shadowColor = 13;
-      case 13: {
-        message.shadowColor = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string strokeColor = 14;
-      case 14: {
-        message.strokeColor = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 strokeWidth = 15;
-      case 15: {
-        message.strokeWidth = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface LikeMessage {
-  common?: Common;
-  count?: string;
-  total?: string;
-  color?: string;
-  user?: User;
-  icon?: string;
-  doubleLikeDetail?: DoubleLikeDetail;
-  displayControlInfo?: DisplayControlInfo;
-  linkmicGuestUid?: string;
-  scene?: string;
-  picoDisplayInfo?: PicoDisplayInfo;
-  publicAreaCommon?: PublicAreaCommon;
-}
-
-export function encodeLikeMessage(message: LikeMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeLikeMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeLikeMessage(message: LikeMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 count = 2;
-  let $count = message.count;
-  if ($count !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, $count);
-  }
-
-  // optional int64 total = 3;
-  let $total = message.total;
-  if ($total !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $total);
-  }
-
-  // optional int64 color = 4;
-  let $color = message.color;
-  if ($color !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, $color);
-  }
-
-  // optional User user = 5;
-  let $user = message.user;
-  if ($user !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodeUser($user, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string icon = 6;
-  let $icon = message.icon;
-  if ($icon !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $icon);
-  }
-
-  // optional DoubleLikeDetail doubleLikeDetail = 7;
-  let $doubleLikeDetail = message.doubleLikeDetail;
-  if ($doubleLikeDetail !== undefined) {
-    writeVarint32(bb, 58);
-    let nested = popByteBuffer();
-    _encodeDoubleLikeDetail($doubleLikeDetail, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional DisplayControlInfo displayControlInfo = 8;
-  let $displayControlInfo = message.displayControlInfo;
-  if ($displayControlInfo !== undefined) {
-    writeVarint32(bb, 66);
-    let nested = popByteBuffer();
-    _encodeDisplayControlInfo($displayControlInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 linkmicGuestUid = 9;
-  let $linkmicGuestUid = message.linkmicGuestUid;
-  if ($linkmicGuestUid !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, $linkmicGuestUid);
-  }
-
-  // optional string scene = 10;
-  let $scene = message.scene;
-  if ($scene !== undefined) {
-    writeVarint32(bb, 82);
-    writeString(bb, $scene);
-  }
-
-  // optional PicoDisplayInfo picoDisplayInfo = 11;
-  let $picoDisplayInfo = message.picoDisplayInfo;
-  if ($picoDisplayInfo !== undefined) {
-    writeVarint32(bb, 90);
-    let nested = popByteBuffer();
-    _encodePicoDisplayInfo($picoDisplayInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional PublicAreaCommon publicAreaCommon = 12;
-  let $publicAreaCommon = message.publicAreaCommon;
-  if ($publicAreaCommon !== undefined) {
-    writeVarint32(bb, 98);
-    let nested = popByteBuffer();
-    _encodePublicAreaCommon($publicAreaCommon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeLikeMessage(binary: Uint8Array): LikeMessage {
-  return _decodeLikeMessage(wrapByteBuffer(binary));
-}
-
-function _decodeLikeMessage(bb: ByteBuffer): LikeMessage {
-  let message: LikeMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 count = 2;
-      case 2: {
-        message.count = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 total = 3;
-      case 3: {
-        message.total = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 color = 4;
-      case 4: {
-        message.color = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional User user = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.user = _decodeUser(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string icon = 6;
-      case 6: {
-        message.icon = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional DoubleLikeDetail doubleLikeDetail = 7;
-      case 7: {
-        let limit = pushTemporaryLength(bb);
-        message.doubleLikeDetail = _decodeDoubleLikeDetail(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional DisplayControlInfo displayControlInfo = 8;
-      case 8: {
-        let limit = pushTemporaryLength(bb);
-        message.displayControlInfo = _decodeDisplayControlInfo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 linkmicGuestUid = 9;
-      case 9: {
-        message.linkmicGuestUid = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string scene = 10;
-      case 10: {
-        message.scene = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional PicoDisplayInfo picoDisplayInfo = 11;
-      case 11: {
-        let limit = pushTemporaryLength(bb);
-        message.picoDisplayInfo = _decodePicoDisplayInfo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional PublicAreaCommon publicAreaCommon = 12;
-      case 12: {
-        let limit = pushTemporaryLength(bb);
-        message.publicAreaCommon = _decodePublicAreaCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface SocialMessage {
-  common?: Common;
-  user?: User;
-  shareType?: string;
-  action?: string;
-  shareTarget?: string;
-  followCount?: string;
-  publicAreaCommon?: PublicAreaCommon;
-}
-
-export function encodeSocialMessage(message: SocialMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeSocialMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeSocialMessage(message: SocialMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional User user = 2;
-  let $user = message.user;
-  if ($user !== undefined) {
-    writeVarint32(bb, 18);
-    let nested = popByteBuffer();
-    _encodeUser($user, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 shareType = 3;
-  let $shareType = message.shareType;
-  if ($shareType !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $shareType);
-  }
-
-  // optional int64 action = 4;
-  let $action = message.action;
-  if ($action !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, $action);
-  }
-
-  // optional string shareTarget = 5;
-  let $shareTarget = message.shareTarget;
-  if ($shareTarget !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $shareTarget);
-  }
-
-  // optional int64 followCount = 6;
-  let $followCount = message.followCount;
-  if ($followCount !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, $followCount);
-  }
-
-  // optional PublicAreaCommon publicAreaCommon = 7;
-  let $publicAreaCommon = message.publicAreaCommon;
-  if ($publicAreaCommon !== undefined) {
-    writeVarint32(bb, 58);
-    let nested = popByteBuffer();
-    _encodePublicAreaCommon($publicAreaCommon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeSocialMessage(binary: Uint8Array): SocialMessage {
-  return _decodeSocialMessage(wrapByteBuffer(binary));
-}
-
-function _decodeSocialMessage(bb: ByteBuffer): SocialMessage {
-  let message: SocialMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional User user = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        message.user = _decodeUser(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 shareType = 3;
-      case 3: {
-        message.shareType = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 action = 4;
-      case 4: {
-        message.action = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string shareTarget = 5;
-      case 5: {
-        message.shareTarget = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 followCount = 6;
-      case 6: {
-        message.followCount = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional PublicAreaCommon publicAreaCommon = 7;
-      case 7: {
-        let limit = pushTemporaryLength(bb);
-        message.publicAreaCommon = _decodePublicAreaCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface MemberMessage {
-  common?: Common;
-  user?: User;
-  memberCount?: string;
-  operator?: User;
-  isSetToAdmin?: boolean;
-  isTopUser?: boolean;
-  rankScore?: string;
-  topUserNo?: string;
-  enterType?: string;
-  action?: string;
-  actionDescription?: string;
-  userId?: string;
-  effectConfig?: MemberMessage_EffectConfig;
-  popStr?: string;
-  enterEffectConfig?: MemberMessage_EffectConfig;
-  backgroundImage?: Image;
-  backgroundImageV2?: Image;
-  anchorDisplayText?: Text;
-  publicAreaCommon?: PublicAreaCommon;
-  userEnterTipType?: string;
-  anchorEnterTipType?: string;
-  picoEnterEffectConfig?: MemberMessage_PicoEffectConfig;
-  userOpenId?: string;
-}
-
-export function encodeMemberMessage(message: MemberMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeMemberMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeMemberMessage(message: MemberMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional User user = 2;
-  let $user = message.user;
-  if ($user !== undefined) {
-    writeVarint32(bb, 18);
-    let nested = popByteBuffer();
-    _encodeUser($user, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 memberCount = 3;
-  let $memberCount = message.memberCount;
-  if ($memberCount !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $memberCount);
-  }
-
-  // optional User operator = 4;
-  let $operator = message.operator;
-  if ($operator !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeUser($operator, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional bool isSetToAdmin = 5;
-  let $isSetToAdmin = message.isSetToAdmin;
-  if ($isSetToAdmin !== undefined) {
-    writeVarint32(bb, 40);
-    writeByte(bb, $isSetToAdmin ? 1 : 0);
-  }
-
-  // optional bool isTopUser = 6;
-  let $isTopUser = message.isTopUser;
-  if ($isTopUser !== undefined) {
-    writeVarint32(bb, 48);
-    writeByte(bb, $isTopUser ? 1 : 0);
-  }
-
-  // optional int64 rankScore = 7;
-  let $rankScore = message.rankScore;
-  if ($rankScore !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, $rankScore);
-  }
-
-  // optional int64 topUserNo = 8;
-  let $topUserNo = message.topUserNo;
-  if ($topUserNo !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, $topUserNo);
-  }
-
-  // optional int64 enterType = 9;
-  let $enterType = message.enterType;
-  if ($enterType !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, $enterType);
-  }
-
-  // optional int64 action = 10;
-  let $action = message.action;
-  if ($action !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, $action);
-  }
-
-  // optional string actionDescription = 11;
-  let $actionDescription = message.actionDescription;
-  if ($actionDescription !== undefined) {
-    writeVarint32(bb, 90);
-    writeString(bb, $actionDescription);
-  }
-
-  // optional int64 userId = 12;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 96);
-    writeVarint64(bb, $userId);
-  }
-
-  // optional MemberMessage_EffectConfig effectConfig = 13;
-  let $effectConfig = message.effectConfig;
-  if ($effectConfig !== undefined) {
-    writeVarint32(bb, 106);
-    let nested = popByteBuffer();
-    _encodeMemberMessage_EffectConfig($effectConfig, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string popStr = 14;
-  let $popStr = message.popStr;
-  if ($popStr !== undefined) {
-    writeVarint32(bb, 114);
-    writeString(bb, $popStr);
-  }
-
-  // optional MemberMessage_EffectConfig enterEffectConfig = 15;
-  let $enterEffectConfig = message.enterEffectConfig;
-  if ($enterEffectConfig !== undefined) {
-    writeVarint32(bb, 122);
-    let nested = popByteBuffer();
-    _encodeMemberMessage_EffectConfig($enterEffectConfig, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Image backgroundImage = 16;
-  let $backgroundImage = message.backgroundImage;
-  if ($backgroundImage !== undefined) {
-    writeVarint32(bb, 130);
-    let nested = popByteBuffer();
-    _encodeImage($backgroundImage, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Image backgroundImageV2 = 17;
-  let $backgroundImageV2 = message.backgroundImageV2;
-  if ($backgroundImageV2 !== undefined) {
-    writeVarint32(bb, 138);
-    let nested = popByteBuffer();
-    _encodeImage($backgroundImageV2, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Text anchorDisplayText = 18;
-  let $anchorDisplayText = message.anchorDisplayText;
-  if ($anchorDisplayText !== undefined) {
-    writeVarint32(bb, 146);
-    let nested = popByteBuffer();
-    _encodeText($anchorDisplayText, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional PublicAreaCommon publicAreaCommon = 19;
-  let $publicAreaCommon = message.publicAreaCommon;
-  if ($publicAreaCommon !== undefined) {
-    writeVarint32(bb, 154);
-    let nested = popByteBuffer();
-    _encodePublicAreaCommon($publicAreaCommon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 userEnterTipType = 20;
-  let $userEnterTipType = message.userEnterTipType;
-  if ($userEnterTipType !== undefined) {
-    writeVarint32(bb, 160);
-    writeVarint64(bb, $userEnterTipType);
-  }
-
-  // optional int64 anchorEnterTipType = 21;
-  let $anchorEnterTipType = message.anchorEnterTipType;
-  if ($anchorEnterTipType !== undefined) {
-    writeVarint32(bb, 168);
-    writeVarint64(bb, $anchorEnterTipType);
-  }
-
-  // optional MemberMessage_PicoEffectConfig picoEnterEffectConfig = 24;
-  let $picoEnterEffectConfig = message.picoEnterEffectConfig;
-  if ($picoEnterEffectConfig !== undefined) {
-    writeVarint32(bb, 194);
-    let nested = popByteBuffer();
-    _encodeMemberMessage_PicoEffectConfig($picoEnterEffectConfig, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string userOpenId = 5000;
-  let $userOpenId = message.userOpenId;
-  if ($userOpenId !== undefined) {
-    writeVarint32(bb, 40002);
-    writeString(bb, $userOpenId);
-  }
-}
-
-export function decodeMemberMessage(binary: Uint8Array): MemberMessage {
-  return _decodeMemberMessage(wrapByteBuffer(binary));
-}
-
-function _decodeMemberMessage(bb: ByteBuffer): MemberMessage {
-  let message: MemberMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional User user = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        message.user = _decodeUser(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 memberCount = 3;
-      case 3: {
-        message.memberCount = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional User operator = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.operator = _decodeUser(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional bool isSetToAdmin = 5;
-      case 5: {
-        message.isSetToAdmin = !!readByte(bb);
-        break;
-      }
-
-      // optional bool isTopUser = 6;
-      case 6: {
-        message.isTopUser = !!readByte(bb);
-        break;
-      }
-
-      // optional int64 rankScore = 7;
-      case 7: {
-        message.rankScore = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 topUserNo = 8;
-      case 8: {
-        message.topUserNo = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 enterType = 9;
-      case 9: {
-        message.enterType = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 action = 10;
-      case 10: {
-        message.action = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string actionDescription = 11;
-      case 11: {
-        message.actionDescription = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 userId = 12;
-      case 12: {
-        message.userId = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional MemberMessage_EffectConfig effectConfig = 13;
-      case 13: {
-        let limit = pushTemporaryLength(bb);
-        message.effectConfig = _decodeMemberMessage_EffectConfig(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string popStr = 14;
-      case 14: {
-        message.popStr = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional MemberMessage_EffectConfig enterEffectConfig = 15;
-      case 15: {
-        let limit = pushTemporaryLength(bb);
-        message.enterEffectConfig = _decodeMemberMessage_EffectConfig(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Image backgroundImage = 16;
-      case 16: {
-        let limit = pushTemporaryLength(bb);
-        message.backgroundImage = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Image backgroundImageV2 = 17;
-      case 17: {
-        let limit = pushTemporaryLength(bb);
-        message.backgroundImageV2 = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Text anchorDisplayText = 18;
-      case 18: {
-        let limit = pushTemporaryLength(bb);
-        message.anchorDisplayText = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional PublicAreaCommon publicAreaCommon = 19;
-      case 19: {
-        let limit = pushTemporaryLength(bb);
-        message.publicAreaCommon = _decodePublicAreaCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 userEnterTipType = 20;
-      case 20: {
-        message.userEnterTipType = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 anchorEnterTipType = 21;
-      case 21: {
-        message.anchorEnterTipType = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional MemberMessage_PicoEffectConfig picoEnterEffectConfig = 24;
-      case 24: {
-        let limit = pushTemporaryLength(bb);
-        message.picoEnterEffectConfig = _decodeMemberMessage_PicoEffectConfig(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string userOpenId = 5000;
-      case 5000: {
-        message.userOpenId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface MemberMessage_EffectConfig {
-  type?: string;
-  icon?: Image;
-  avatarPos?: string;
-  text?: Text;
-  textIcon?: Image;
-  stayTime?: number;
-  animAssetId?: string;
-  badge?: Image;
-  flexSettingArray?: string[];
-  textIconOverlay?: Image;
-  animatedBadge?: Image;
-  hasSweepLight?: boolean;
-  textFlexSettingArray?: string[];
-  centerAnimAssetId?: string;
-}
-
-export function encodeMemberMessage_EffectConfig(message: MemberMessage_EffectConfig): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeMemberMessage_EffectConfig(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeMemberMessage_EffectConfig(message: MemberMessage_EffectConfig, bb: ByteBuffer): void {
-  // optional int64 type = 1;
-  let $type = message.type;
-  if ($type !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, $type);
-  }
-
-  // optional Image icon = 2;
-  let $icon = message.icon;
-  if ($icon !== undefined) {
-    writeVarint32(bb, 18);
-    let nested = popByteBuffer();
-    _encodeImage($icon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 avatarPos = 3;
-  let $avatarPos = message.avatarPos;
-  if ($avatarPos !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $avatarPos);
-  }
-
-  // optional Text text = 4;
-  let $text = message.text;
-  if ($text !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeText($text, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Image textIcon = 5;
-  let $textIcon = message.textIcon;
-  if ($textIcon !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodeImage($textIcon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int32 stayTime = 6;
-  let $stayTime = message.stayTime;
-  if ($stayTime !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($stayTime));
-  }
-
-  // optional int64 animAssetId = 7;
-  let $animAssetId = message.animAssetId;
-  if ($animAssetId !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, $animAssetId);
-  }
-
-  // optional Image badge = 8;
-  let $badge = message.badge;
-  if ($badge !== undefined) {
-    writeVarint32(bb, 66);
-    let nested = popByteBuffer();
-    _encodeImage($badge, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated int64 flexSettingArray = 9;
-  let array$flexSettingArray = message.flexSettingArray;
-  if (array$flexSettingArray !== undefined) {
-    let packed = popByteBuffer();
-    for (let value of array$flexSettingArray) {
-      writeVarint64(packed, value);
-    }
-    writeVarint32(bb, 74);
-    writeVarint32(bb, packed.offset);
-    writeByteBuffer(bb, packed);
-    pushByteBuffer(packed);
-  }
-
-  // optional Image textIconOverlay = 10;
-  let $textIconOverlay = message.textIconOverlay;
-  if ($textIconOverlay !== undefined) {
-    writeVarint32(bb, 82);
-    let nested = popByteBuffer();
-    _encodeImage($textIconOverlay, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Image animatedBadge = 11;
-  let $animatedBadge = message.animatedBadge;
-  if ($animatedBadge !== undefined) {
-    writeVarint32(bb, 90);
-    let nested = popByteBuffer();
-    _encodeImage($animatedBadge, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional bool hasSweepLight = 12;
-  let $hasSweepLight = message.hasSweepLight;
-  if ($hasSweepLight !== undefined) {
-    writeVarint32(bb, 96);
-    writeByte(bb, $hasSweepLight ? 1 : 0);
-  }
-
-  // repeated int64 textFlexSettingArray = 13;
-  let array$textFlexSettingArray = message.textFlexSettingArray;
-  if (array$textFlexSettingArray !== undefined) {
-    let packed = popByteBuffer();
-    for (let value of array$textFlexSettingArray) {
-      writeVarint64(packed, value);
-    }
-    writeVarint32(bb, 106);
-    writeVarint32(bb, packed.offset);
-    writeByteBuffer(bb, packed);
-    pushByteBuffer(packed);
-  }
-
-  // optional int64 centerAnimAssetId = 14;
-  let $centerAnimAssetId = message.centerAnimAssetId;
-  if ($centerAnimAssetId !== undefined) {
-    writeVarint32(bb, 112);
-    writeVarint64(bb, $centerAnimAssetId);
-  }
-}
-
-export function decodeMemberMessage_EffectConfig(binary: Uint8Array): MemberMessage_EffectConfig {
-  return _decodeMemberMessage_EffectConfig(wrapByteBuffer(binary));
-}
-
-function _decodeMemberMessage_EffectConfig(bb: ByteBuffer): MemberMessage_EffectConfig {
-  let message: MemberMessage_EffectConfig = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int64 type = 1;
-      case 1: {
-        message.type = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional Image icon = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        message.icon = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 avatarPos = 3;
-      case 3: {
-        message.avatarPos = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional Text text = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.text = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Image textIcon = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.textIcon = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 stayTime = 6;
-      case 6: {
-        message.stayTime = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 animAssetId = 7;
-      case 7: {
-        message.animAssetId = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional Image badge = 8;
-      case 8: {
-        let limit = pushTemporaryLength(bb);
-        message.badge = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated int64 flexSettingArray = 9;
-      case 9: {
-        let values = message.flexSettingArray || (message.flexSettingArray = []);
-        if ((tag & 7) === 2) {
-          let outerLimit = pushTemporaryLength(bb);
-          while (!isAtEnd(bb)) {
-            values.push(readVarint64(bb, /* unsigned */ false));
-          }
-          bb.limit = outerLimit;
-        } else {
-          values.push(readVarint64(bb, /* unsigned */ false));
-        }
-        break;
-      }
-
-      // optional Image textIconOverlay = 10;
-      case 10: {
-        let limit = pushTemporaryLength(bb);
-        message.textIconOverlay = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Image animatedBadge = 11;
-      case 11: {
-        let limit = pushTemporaryLength(bb);
-        message.animatedBadge = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional bool hasSweepLight = 12;
-      case 12: {
-        message.hasSweepLight = !!readByte(bb);
-        break;
-      }
-
-      // repeated int64 textFlexSettingArray = 13;
-      case 13: {
-        let values = message.textFlexSettingArray || (message.textFlexSettingArray = []);
-        if ((tag & 7) === 2) {
-          let outerLimit = pushTemporaryLength(bb);
-          while (!isAtEnd(bb)) {
-            values.push(readVarint64(bb, /* unsigned */ false));
-          }
-          bb.limit = outerLimit;
-        } else {
-          values.push(readVarint64(bb, /* unsigned */ false));
-        }
-        break;
-      }
-
-      // optional int64 centerAnimAssetId = 14;
-      case 14: {
-        message.centerAnimAssetId = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface MemberMessage_PicoEffectConfig {
-  type?: string;
-  icon?: Image;
-  text?: Text;
-  textIcon?: Image;
-  stayTime?: number;
-  badge?: Image;
-  centerAnimAssetId?: string;
-  dressId?: string;
-}
-
-export function encodeMemberMessage_PicoEffectConfig(message: MemberMessage_PicoEffectConfig): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeMemberMessage_PicoEffectConfig(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeMemberMessage_PicoEffectConfig(message: MemberMessage_PicoEffectConfig, bb: ByteBuffer): void {
-  // optional int64 type = 1;
-  let $type = message.type;
-  if ($type !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, $type);
-  }
-
-  // optional Image icon = 2;
-  let $icon = message.icon;
-  if ($icon !== undefined) {
-    writeVarint32(bb, 18);
-    let nested = popByteBuffer();
-    _encodeImage($icon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Text text = 3;
-  let $text = message.text;
-  if ($text !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodeText($text, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Image textIcon = 4;
-  let $textIcon = message.textIcon;
-  if ($textIcon !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeImage($textIcon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int32 stayTime = 5;
-  let $stayTime = message.stayTime;
-  if ($stayTime !== undefined) {
-    writeVarint32(bb, 40);
-    writeVarint64(bb, intToLong($stayTime));
-  }
-
-  // optional Image badge = 6;
-  let $badge = message.badge;
-  if ($badge !== undefined) {
-    writeVarint32(bb, 50);
-    let nested = popByteBuffer();
-    _encodeImage($badge, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 centerAnimAssetId = 7;
-  let $centerAnimAssetId = message.centerAnimAssetId;
-  if ($centerAnimAssetId !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, $centerAnimAssetId);
-  }
-
-  // optional string dressId = 9;
-  let $dressId = message.dressId;
-  if ($dressId !== undefined) {
-    writeVarint32(bb, 74);
-    writeString(bb, $dressId);
-  }
-}
-
-export function decodeMemberMessage_PicoEffectConfig(binary: Uint8Array): MemberMessage_PicoEffectConfig {
-  return _decodeMemberMessage_PicoEffectConfig(wrapByteBuffer(binary));
-}
-
-function _decodeMemberMessage_PicoEffectConfig(bb: ByteBuffer): MemberMessage_PicoEffectConfig {
-  let message: MemberMessage_PicoEffectConfig = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int64 type = 1;
-      case 1: {
-        message.type = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional Image icon = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        message.icon = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Text text = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.text = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Image textIcon = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.textIcon = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 stayTime = 5;
-      case 5: {
-        message.stayTime = readVarint32(bb);
-        break;
-      }
-
-      // optional Image badge = 6;
-      case 6: {
-        let limit = pushTemporaryLength(bb);
-        message.badge = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 centerAnimAssetId = 7;
-      case 7: {
-        message.centerAnimAssetId = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string dressId = 9;
-      case 9: {
-        message.dressId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface ControlMessage {
-  common?: Common;
-  action?: string;
-  tips?: string;
-  extra?: ControlMessage_Extra;
-  publicAreaCommon?: PublicAreaCommon;
-}
-
-export function encodeControlMessage(message: ControlMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeControlMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeControlMessage(message: ControlMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 action = 2;
-  let $action = message.action;
-  if ($action !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, $action);
-  }
-
-  // optional string tips = 3;
-  let $tips = message.tips;
-  if ($tips !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $tips);
-  }
-
-  // optional ControlMessage_Extra extra = 4;
-  let $extra = message.extra;
-  if ($extra !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeControlMessage_Extra($extra, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional PublicAreaCommon publicAreaCommon = 5;
-  let $publicAreaCommon = message.publicAreaCommon;
-  if ($publicAreaCommon !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodePublicAreaCommon($publicAreaCommon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeControlMessage(binary: Uint8Array): ControlMessage {
-  return _decodeControlMessage(wrapByteBuffer(binary));
-}
-
-function _decodeControlMessage(bb: ByteBuffer): ControlMessage {
-  let message: ControlMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 action = 2;
-      case 2: {
-        message.action = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string tips = 3;
-      case 3: {
-        message.tips = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional ControlMessage_Extra extra = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.extra = _decodeControlMessage_Extra(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional PublicAreaCommon publicAreaCommon = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.publicAreaCommon = _decodePublicAreaCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface ControlMessage_Extra {
-  banInfoUrl?: string;
-  reasonNo?: string;
-  title?: Text;
-  violationReason?: Text;
-  content?: Text;
-  gotItButton?: Text;
-  banDetailButton?: Text;
-  source?: string;
-}
-
-export function encodeControlMessage_Extra(message: ControlMessage_Extra): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeControlMessage_Extra(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeControlMessage_Extra(message: ControlMessage_Extra, bb: ByteBuffer): void {
-  // optional string banInfoUrl = 1;
-  let $banInfoUrl = message.banInfoUrl;
-  if ($banInfoUrl !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $banInfoUrl);
-  }
-
-  // optional int64 reasonNo = 2;
-  let $reasonNo = message.reasonNo;
-  if ($reasonNo !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, $reasonNo);
-  }
-
-  // optional Text title = 3;
-  let $title = message.title;
-  if ($title !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodeText($title, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Text violationReason = 4;
-  let $violationReason = message.violationReason;
-  if ($violationReason !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeText($violationReason, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Text content = 5;
-  let $content = message.content;
-  if ($content !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodeText($content, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Text gotItButton = 6;
-  let $gotItButton = message.gotItButton;
-  if ($gotItButton !== undefined) {
-    writeVarint32(bb, 50);
-    let nested = popByteBuffer();
-    _encodeText($gotItButton, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Text banDetailButton = 7;
-  let $banDetailButton = message.banDetailButton;
-  if ($banDetailButton !== undefined) {
-    writeVarint32(bb, 58);
-    let nested = popByteBuffer();
-    _encodeText($banDetailButton, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string source = 8;
-  let $source = message.source;
-  if ($source !== undefined) {
-    writeVarint32(bb, 66);
-    writeString(bb, $source);
-  }
-}
-
-export function decodeControlMessage_Extra(binary: Uint8Array): ControlMessage_Extra {
-  return _decodeControlMessage_Extra(wrapByteBuffer(binary));
-}
-
-function _decodeControlMessage_Extra(bb: ByteBuffer): ControlMessage_Extra {
-  let message: ControlMessage_Extra = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string banInfoUrl = 1;
-      case 1: {
-        message.banInfoUrl = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 reasonNo = 2;
-      case 2: {
-        message.reasonNo = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional Text title = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.title = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Text violationReason = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.violationReason = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Text content = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.content = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Text gotItButton = 6;
-      case 6: {
-        let limit = pushTemporaryLength(bb);
-        message.gotItButton = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Text banDetailButton = 7;
-      case 7: {
-        let limit = pushTemporaryLength(bb);
-        message.banDetailButton = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string source = 8;
-      case 8: {
-        message.source = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface FansclubMessage {
-  commonInfo?: Common;
-  type?: number;
-  content?: string;
-  user?: User;
-  upgradePrivilege?: FansclubMessage_UpgradePrivilege;
-  publicAreaCommon?: PublicAreaCommon;
-  leftDiamond?: string;
-}
-
-export function encodeFansclubMessage(message: FansclubMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeFansclubMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeFansclubMessage(message: FansclubMessage, bb: ByteBuffer): void {
-  // optional Common commonInfo = 1;
-  let $commonInfo = message.commonInfo;
-  if ($commonInfo !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($commonInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int32 type = 2;
-  let $type = message.type;
-  if ($type !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($type));
-  }
-
-  // optional string content = 3;
-  let $content = message.content;
-  if ($content !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $content);
-  }
-
-  // optional User user = 4;
-  let $user = message.user;
-  if ($user !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeUser($user, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional FansclubMessage_UpgradePrivilege upgradePrivilege = 5;
-  let $upgradePrivilege = message.upgradePrivilege;
-  if ($upgradePrivilege !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodeFansclubMessage_UpgradePrivilege($upgradePrivilege, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional PublicAreaCommon publicAreaCommon = 6;
-  let $publicAreaCommon = message.publicAreaCommon;
-  if ($publicAreaCommon !== undefined) {
-    writeVarint32(bb, 50);
-    let nested = popByteBuffer();
-    _encodePublicAreaCommon($publicAreaCommon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 leftDiamond = 7;
-  let $leftDiamond = message.leftDiamond;
-  if ($leftDiamond !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, $leftDiamond);
-  }
-}
-
-export function decodeFansclubMessage(binary: Uint8Array): FansclubMessage {
-  return _decodeFansclubMessage(wrapByteBuffer(binary));
-}
-
-function _decodeFansclubMessage(bb: ByteBuffer): FansclubMessage {
-  let message: FansclubMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common commonInfo = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.commonInfo = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 type = 2;
-      case 2: {
-        message.type = readVarint32(bb);
-        break;
-      }
-
-      // optional string content = 3;
-      case 3: {
-        message.content = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional User user = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.user = _decodeUser(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional FansclubMessage_UpgradePrivilege upgradePrivilege = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.upgradePrivilege = _decodeFansclubMessage_UpgradePrivilege(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional PublicAreaCommon publicAreaCommon = 6;
-      case 6: {
-        let limit = pushTemporaryLength(bb);
-        message.publicAreaCommon = _decodePublicAreaCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 leftDiamond = 7;
-      case 7: {
-        message.leftDiamond = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface FansclubMessage_UpgradePrivilege {
-  content?: string;
-  description?: string;
-  buttonType?: number;
-}
-
-export function encodeFansclubMessage_UpgradePrivilege(message: FansclubMessage_UpgradePrivilege): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeFansclubMessage_UpgradePrivilege(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeFansclubMessage_UpgradePrivilege(message: FansclubMessage_UpgradePrivilege, bb: ByteBuffer): void {
-  // optional string content = 1;
-  let $content = message.content;
-  if ($content !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $content);
-  }
-
-  // optional string description = 2;
-  let $description = message.description;
-  if ($description !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $description);
-  }
-
-  // optional int32 buttonType = 3;
-  let $buttonType = message.buttonType;
-  if ($buttonType !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($buttonType));
-  }
-}
-
-export function decodeFansclubMessage_UpgradePrivilege(binary: Uint8Array): FansclubMessage_UpgradePrivilege {
-  return _decodeFansclubMessage_UpgradePrivilege(wrapByteBuffer(binary));
-}
-
-function _decodeFansclubMessage_UpgradePrivilege(bb: ByteBuffer): FansclubMessage_UpgradePrivilege {
-  let message: FansclubMessage_UpgradePrivilege = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string content = 1;
-      case 1: {
-        message.content = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string description = 2;
-      case 2: {
-        message.description = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 buttonType = 3;
-      case 3: {
-        message.buttonType = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RoomMessage {
-  common?: Common;
-  content?: string;
-  supprotLandscape?: boolean;
-  roomMessageType?: number;
-  systemTopMsg?: boolean;
-  forcedGuarantee?: boolean;
-  publicAreaCommon?: PublicAreaCommon;
-  bizScene?: string;
-  extra?: RoomMsgExtra;
-}
-
-export function encodeRoomMessage(message: RoomMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRoomMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRoomMessage(message: RoomMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string content = 2;
-  let $content = message.content;
-  if ($content !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $content);
-  }
-
-  // optional bool supprotLandscape = 3;
-  let $supprotLandscape = message.supprotLandscape;
-  if ($supprotLandscape !== undefined) {
-    writeVarint32(bb, 24);
-    writeByte(bb, $supprotLandscape ? 1 : 0);
-  }
-
-  // optional int32 roomMessageType = 4;
-  let $roomMessageType = message.roomMessageType;
-  if ($roomMessageType !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($roomMessageType));
-  }
-
-  // optional bool systemTopMsg = 5;
-  let $systemTopMsg = message.systemTopMsg;
-  if ($systemTopMsg !== undefined) {
-    writeVarint32(bb, 40);
-    writeByte(bb, $systemTopMsg ? 1 : 0);
-  }
-
-  // optional bool forcedGuarantee = 6;
-  let $forcedGuarantee = message.forcedGuarantee;
-  if ($forcedGuarantee !== undefined) {
-    writeVarint32(bb, 48);
-    writeByte(bb, $forcedGuarantee ? 1 : 0);
-  }
-
-  // optional PublicAreaCommon publicAreaCommon = 7;
-  let $publicAreaCommon = message.publicAreaCommon;
-  if ($publicAreaCommon !== undefined) {
-    writeVarint32(bb, 58);
-    let nested = popByteBuffer();
-    _encodePublicAreaCommon($publicAreaCommon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string bizScene = 20;
-  let $bizScene = message.bizScene;
-  if ($bizScene !== undefined) {
-    writeVarint32(bb, 162);
-    writeString(bb, $bizScene);
-  }
-
-  // optional RoomMsgExtra extra = 40;
-  let $extra = message.extra;
-  if ($extra !== undefined) {
-    writeVarint32(bb, 322);
-    let nested = popByteBuffer();
-    _encodeRoomMsgExtra($extra, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeRoomMessage(binary: Uint8Array): RoomMessage {
-  return _decodeRoomMessage(wrapByteBuffer(binary));
-}
-
-function _decodeRoomMessage(bb: ByteBuffer): RoomMessage {
-  let message: RoomMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string content = 2;
-      case 2: {
-        message.content = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool supprotLandscape = 3;
-      case 3: {
-        message.supprotLandscape = !!readByte(bb);
-        break;
-      }
-
-      // optional int32 roomMessageType = 4;
-      case 4: {
-        message.roomMessageType = readVarint32(bb);
-        break;
-      }
-
-      // optional bool systemTopMsg = 5;
-      case 5: {
-        message.systemTopMsg = !!readByte(bb);
-        break;
-      }
-
-      // optional bool forcedGuarantee = 6;
-      case 6: {
-        message.forcedGuarantee = !!readByte(bb);
-        break;
-      }
-
-      // optional PublicAreaCommon publicAreaCommon = 7;
-      case 7: {
-        let limit = pushTemporaryLength(bb);
-        message.publicAreaCommon = _decodePublicAreaCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string bizScene = 20;
-      case 20: {
-        message.bizScene = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional RoomMsgExtra extra = 40;
-      case 40: {
-        let limit = pushTemporaryLength(bb);
-        message.extra = _decodeRoomMsgExtra(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RoomStatsMessage {
-  common?: Common;
-  displayShort?: string;
-  displayMiddle?: string;
-  displayLong?: string;
-  displayValue?: string;
-  displayVersion?: string;
-  incremental?: boolean;
-  isHidden?: boolean;
-  total?: string;
-  displayType?: string;
-}
-
-export function encodeRoomStatsMessage(message: RoomStatsMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRoomStatsMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRoomStatsMessage(message: RoomStatsMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string displayShort = 2;
-  let $displayShort = message.displayShort;
-  if ($displayShort !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $displayShort);
-  }
-
-  // optional string displayMiddle = 3;
-  let $displayMiddle = message.displayMiddle;
-  if ($displayMiddle !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $displayMiddle);
-  }
-
-  // optional string displayLong = 4;
-  let $displayLong = message.displayLong;
-  if ($displayLong !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $displayLong);
-  }
-
-  // optional int64 displayValue = 5;
-  let $displayValue = message.displayValue;
-  if ($displayValue !== undefined) {
-    writeVarint32(bb, 40);
-    writeVarint64(bb, $displayValue);
-  }
-
-  // optional int64 displayVersion = 6;
-  let $displayVersion = message.displayVersion;
-  if ($displayVersion !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, $displayVersion);
-  }
-
-  // optional bool incremental = 7;
-  let $incremental = message.incremental;
-  if ($incremental !== undefined) {
-    writeVarint32(bb, 56);
-    writeByte(bb, $incremental ? 1 : 0);
-  }
-
-  // optional bool isHidden = 8;
-  let $isHidden = message.isHidden;
-  if ($isHidden !== undefined) {
-    writeVarint32(bb, 64);
-    writeByte(bb, $isHidden ? 1 : 0);
-  }
-
-  // optional int64 total = 9;
-  let $total = message.total;
-  if ($total !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, $total);
-  }
-
-  // optional int64 displayType = 10;
-  let $displayType = message.displayType;
-  if ($displayType !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, $displayType);
-  }
-}
-
-export function decodeRoomStatsMessage(binary: Uint8Array): RoomStatsMessage {
-  return _decodeRoomStatsMessage(wrapByteBuffer(binary));
-}
-
-function _decodeRoomStatsMessage(bb: ByteBuffer): RoomStatsMessage {
-  let message: RoomStatsMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string displayShort = 2;
-      case 2: {
-        message.displayShort = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string displayMiddle = 3;
-      case 3: {
-        message.displayMiddle = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string displayLong = 4;
-      case 4: {
-        message.displayLong = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 displayValue = 5;
-      case 5: {
-        message.displayValue = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 displayVersion = 6;
-      case 6: {
-        message.displayVersion = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional bool incremental = 7;
-      case 7: {
-        message.incremental = !!readByte(bb);
-        break;
-      }
-
-      // optional bool isHidden = 8;
-      case 8: {
-        message.isHidden = !!readByte(bb);
-        break;
-      }
-
-      // optional int64 total = 9;
-      case 9: {
-        message.total = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 displayType = 10;
-      case 10: {
-        message.displayType = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface InRoomBannerMessage {
-  common?: Common;
-  extra?: string;
-  position?: number;
-  actionType?: number;
-  containerUrl?: string;
-  lynxContainerUrl?: string;
-  containerType?: number;
-  opType?: number;
-}
-
-export function encodeInRoomBannerMessage(message: InRoomBannerMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeInRoomBannerMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeInRoomBannerMessage(message: InRoomBannerMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string extra = 2;
-  let $extra = message.extra;
-  if ($extra !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $extra);
-  }
-
-  // optional int32 position = 3;
-  let $position = message.position;
-  if ($position !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($position));
-  }
-
-  // optional int32 actionType = 4;
-  let $actionType = message.actionType;
-  if ($actionType !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($actionType));
-  }
-
-  // optional string containerUrl = 5;
-  let $containerUrl = message.containerUrl;
-  if ($containerUrl !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $containerUrl);
-  }
-
-  // optional string lynxContainerUrl = 6;
-  let $lynxContainerUrl = message.lynxContainerUrl;
-  if ($lynxContainerUrl !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $lynxContainerUrl);
-  }
-
-  // optional int32 containerType = 7;
-  let $containerType = message.containerType;
-  if ($containerType !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($containerType));
-  }
-
-  // optional int32 opType = 8;
-  let $opType = message.opType;
-  if ($opType !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, intToLong($opType));
-  }
-}
-
-export function decodeInRoomBannerMessage(binary: Uint8Array): InRoomBannerMessage {
-  return _decodeInRoomBannerMessage(wrapByteBuffer(binary));
-}
-
-function _decodeInRoomBannerMessage(bb: ByteBuffer): InRoomBannerMessage {
-  let message: InRoomBannerMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string extra = 2;
-      case 2: {
-        message.extra = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 position = 3;
-      case 3: {
-        message.position = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 actionType = 4;
-      case 4: {
-        message.actionType = readVarint32(bb);
-        break;
-      }
-
-      // optional string containerUrl = 5;
-      case 5: {
-        message.containerUrl = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string lynxContainerUrl = 6;
-      case 6: {
-        message.lynxContainerUrl = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 containerType = 7;
-      case 7: {
-        message.containerType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 opType = 8;
-      case 8: {
-        message.opType = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RoomRankMessage {
-  common?: Common;
-  ranks?: RoomRankMessage_RoomRank[];
-}
-
-export function encodeRoomRankMessage(message: RoomRankMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRoomRankMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRoomRankMessage(message: RoomRankMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated RoomRankMessage_RoomRank ranks = 2;
-  let array$ranks = message.ranks;
-  if (array$ranks !== undefined) {
-    for (let value of array$ranks) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeRoomRankMessage_RoomRank(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-}
-
-export function decodeRoomRankMessage(binary: Uint8Array): RoomRankMessage {
-  return _decodeRoomRankMessage(wrapByteBuffer(binary));
-}
-
-function _decodeRoomRankMessage(bb: ByteBuffer): RoomRankMessage {
-  let message: RoomRankMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated RoomRankMessage_RoomRank ranks = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.ranks || (message.ranks = []);
-        values.push(_decodeRoomRankMessage_RoomRank(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RoomRankMessage_RoomRank {
-  user?: User;
-  scoreStr?: string;
-  profileHidden?: boolean;
-}
-
-export function encodeRoomRankMessage_RoomRank(message: RoomRankMessage_RoomRank): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRoomRankMessage_RoomRank(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRoomRankMessage_RoomRank(message: RoomRankMessage_RoomRank, bb: ByteBuffer): void {
-  // optional User user = 1;
-  let $user = message.user;
-  if ($user !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeUser($user, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string scoreStr = 2;
-  let $scoreStr = message.scoreStr;
-  if ($scoreStr !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $scoreStr);
-  }
-
-  // optional bool profileHidden = 3;
-  let $profileHidden = message.profileHidden;
-  if ($profileHidden !== undefined) {
-    writeVarint32(bb, 24);
-    writeByte(bb, $profileHidden ? 1 : 0);
-  }
-}
-
-export function decodeRoomRankMessage_RoomRank(binary: Uint8Array): RoomRankMessage_RoomRank {
-  return _decodeRoomRankMessage_RoomRank(wrapByteBuffer(binary));
-}
-
-function _decodeRoomRankMessage_RoomRank(bb: ByteBuffer): RoomRankMessage_RoomRank {
-  let message: RoomRankMessage_RoomRank = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional User user = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.user = _decodeUser(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string scoreStr = 2;
-      case 2: {
-        message.scoreStr = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool profileHidden = 3;
-      case 3: {
-        message.profileHidden = !!readByte(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RoomDataSyncMessage {
-  common?: Common;
-  roomID?: string;
-  syncKey?: string;
-  version?: string;
-  payload?: Uint8Array;
-  bizLogID?: string;
-}
-
-export function encodeRoomDataSyncMessage(message: RoomDataSyncMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRoomDataSyncMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRoomDataSyncMessage(message: RoomDataSyncMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 roomID = 2;
-  let $roomID = message.roomID;
-  if ($roomID !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, $roomID);
-  }
-
-  // optional string syncKey = 3;
-  let $syncKey = message.syncKey;
-  if ($syncKey !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $syncKey);
-  }
-
-  // optional int64 version = 4;
-  let $version = message.version;
-  if ($version !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, $version);
-  }
-
-  // optional bytes payload = 5;
-  let $payload = message.payload;
-  if ($payload !== undefined) {
-    writeVarint32(bb, 42);
-    writeVarint32(bb, $payload.length), writeBytes(bb, $payload);
-  }
-
-  // optional string bizLogID = 6;
-  let $bizLogID = message.bizLogID;
-  if ($bizLogID !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $bizLogID);
-  }
-}
-
-export function decodeRoomDataSyncMessage(binary: Uint8Array): RoomDataSyncMessage {
-  return _decodeRoomDataSyncMessage(wrapByteBuffer(binary));
-}
-
-function _decodeRoomDataSyncMessage(bb: ByteBuffer): RoomDataSyncMessage {
-  let message: RoomDataSyncMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 roomID = 2;
-      case 2: {
-        message.roomID = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string syncKey = 3;
-      case 3: {
-        message.syncKey = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 version = 4;
-      case 4: {
-        message.version = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional bytes payload = 5;
-      case 5: {
-        message.payload = readBytes(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string bizLogID = 6;
-      case 6: {
-        message.bizLogID = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface ActivityEmojiGroupsMessage {
-  common?: Common;
-  activityEmojiGroups?: EffectiveActivityEmojiGroup[];
-}
-
-export function encodeActivityEmojiGroupsMessage(message: ActivityEmojiGroupsMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeActivityEmojiGroupsMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeActivityEmojiGroupsMessage(message: ActivityEmojiGroupsMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated EffectiveActivityEmojiGroup activityEmojiGroups = 2;
-  let array$activityEmojiGroups = message.activityEmojiGroups;
-  if (array$activityEmojiGroups !== undefined) {
-    for (let value of array$activityEmojiGroups) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeEffectiveActivityEmojiGroup(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-}
-
-export function decodeActivityEmojiGroupsMessage(binary: Uint8Array): ActivityEmojiGroupsMessage {
-  return _decodeActivityEmojiGroupsMessage(wrapByteBuffer(binary));
-}
-
-function _decodeActivityEmojiGroupsMessage(bb: ByteBuffer): ActivityEmojiGroupsMessage {
-  let message: ActivityEmojiGroupsMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated EffectiveActivityEmojiGroup activityEmojiGroups = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.activityEmojiGroups || (message.activityEmojiGroups = []);
-        values.push(_decodeEffectiveActivityEmojiGroup(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface GiftSortMessage {
-  common?: Common;
-  messageType?: number;
-  minConsumeLevel?: string;
-  sceneInsertStrategy?: GiftSortStrategy;
-}
-
-export function encodeGiftSortMessage(message: GiftSortMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeGiftSortMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeGiftSortMessage(message: GiftSortMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int32 messageType = 2;
-  let $messageType = message.messageType;
-  if ($messageType !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($messageType));
-  }
-
-  // optional int64 minConsumeLevel = 3;
-  let $minConsumeLevel = message.minConsumeLevel;
-  if ($minConsumeLevel !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $minConsumeLevel);
-  }
-
-  // optional GiftSortStrategy sceneInsertStrategy = 4;
-  let $sceneInsertStrategy = message.sceneInsertStrategy;
-  if ($sceneInsertStrategy !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeGiftSortStrategy($sceneInsertStrategy, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeGiftSortMessage(binary: Uint8Array): GiftSortMessage {
-  return _decodeGiftSortMessage(wrapByteBuffer(binary));
-}
-
-function _decodeGiftSortMessage(bb: ByteBuffer): GiftSortMessage {
-  let message: GiftSortMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 messageType = 2;
-      case 2: {
-        message.messageType = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 minConsumeLevel = 3;
-      case 3: {
-        message.minConsumeLevel = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional GiftSortStrategy sceneInsertStrategy = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.sceneInsertStrategy = _decodeGiftSortStrategy(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface UpdateFanTicketMessage {
-  common?: Common;
-  roomFanTicketCountText?: string;
-  roomFanTicketCount?: string;
-  forceUpdate?: boolean;
-}
-
-export function encodeUpdateFanTicketMessage(message: UpdateFanTicketMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeUpdateFanTicketMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeUpdateFanTicketMessage(message: UpdateFanTicketMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string roomFanTicketCountText = 2;
-  let $roomFanTicketCountText = message.roomFanTicketCountText;
-  if ($roomFanTicketCountText !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $roomFanTicketCountText);
-  }
-
-  // optional int64 roomFanTicketCount = 3;
-  let $roomFanTicketCount = message.roomFanTicketCount;
-  if ($roomFanTicketCount !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $roomFanTicketCount);
-  }
-
-  // optional bool forceUpdate = 4;
-  let $forceUpdate = message.forceUpdate;
-  if ($forceUpdate !== undefined) {
-    writeVarint32(bb, 32);
-    writeByte(bb, $forceUpdate ? 1 : 0);
-  }
-}
-
-export function decodeUpdateFanTicketMessage(binary: Uint8Array): UpdateFanTicketMessage {
-  return _decodeUpdateFanTicketMessage(wrapByteBuffer(binary));
-}
-
-function _decodeUpdateFanTicketMessage(bb: ByteBuffer): UpdateFanTicketMessage {
-  let message: UpdateFanTicketMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string roomFanTicketCountText = 2;
-      case 2: {
-        message.roomFanTicketCountText = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 roomFanTicketCount = 3;
-      case 3: {
-        message.roomFanTicketCount = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional bool forceUpdate = 4;
-      case 4: {
-        message.forceUpdate = !!readByte(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface InteractEffectMessage {
-  common?: Common;
-  effectId?: string;
-  extra?: string;
-  teaLog?: string;
-  messageType?: string;
-  arg1?: string;
-  arg2?: string;
-  arg3?: string;
-}
-
-export function encodeInteractEffectMessage(message: InteractEffectMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeInteractEffectMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeInteractEffectMessage(message: InteractEffectMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 effectId = 2;
-  let $effectId = message.effectId;
-  if ($effectId !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, $effectId);
-  }
-
-  // optional string extra = 3;
-  let $extra = message.extra;
-  if ($extra !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $extra);
-  }
-
-  // optional string teaLog = 4;
-  let $teaLog = message.teaLog;
-  if ($teaLog !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $teaLog);
-  }
-
-  // optional int64 messageType = 5;
-  let $messageType = message.messageType;
-  if ($messageType !== undefined) {
-    writeVarint32(bb, 40);
-    writeVarint64(bb, $messageType);
-  }
-
-  // optional int64 arg1 = 6;
-  let $arg1 = message.arg1;
-  if ($arg1 !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, $arg1);
-  }
-
-  // optional int64 arg2 = 7;
-  let $arg2 = message.arg2;
-  if ($arg2 !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, $arg2);
-  }
-
-  // optional string arg3 = 8;
-  let $arg3 = message.arg3;
-  if ($arg3 !== undefined) {
-    writeVarint32(bb, 66);
-    writeString(bb, $arg3);
-  }
-}
-
-export function decodeInteractEffectMessage(binary: Uint8Array): InteractEffectMessage {
-  return _decodeInteractEffectMessage(wrapByteBuffer(binary));
-}
-
-function _decodeInteractEffectMessage(bb: ByteBuffer): InteractEffectMessage {
-  let message: InteractEffectMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 effectId = 2;
-      case 2: {
-        message.effectId = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string extra = 3;
-      case 3: {
-        message.extra = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string teaLog = 4;
-      case 4: {
-        message.teaLog = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 messageType = 5;
-      case 5: {
-        message.messageType = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 arg1 = 6;
-      case 6: {
-        message.arg1 = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 arg2 = 7;
-      case 7: {
-        message.arg2 = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string arg3 = 8;
-      case 8: {
-        message.arg3 = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RanklistHourEntranceMessage {
-  common?: Common;
-  info?: RanklistHourEntrance;
-}
-
-export function encodeRanklistHourEntranceMessage(message: RanklistHourEntranceMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRanklistHourEntranceMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRanklistHourEntranceMessage(message: RanklistHourEntranceMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional RanklistHourEntrance info = 2;
-  let $info = message.info;
-  if ($info !== undefined) {
-    writeVarint32(bb, 18);
-    let nested = popByteBuffer();
-    _encodeRanklistHourEntrance($info, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeRanklistHourEntranceMessage(binary: Uint8Array): RanklistHourEntranceMessage {
-  return _decodeRanklistHourEntranceMessage(wrapByteBuffer(binary));
-}
-
-function _decodeRanklistHourEntranceMessage(bb: ByteBuffer): RanklistHourEntranceMessage {
-  let message: RanklistHourEntranceMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional RanklistHourEntrance info = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        message.info = _decodeRanklistHourEntrance(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface ChatLikeMessage {
-  common?: Common;
-}
-
-export function encodeChatLikeMessage(message: ChatLikeMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeChatLikeMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeChatLikeMessage(message: ChatLikeMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeChatLikeMessage(binary: Uint8Array): ChatLikeMessage {
-  return _decodeChatLikeMessage(wrapByteBuffer(binary));
-}
-
-function _decodeChatLikeMessage(bb: ByteBuffer): ChatLikeMessage {
-  let message: ChatLikeMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RoomStreamAdaptationMessage {
-  common?: Common;
-  adaptationType?: number;
-  adaptationHeightRatio?: number;
-  adaptationBodyCenterRatio?: number;
-  adaptationContentTopRatio?: number;
-  adaptationContentBottomRatio?: number;
-}
-
-export function encodeRoomStreamAdaptationMessage(message: RoomStreamAdaptationMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRoomStreamAdaptationMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRoomStreamAdaptationMessage(message: RoomStreamAdaptationMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int32 adaptationType = 2;
-  let $adaptationType = message.adaptationType;
-  if ($adaptationType !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($adaptationType));
-  }
-
-  // optional float adaptationHeightRatio = 3;
-  let $adaptationHeightRatio = message.adaptationHeightRatio;
-  if ($adaptationHeightRatio !== undefined) {
-    writeVarint32(bb, 29);
-    writeFloat(bb, $adaptationHeightRatio);
-  }
-
-  // optional float adaptationBodyCenterRatio = 4;
-  let $adaptationBodyCenterRatio = message.adaptationBodyCenterRatio;
-  if ($adaptationBodyCenterRatio !== undefined) {
-    writeVarint32(bb, 37);
-    writeFloat(bb, $adaptationBodyCenterRatio);
-  }
-
-  // optional float adaptationContentTopRatio = 5;
-  let $adaptationContentTopRatio = message.adaptationContentTopRatio;
-  if ($adaptationContentTopRatio !== undefined) {
-    writeVarint32(bb, 45);
-    writeFloat(bb, $adaptationContentTopRatio);
-  }
-
-  // optional float adaptationContentBottomRatio = 6;
-  let $adaptationContentBottomRatio = message.adaptationContentBottomRatio;
-  if ($adaptationContentBottomRatio !== undefined) {
-    writeVarint32(bb, 53);
-    writeFloat(bb, $adaptationContentBottomRatio);
-  }
-}
-
-export function decodeRoomStreamAdaptationMessage(binary: Uint8Array): RoomStreamAdaptationMessage {
-  return _decodeRoomStreamAdaptationMessage(wrapByteBuffer(binary));
-}
-
-function _decodeRoomStreamAdaptationMessage(bb: ByteBuffer): RoomStreamAdaptationMessage {
-  let message: RoomStreamAdaptationMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 adaptationType = 2;
-      case 2: {
-        message.adaptationType = readVarint32(bb);
-        break;
-      }
-
-      // optional float adaptationHeightRatio = 3;
-      case 3: {
-        message.adaptationHeightRatio = readFloat(bb);
-        break;
-      }
-
-      // optional float adaptationBodyCenterRatio = 4;
-      case 4: {
-        message.adaptationBodyCenterRatio = readFloat(bb);
-        break;
-      }
-
-      // optional float adaptationContentTopRatio = 5;
-      case 5: {
-        message.adaptationContentTopRatio = readFloat(bb);
-        break;
-      }
-
-      // optional float adaptationContentBottomRatio = 6;
-      case 6: {
-        message.adaptationContentBottomRatio = readFloat(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface TopEffectMessage {
-  common?: Common;
-  assetId?: string;
-  priority?: string;
-  action?: number;
-  scene?: string;
-  endTime?: string;
-  fadeInDuration?: string;
-  fadeOutDuration?: string;
-  images?: EffectImageInfo[];
-  texts?: EffectTextInfo[];
-}
-
-export function encodeTopEffectMessage(message: TopEffectMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeTopEffectMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeTopEffectMessage(message: TopEffectMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 assetId = 2;
-  let $assetId = message.assetId;
-  if ($assetId !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, $assetId);
-  }
-
-  // optional int64 priority = 3;
-  let $priority = message.priority;
-  if ($priority !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $priority);
-  }
-
-  // optional int32 action = 4;
-  let $action = message.action;
-  if ($action !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($action));
-  }
-
-  // optional string scene = 5;
-  let $scene = message.scene;
-  if ($scene !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $scene);
-  }
-
-  // optional int64 endTime = 6;
-  let $endTime = message.endTime;
-  if ($endTime !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, $endTime);
-  }
-
-  // optional int64 fadeInDuration = 7;
-  let $fadeInDuration = message.fadeInDuration;
-  if ($fadeInDuration !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, $fadeInDuration);
-  }
-
-  // optional int64 fadeOutDuration = 8;
-  let $fadeOutDuration = message.fadeOutDuration;
-  if ($fadeOutDuration !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, $fadeOutDuration);
-  }
-
-  // repeated EffectImageInfo images = 10;
-  let array$images = message.images;
-  if (array$images !== undefined) {
-    for (let value of array$images) {
-      writeVarint32(bb, 82);
-      let nested = popByteBuffer();
-      _encodeEffectImageInfo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated EffectTextInfo texts = 20;
-  let array$texts = message.texts;
-  if (array$texts !== undefined) {
-    for (let value of array$texts) {
-      writeVarint32(bb, 162);
-      let nested = popByteBuffer();
-      _encodeEffectTextInfo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-}
-
-export function decodeTopEffectMessage(binary: Uint8Array): TopEffectMessage {
-  return _decodeTopEffectMessage(wrapByteBuffer(binary));
-}
-
-function _decodeTopEffectMessage(bb: ByteBuffer): TopEffectMessage {
-  let message: TopEffectMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 assetId = 2;
-      case 2: {
-        message.assetId = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 priority = 3;
-      case 3: {
-        message.priority = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 action = 4;
-      case 4: {
-        message.action = readVarint32(bb);
-        break;
-      }
-
-      // optional string scene = 5;
-      case 5: {
-        message.scene = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 endTime = 6;
-      case 6: {
-        message.endTime = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 fadeInDuration = 7;
-      case 7: {
-        message.fadeInDuration = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 fadeOutDuration = 8;
-      case 8: {
-        message.fadeOutDuration = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // repeated EffectImageInfo images = 10;
-      case 10: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.images || (message.images = []);
-        values.push(_decodeEffectImageInfo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated EffectTextInfo texts = 20;
-      case 20: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.texts || (message.texts = []);
-        values.push(_decodeEffectTextInfo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RoomIntroMessage {
-  common?: Common;
-  user?: User;
-  style?: string;
-  intro?: string;
-  label?: string;
-  introVideoItemId?: string;
-  introVideoTitle?: string;
-  selectedLabels?: RoomIntroLabel[];
-  introLabels?: RoomIntroLabel[];
-  publicAreaCommon?: PublicAreaCommon;
-  poiEnabled?: boolean;
-  appointmentInfo?: RoomIntroAppointmentInfo;
-}
-
-export function encodeRoomIntroMessage(message: RoomIntroMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRoomIntroMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRoomIntroMessage(message: RoomIntroMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional User user = 2;
-  let $user = message.user;
-  if ($user !== undefined) {
-    writeVarint32(bb, 18);
-    let nested = popByteBuffer();
-    _encodeUser($user, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 style = 3;
-  let $style = message.style;
-  if ($style !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $style);
-  }
-
-  // optional string intro = 4;
-  let $intro = message.intro;
-  if ($intro !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $intro);
-  }
-
-  // optional string label = 5;
-  let $label = message.label;
-  if ($label !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $label);
-  }
-
-  // optional int64 introVideoItemId = 6;
-  let $introVideoItemId = message.introVideoItemId;
-  if ($introVideoItemId !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, $introVideoItemId);
-  }
-
-  // optional string introVideoTitle = 7;
-  let $introVideoTitle = message.introVideoTitle;
-  if ($introVideoTitle !== undefined) {
-    writeVarint32(bb, 58);
-    writeString(bb, $introVideoTitle);
-  }
-
-  // repeated RoomIntroLabel selectedLabels = 8;
-  let array$selectedLabels = message.selectedLabels;
-  if (array$selectedLabels !== undefined) {
-    for (let value of array$selectedLabels) {
-      writeVarint32(bb, 66);
-      let nested = popByteBuffer();
-      _encodeRoomIntroLabel(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated RoomIntroLabel introLabels = 9;
-  let array$introLabels = message.introLabels;
-  if (array$introLabels !== undefined) {
-    for (let value of array$introLabels) {
-      writeVarint32(bb, 74);
-      let nested = popByteBuffer();
-      _encodeRoomIntroLabel(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional PublicAreaCommon publicAreaCommon = 10;
-  let $publicAreaCommon = message.publicAreaCommon;
-  if ($publicAreaCommon !== undefined) {
-    writeVarint32(bb, 82);
-    let nested = popByteBuffer();
-    _encodePublicAreaCommon($publicAreaCommon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional bool poiEnabled = 11;
-  let $poiEnabled = message.poiEnabled;
-  if ($poiEnabled !== undefined) {
-    writeVarint32(bb, 88);
-    writeByte(bb, $poiEnabled ? 1 : 0);
-  }
-
-  // optional RoomIntroAppointmentInfo appointmentInfo = 22;
-  let $appointmentInfo = message.appointmentInfo;
-  if ($appointmentInfo !== undefined) {
-    writeVarint32(bb, 178);
-    let nested = popByteBuffer();
-    _encodeRoomIntroAppointmentInfo($appointmentInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeRoomIntroMessage(binary: Uint8Array): RoomIntroMessage {
-  return _decodeRoomIntroMessage(wrapByteBuffer(binary));
-}
-
-function _decodeRoomIntroMessage(bb: ByteBuffer): RoomIntroMessage {
-  let message: RoomIntroMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional User user = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        message.user = _decodeUser(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 style = 3;
-      case 3: {
-        message.style = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string intro = 4;
-      case 4: {
-        message.intro = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string label = 5;
-      case 5: {
-        message.label = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 introVideoItemId = 6;
-      case 6: {
-        message.introVideoItemId = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string introVideoTitle = 7;
-      case 7: {
-        message.introVideoTitle = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // repeated RoomIntroLabel selectedLabels = 8;
-      case 8: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.selectedLabels || (message.selectedLabels = []);
-        values.push(_decodeRoomIntroLabel(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated RoomIntroLabel introLabels = 9;
-      case 9: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.introLabels || (message.introLabels = []);
-        values.push(_decodeRoomIntroLabel(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional PublicAreaCommon publicAreaCommon = 10;
-      case 10: {
-        let limit = pushTemporaryLength(bb);
-        message.publicAreaCommon = _decodePublicAreaCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional bool poiEnabled = 11;
-      case 11: {
-        message.poiEnabled = !!readByte(bb);
-        break;
-      }
-
-      // optional RoomIntroAppointmentInfo appointmentInfo = 22;
-      case 22: {
-        let limit = pushTemporaryLength(bb);
-        message.appointmentInfo = _decodeRoomIntroAppointmentInfo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface SandwichBorderMessage {
-  common?: Common;
-  sandwichBorderInfo?: SandwichBorder;
-}
-
-export function encodeSandwichBorderMessage(message: SandwichBorderMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeSandwichBorderMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeSandwichBorderMessage(message: SandwichBorderMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional SandwichBorder sandwichBorderInfo = 2;
-  let $sandwichBorderInfo = message.sandwichBorderInfo;
-  if ($sandwichBorderInfo !== undefined) {
-    writeVarint32(bb, 18);
-    let nested = popByteBuffer();
-    _encodeSandwichBorder($sandwichBorderInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeSandwichBorderMessage(binary: Uint8Array): SandwichBorderMessage {
-  return _decodeSandwichBorderMessage(wrapByteBuffer(binary));
-}
-
-function _decodeSandwichBorderMessage(bb: ByteBuffer): SandwichBorderMessage {
-  let message: SandwichBorderMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional SandwichBorder sandwichBorderInfo = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        message.sandwichBorderInfo = _decodeSandwichBorder(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface NotifyEffectMessage {
-  common?: Common;
-  icons?: Image[];
-  text?: Text;
-  background?: NotifyEffectMessage_Background;
-  dynamicConfig?: NotifyEffectMessage_DynamicConfig;
-  textV2?: CombinedText;
-  supportLandscape?: boolean;
-  sceneConfig?: NotifyEffectMessage_SceneConfig;
-}
-
-export function encodeNotifyEffectMessage(message: NotifyEffectMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeNotifyEffectMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeNotifyEffectMessage(message: NotifyEffectMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated Image icons = 2;
-  let array$icons = message.icons;
-  if (array$icons !== undefined) {
-    for (let value of array$icons) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeImage(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional Text text = 3;
-  let $text = message.text;
-  if ($text !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodeText($text, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional NotifyEffectMessage_Background background = 4;
-  let $background = message.background;
-  if ($background !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeNotifyEffectMessage_Background($background, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional NotifyEffectMessage_DynamicConfig dynamicConfig = 5;
-  let $dynamicConfig = message.dynamicConfig;
-  if ($dynamicConfig !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodeNotifyEffectMessage_DynamicConfig($dynamicConfig, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional CombinedText textV2 = 6;
-  let $textV2 = message.textV2;
-  if ($textV2 !== undefined) {
-    writeVarint32(bb, 50);
-    let nested = popByteBuffer();
-    _encodeCombinedText($textV2, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional bool supportLandscape = 7;
-  let $supportLandscape = message.supportLandscape;
-  if ($supportLandscape !== undefined) {
-    writeVarint32(bb, 56);
-    writeByte(bb, $supportLandscape ? 1 : 0);
-  }
-
-  // optional NotifyEffectMessage_SceneConfig sceneConfig = 10;
-  let $sceneConfig = message.sceneConfig;
-  if ($sceneConfig !== undefined) {
-    writeVarint32(bb, 82);
-    let nested = popByteBuffer();
-    _encodeNotifyEffectMessage_SceneConfig($sceneConfig, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeNotifyEffectMessage(binary: Uint8Array): NotifyEffectMessage {
-  return _decodeNotifyEffectMessage(wrapByteBuffer(binary));
-}
-
-function _decodeNotifyEffectMessage(bb: ByteBuffer): NotifyEffectMessage {
-  let message: NotifyEffectMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated Image icons = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.icons || (message.icons = []);
-        values.push(_decodeImage(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Text text = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.text = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional NotifyEffectMessage_Background background = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.background = _decodeNotifyEffectMessage_Background(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional NotifyEffectMessage_DynamicConfig dynamicConfig = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.dynamicConfig = _decodeNotifyEffectMessage_DynamicConfig(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional CombinedText textV2 = 6;
-      case 6: {
-        let limit = pushTemporaryLength(bb);
-        message.textV2 = _decodeCombinedText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional bool supportLandscape = 7;
-      case 7: {
-        message.supportLandscape = !!readByte(bb);
-        break;
-      }
-
-      // optional NotifyEffectMessage_SceneConfig sceneConfig = 10;
-      case 10: {
-        let limit = pushTemporaryLength(bb);
-        message.sceneConfig = _decodeNotifyEffectMessage_SceneConfig(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface NotifyEffectMessage_Background {
-  backgroundImage?: Image;
-  backgroundColor?: string;
-  backgroundEffect?: Image;
-}
-
-export function encodeNotifyEffectMessage_Background(message: NotifyEffectMessage_Background): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeNotifyEffectMessage_Background(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeNotifyEffectMessage_Background(message: NotifyEffectMessage_Background, bb: ByteBuffer): void {
-  // optional Image backgroundImage = 1;
-  let $backgroundImage = message.backgroundImage;
-  if ($backgroundImage !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeImage($backgroundImage, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string backgroundColor = 10;
-  let $backgroundColor = message.backgroundColor;
-  if ($backgroundColor !== undefined) {
-    writeVarint32(bb, 82);
-    writeString(bb, $backgroundColor);
-  }
-
-  // optional Image backgroundEffect = 11;
-  let $backgroundEffect = message.backgroundEffect;
-  if ($backgroundEffect !== undefined) {
-    writeVarint32(bb, 90);
-    let nested = popByteBuffer();
-    _encodeImage($backgroundEffect, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeNotifyEffectMessage_Background(binary: Uint8Array): NotifyEffectMessage_Background {
-  return _decodeNotifyEffectMessage_Background(wrapByteBuffer(binary));
-}
-
-function _decodeNotifyEffectMessage_Background(bb: ByteBuffer): NotifyEffectMessage_Background {
-  let message: NotifyEffectMessage_Background = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Image backgroundImage = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.backgroundImage = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string backgroundColor = 10;
-      case 10: {
-        message.backgroundColor = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional Image backgroundEffect = 11;
-      case 11: {
-        let limit = pushTemporaryLength(bb);
-        message.backgroundEffect = _decodeImage(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface NotifyEffectMessage_DynamicConfig {
-  stayTime?: number;
-  maxStayTime?: number;
-  displayEffectType?: number;
-}
-
-export function encodeNotifyEffectMessage_DynamicConfig(message: NotifyEffectMessage_DynamicConfig): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeNotifyEffectMessage_DynamicConfig(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeNotifyEffectMessage_DynamicConfig(message: NotifyEffectMessage_DynamicConfig, bb: ByteBuffer): void {
-  // optional int32 stayTime = 1;
-  let $stayTime = message.stayTime;
-  if ($stayTime !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($stayTime));
-  }
-
-  // optional int32 maxStayTime = 2;
-  let $maxStayTime = message.maxStayTime;
-  if ($maxStayTime !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($maxStayTime));
-  }
-
-  // optional int32 displayEffectType = 3;
-  let $displayEffectType = message.displayEffectType;
-  if ($displayEffectType !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($displayEffectType));
-  }
-}
-
-export function decodeNotifyEffectMessage_DynamicConfig(binary: Uint8Array): NotifyEffectMessage_DynamicConfig {
-  return _decodeNotifyEffectMessage_DynamicConfig(wrapByteBuffer(binary));
-}
-
-function _decodeNotifyEffectMessage_DynamicConfig(bb: ByteBuffer): NotifyEffectMessage_DynamicConfig {
-  let message: NotifyEffectMessage_DynamicConfig = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 stayTime = 1;
-      case 1: {
-        message.stayTime = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 maxStayTime = 2;
-      case 2: {
-        message.maxStayTime = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 displayEffectType = 3;
-      case 3: {
-        message.displayEffectType = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface NotifyEffectMessage_SceneConfig {
-  scene?: string;
-  priority?: string;
-  needAggregate?: boolean;
-  aggregateNum?: string;
-  aggregateText?: Text;
-  subScene?: string;
-  maxWaitTime?: string;
-}
-
-export function encodeNotifyEffectMessage_SceneConfig(message: NotifyEffectMessage_SceneConfig): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeNotifyEffectMessage_SceneConfig(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeNotifyEffectMessage_SceneConfig(message: NotifyEffectMessage_SceneConfig, bb: ByteBuffer): void {
-  // optional string scene = 1;
-  let $scene = message.scene;
-  if ($scene !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $scene);
-  }
-
-  // optional int64 priority = 2;
-  let $priority = message.priority;
-  if ($priority !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, $priority);
-  }
-
-  // optional bool needAggregate = 3;
-  let $needAggregate = message.needAggregate;
-  if ($needAggregate !== undefined) {
-    writeVarint32(bb, 24);
-    writeByte(bb, $needAggregate ? 1 : 0);
-  }
-
-  // optional int64 aggregateNum = 4;
-  let $aggregateNum = message.aggregateNum;
-  if ($aggregateNum !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, $aggregateNum);
-  }
-
-  // optional Text aggregateText = 5;
-  let $aggregateText = message.aggregateText;
-  if ($aggregateText !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodeText($aggregateText, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string subScene = 6;
-  let $subScene = message.subScene;
-  if ($subScene !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $subScene);
-  }
-
-  // optional int64 maxWaitTime = 7;
-  let $maxWaitTime = message.maxWaitTime;
-  if ($maxWaitTime !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, $maxWaitTime);
-  }
-}
-
-export function decodeNotifyEffectMessage_SceneConfig(binary: Uint8Array): NotifyEffectMessage_SceneConfig {
-  return _decodeNotifyEffectMessage_SceneConfig(wrapByteBuffer(binary));
-}
-
-function _decodeNotifyEffectMessage_SceneConfig(bb: ByteBuffer): NotifyEffectMessage_SceneConfig {
-  let message: NotifyEffectMessage_SceneConfig = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string scene = 1;
-      case 1: {
-        message.scene = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 priority = 2;
-      case 2: {
-        message.priority = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional bool needAggregate = 3;
-      case 3: {
-        message.needAggregate = !!readByte(bb);
-        break;
-      }
-
-      // optional int64 aggregateNum = 4;
-      case 4: {
-        message.aggregateNum = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional Text aggregateText = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.aggregateText = _decodeText(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string subScene = 6;
-      case 6: {
-        message.subScene = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 maxWaitTime = 7;
-      case 7: {
-        message.maxWaitTime = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface NotifyMessage {
-  common?: Common;
-  schema?: string;
-  notifyType?: string;
-  content?: string;
-  user?: User;
-  extra?: NotifyMessage_Extra;
-  notifyClass?: string;
-  flexSetting?: string[];
-  bizScene?: string;
-}
-
-export function encodeNotifyMessage(message: NotifyMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeNotifyMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeNotifyMessage(message: NotifyMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string schema = 2;
-  let $schema = message.schema;
-  if ($schema !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $schema);
-  }
-
-  // optional int64 notifyType = 3;
-  let $notifyType = message.notifyType;
-  if ($notifyType !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $notifyType);
-  }
-
-  // optional string content = 4;
-  let $content = message.content;
-  if ($content !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $content);
-  }
-
-  // optional User user = 5;
-  let $user = message.user;
-  if ($user !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodeUser($user, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional NotifyMessage_Extra extra = 6;
-  let $extra = message.extra;
-  if ($extra !== undefined) {
-    writeVarint32(bb, 50);
-    let nested = popByteBuffer();
-    _encodeNotifyMessage_Extra($extra, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 notifyClass = 7;
-  let $notifyClass = message.notifyClass;
-  if ($notifyClass !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, $notifyClass);
-  }
-
-  // repeated int64 flexSetting = 8;
-  let array$flexSetting = message.flexSetting;
-  if (array$flexSetting !== undefined) {
-    let packed = popByteBuffer();
-    for (let value of array$flexSetting) {
-      writeVarint64(packed, value);
-    }
-    writeVarint32(bb, 66);
-    writeVarint32(bb, packed.offset);
-    writeByteBuffer(bb, packed);
-    pushByteBuffer(packed);
-  }
-
-  // optional string bizScene = 100;
-  let $bizScene = message.bizScene;
-  if ($bizScene !== undefined) {
-    writeVarint32(bb, 802);
-    writeString(bb, $bizScene);
-  }
-}
-
-export function decodeNotifyMessage(binary: Uint8Array): NotifyMessage {
-  return _decodeNotifyMessage(wrapByteBuffer(binary));
-}
-
-function _decodeNotifyMessage(bb: ByteBuffer): NotifyMessage {
-  let message: NotifyMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string schema = 2;
-      case 2: {
-        message.schema = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 notifyType = 3;
-      case 3: {
-        message.notifyType = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string content = 4;
-      case 4: {
-        message.content = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional User user = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.user = _decodeUser(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional NotifyMessage_Extra extra = 6;
-      case 6: {
-        let limit = pushTemporaryLength(bb);
-        message.extra = _decodeNotifyMessage_Extra(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 notifyClass = 7;
-      case 7: {
-        message.notifyClass = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // repeated int64 flexSetting = 8;
-      case 8: {
-        let values = message.flexSetting || (message.flexSetting = []);
-        if ((tag & 7) === 2) {
-          let outerLimit = pushTemporaryLength(bb);
-          while (!isAtEnd(bb)) {
-            values.push(readVarint64(bb, /* unsigned */ false));
-          }
-          bb.limit = outerLimit;
-        } else {
-          values.push(readVarint64(bb, /* unsigned */ false));
-        }
-        break;
-      }
-
-      // optional string bizScene = 100;
-      case 100: {
-        message.bizScene = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface NotifyMessage_Extra {
-  duration?: string;
-  background?: NotifyMessage_Background;
-  contentList?: NotifyMessage_ContentList;
-  needGiftFrequency?: boolean;
-}
-
-export function encodeNotifyMessage_Extra(message: NotifyMessage_Extra): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeNotifyMessage_Extra(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeNotifyMessage_Extra(message: NotifyMessage_Extra, bb: ByteBuffer): void {
-  // optional int64 duration = 1;
-  let $duration = message.duration;
-  if ($duration !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, $duration);
-  }
-
-  // optional NotifyMessage_Background background = 2;
-  let $background = message.background;
-  if ($background !== undefined) {
-    writeVarint32(bb, 18);
-    let nested = popByteBuffer();
-    _encodeNotifyMessage_Background($background, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional NotifyMessage_ContentList contentList = 3;
-  let $contentList = message.contentList;
-  if ($contentList !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodeNotifyMessage_ContentList($contentList, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional bool needGiftFrequency = 6;
-  let $needGiftFrequency = message.needGiftFrequency;
-  if ($needGiftFrequency !== undefined) {
-    writeVarint32(bb, 48);
-    writeByte(bb, $needGiftFrequency ? 1 : 0);
-  }
-}
-
-export function decodeNotifyMessage_Extra(binary: Uint8Array): NotifyMessage_Extra {
-  return _decodeNotifyMessage_Extra(wrapByteBuffer(binary));
-}
-
-function _decodeNotifyMessage_Extra(bb: ByteBuffer): NotifyMessage_Extra {
-  let message: NotifyMessage_Extra = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int64 duration = 1;
-      case 1: {
-        message.duration = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional NotifyMessage_Background background = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        message.background = _decodeNotifyMessage_Background(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional NotifyMessage_ContentList contentList = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.contentList = _decodeNotifyMessage_ContentList(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional bool needGiftFrequency = 6;
-      case 6: {
-        message.needGiftFrequency = !!readByte(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface NotifyMessage_Background {
-  width?: number;
-  height?: number;
-  urlList?: string;
-  uri?: string;
-}
-
-export function encodeNotifyMessage_Background(message: NotifyMessage_Background): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeNotifyMessage_Background(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeNotifyMessage_Background(message: NotifyMessage_Background, bb: ByteBuffer): void {
-  // optional int32 width = 1;
-  let $width = message.width;
-  if ($width !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($width));
-  }
-
-  // optional int32 height = 2;
-  let $height = message.height;
-  if ($height !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($height));
-  }
-
-  // optional string urlList = 3;
-  let $urlList = message.urlList;
-  if ($urlList !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $urlList);
-  }
-
-  // optional string uri = 4;
-  let $uri = message.uri;
-  if ($uri !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $uri);
-  }
-}
-
-export function decodeNotifyMessage_Background(binary: Uint8Array): NotifyMessage_Background {
-  return _decodeNotifyMessage_Background(wrapByteBuffer(binary));
-}
-
-function _decodeNotifyMessage_Background(bb: ByteBuffer): NotifyMessage_Background {
-  let message: NotifyMessage_Background = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 width = 1;
-      case 1: {
-        message.width = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 height = 2;
-      case 2: {
-        message.height = readVarint32(bb);
-        break;
-      }
-
-      // optional string urlList = 3;
-      case 3: {
-        message.urlList = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string uri = 4;
-      case 4: {
-        message.uri = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface NotifyMessage_ContentList {
-  contents?: NotifyMessage_Content[];
-  highLightColor?: string;
-}
-
-export function encodeNotifyMessage_ContentList(message: NotifyMessage_ContentList): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeNotifyMessage_ContentList(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeNotifyMessage_ContentList(message: NotifyMessage_ContentList, bb: ByteBuffer): void {
-  // repeated NotifyMessage_Content contents = 1;
-  let array$contents = message.contents;
-  if (array$contents !== undefined) {
-    for (let value of array$contents) {
-      writeVarint32(bb, 10);
-      let nested = popByteBuffer();
-      _encodeNotifyMessage_Content(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional string highLightColor = 2;
-  let $highLightColor = message.highLightColor;
-  if ($highLightColor !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $highLightColor);
-  }
-}
-
-export function decodeNotifyMessage_ContentList(binary: Uint8Array): NotifyMessage_ContentList {
-  return _decodeNotifyMessage_ContentList(wrapByteBuffer(binary));
-}
-
-function _decodeNotifyMessage_ContentList(bb: ByteBuffer): NotifyMessage_ContentList {
-  let message: NotifyMessage_ContentList = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // repeated NotifyMessage_Content contents = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.contents || (message.contents = []);
-        values.push(_decodeNotifyMessage_Content(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string highLightColor = 2;
-      case 2: {
-        message.highLightColor = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface NotifyMessage_Content {
-  content?: string;
-  needHighLight?: boolean;
-}
-
-export function encodeNotifyMessage_Content(message: NotifyMessage_Content): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeNotifyMessage_Content(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeNotifyMessage_Content(message: NotifyMessage_Content, bb: ByteBuffer): void {
-  // optional string content = 1;
-  let $content = message.content;
-  if ($content !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $content);
-  }
-
-  // optional bool needHighLight = 2;
-  let $needHighLight = message.needHighLight;
-  if ($needHighLight !== undefined) {
-    writeVarint32(bb, 16);
-    writeByte(bb, $needHighLight ? 1 : 0);
-  }
-}
-
-export function decodeNotifyMessage_Content(binary: Uint8Array): NotifyMessage_Content {
-  return _decodeNotifyMessage_Content(wrapByteBuffer(binary));
-}
-
-function _decodeNotifyMessage_Content(bb: ByteBuffer): NotifyMessage_Content {
-  let message: NotifyMessage_Content = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string content = 1;
-      case 1: {
-        message.content = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool needHighLight = 2;
-      case 2: {
-        message.needHighLight = !!readByte(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RoomNotifyMessage {
-  common?: Common;
-  schema?: string;
-  notifyType?: string;
-  content?: string;
-  user?: User;
-  extra?: NotifyMessage_Extra;
-  notifyClass?: string;
-  flexSetting?: string[];
-  bizScene?: string;
-}
-
-export function encodeRoomNotifyMessage(message: RoomNotifyMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRoomNotifyMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRoomNotifyMessage(message: RoomNotifyMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional string schema = 2;
-  let $schema = message.schema;
-  if ($schema !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $schema);
-  }
-
-  // optional int64 notifyType = 3;
-  let $notifyType = message.notifyType;
-  if ($notifyType !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $notifyType);
-  }
-
-  // optional string content = 4;
-  let $content = message.content;
-  if ($content !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $content);
-  }
-
-  // optional User user = 5;
-  let $user = message.user;
-  if ($user !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodeUser($user, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional NotifyMessage_Extra extra = 6;
-  let $extra = message.extra;
-  if ($extra !== undefined) {
-    writeVarint32(bb, 50);
-    let nested = popByteBuffer();
-    _encodeNotifyMessage_Extra($extra, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 notifyClass = 7;
-  let $notifyClass = message.notifyClass;
-  if ($notifyClass !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, $notifyClass);
-  }
-
-  // repeated int64 flexSetting = 8;
-  let array$flexSetting = message.flexSetting;
-  if (array$flexSetting !== undefined) {
-    let packed = popByteBuffer();
-    for (let value of array$flexSetting) {
-      writeVarint64(packed, value);
-    }
-    writeVarint32(bb, 66);
-    writeVarint32(bb, packed.offset);
-    writeByteBuffer(bb, packed);
-    pushByteBuffer(packed);
-  }
-
-  // optional string bizScene = 100;
-  let $bizScene = message.bizScene;
-  if ($bizScene !== undefined) {
-    writeVarint32(bb, 802);
-    writeString(bb, $bizScene);
-  }
-}
-
-export function decodeRoomNotifyMessage(binary: Uint8Array): RoomNotifyMessage {
-  return _decodeRoomNotifyMessage(wrapByteBuffer(binary));
-}
-
-function _decodeRoomNotifyMessage(bb: ByteBuffer): RoomNotifyMessage {
-  let message: RoomNotifyMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional string schema = 2;
-      case 2: {
-        message.schema = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 notifyType = 3;
-      case 3: {
-        message.notifyType = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string content = 4;
-      case 4: {
-        message.content = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional User user = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.user = _decodeUser(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional NotifyMessage_Extra extra = 6;
-      case 6: {
-        let limit = pushTemporaryLength(bb);
-        message.extra = _decodeNotifyMessage_Extra(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 notifyClass = 7;
-      case 7: {
-        message.notifyClass = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // repeated int64 flexSetting = 8;
-      case 8: {
-        let values = message.flexSetting || (message.flexSetting = []);
-        if ((tag & 7) === 2) {
-          let outerLimit = pushTemporaryLength(bb);
-          while (!isAtEnd(bb)) {
-            values.push(readVarint64(bb, /* unsigned */ false));
-          }
-          bb.limit = outerLimit;
-        } else {
-          values.push(readVarint64(bb, /* unsigned */ false));
-        }
-        break;
-      }
-
-      // optional string bizScene = 100;
-      case 100: {
-        message.bizScene = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface QuizAudienceStatusMessage {
-  common?: Common;
-  quizList?: Quiz[];
-}
-
-export function encodeQuizAudienceStatusMessage(message: QuizAudienceStatusMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeQuizAudienceStatusMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeQuizAudienceStatusMessage(message: QuizAudienceStatusMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated Quiz quizList = 2;
-  let array$quizList = message.quizList;
-  if (array$quizList !== undefined) {
-    for (let value of array$quizList) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeQuiz(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-}
-
-export function decodeQuizAudienceStatusMessage(binary: Uint8Array): QuizAudienceStatusMessage {
-  return _decodeQuizAudienceStatusMessage(wrapByteBuffer(binary));
-}
-
-function _decodeQuizAudienceStatusMessage(bb: ByteBuffer): QuizAudienceStatusMessage {
-  let message: QuizAudienceStatusMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated Quiz quizList = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.quizList || (message.quizList = []);
-        values.push(_decodeQuiz(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface TempStateAreaReachMessage {
-  common?: Common;
-  elemType?: string;
-  elemId?: string;
-  itemId?: string;
-  status?: string;
-  resource?: TempStateAreaReachMessage_Resource;
-}
-
-export function encodeTempStateAreaReachMessage(message: TempStateAreaReachMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeTempStateAreaReachMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeTempStateAreaReachMessage(message: TempStateAreaReachMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 elemType = 2;
-  let $elemType = message.elemType;
-  if ($elemType !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, $elemType);
-  }
-
-  // optional int64 elemId = 3;
-  let $elemId = message.elemId;
-  if ($elemId !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $elemId);
-  }
-
-  // optional int64 itemId = 4;
-  let $itemId = message.itemId;
-  if ($itemId !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, $itemId);
-  }
-
-  // optional int64 status = 5;
-  let $status = message.status;
-  if ($status !== undefined) {
-    writeVarint32(bb, 40);
-    writeVarint64(bb, $status);
-  }
-
-  // optional TempStateAreaReachMessage_Resource resource = 6;
-  let $resource = message.resource;
-  if ($resource !== undefined) {
-    writeVarint32(bb, 50);
-    let nested = popByteBuffer();
-    _encodeTempStateAreaReachMessage_Resource($resource, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeTempStateAreaReachMessage(binary: Uint8Array): TempStateAreaReachMessage {
-  return _decodeTempStateAreaReachMessage(wrapByteBuffer(binary));
-}
-
-function _decodeTempStateAreaReachMessage(bb: ByteBuffer): TempStateAreaReachMessage {
-  let message: TempStateAreaReachMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 elemType = 2;
-      case 2: {
-        message.elemType = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 elemId = 3;
-      case 3: {
-        message.elemId = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 itemId = 4;
-      case 4: {
-        message.itemId = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 status = 5;
-      case 5: {
-        message.status = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional TempStateAreaReachMessage_Resource resource = 6;
-      case 6: {
-        let limit = pushTemporaryLength(bb);
-        message.resource = _decodeTempStateAreaReachMessage_Resource(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface TempStateAreaReachMessage_Resource {
-  name?: string;
-  icon?: string;
-  description?: string;
-  extra?: string;
-}
-
-export function encodeTempStateAreaReachMessage_Resource(message: TempStateAreaReachMessage_Resource): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeTempStateAreaReachMessage_Resource(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeTempStateAreaReachMessage_Resource(message: TempStateAreaReachMessage_Resource, bb: ByteBuffer): void {
-  // optional string name = 1;
-  let $name = message.name;
-  if ($name !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $name);
-  }
-
-  // optional string icon = 2;
-  let $icon = message.icon;
-  if ($icon !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $icon);
-  }
-
-  // optional string description = 3;
-  let $description = message.description;
-  if ($description !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $description);
-  }
-
-  // optional string extra = 4;
-  let $extra = message.extra;
-  if ($extra !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $extra);
-  }
-}
-
-export function decodeTempStateAreaReachMessage_Resource(binary: Uint8Array): TempStateAreaReachMessage_Resource {
-  return _decodeTempStateAreaReachMessage_Resource(wrapByteBuffer(binary));
-}
-
-function _decodeTempStateAreaReachMessage_Resource(bb: ByteBuffer): TempStateAreaReachMessage_Resource {
-  let message: TempStateAreaReachMessage_Resource = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string name = 1;
-      case 1: {
-        message.name = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string icon = 2;
-      case 2: {
-        message.icon = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string description = 3;
-      case 3: {
-        message.description = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string extra = 4;
-      case 4: {
-        message.extra = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface CornerReachMessage {
-  common?: Common;
-  duration?: string;
-  elemType?: string;
-}
-
-export function encodeCornerReachMessage(message: CornerReachMessage): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeCornerReachMessage(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeCornerReachMessage(message: CornerReachMessage, bb: ByteBuffer): void {
-  // optional Common common = 1;
-  let $common = message.common;
-  if ($common !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeCommon($common, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int64 duration = 2;
-  let $duration = message.duration;
-  if ($duration !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, $duration);
-  }
-
-  // optional int64 elemType = 3;
-  let $elemType = message.elemType;
-  if ($elemType !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $elemType);
-  }
-}
-
-export function decodeCornerReachMessage(binary: Uint8Array): CornerReachMessage {
-  return _decodeCornerReachMessage(wrapByteBuffer(binary));
-}
-
-function _decodeCornerReachMessage(bb: ByteBuffer): CornerReachMessage {
-  let message: CornerReachMessage = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional Common common = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.common = _decodeCommon(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int64 duration = 2;
-      case 2: {
-        message.duration = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 elemType = 3;
-      case 3: {
-        message.elemType = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
+import { Long } from '../Long';
+import {
+  popByteBuffer, pushByteBuffer, wrapByteBuffer, toUint8Array,
+  writeVarint32, writeVarint64, writeString, writeBytes, writeByteBuffer, writeByte,
+  readVarint32, readVarint64, readString, readBytes, readByte, readFloat, readDouble,
+  writeFloat, writeDouble, longToString, stringToLong, intToLong,
+  pushTemporaryLength, skipUnknownField, isAtEnd,
+} from './shared';
+import type { ByteBuffer } from './shared';
 
 export interface Common {
   method?: string;
@@ -7961,7 +41,7 @@ export function encodeCommon(message: Common): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeCommon(message: Common, bb: ByteBuffer): void {
+export function _encodeCommon(message: Common, bb: ByteBuffer): void {
   // optional string method = 1;
   let $method = message.method;
   if ($method !== undefined) {
@@ -8147,7 +227,7 @@ export function decodeCommon(binary: Uint8Array): Common {
   return _decodeCommon(wrapByteBuffer(binary));
 }
 
-function _decodeCommon(bb: ByteBuffer): Common {
+export function _decodeCommon(bb: ByteBuffer): Common {
   let message: Common = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -8328,7 +408,7 @@ export function encodeDoubleLikeDetail(message: DoubleLikeDetail): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeDoubleLikeDetail(message: DoubleLikeDetail, bb: ByteBuffer): void {
+export function _encodeDoubleLikeDetail(message: DoubleLikeDetail, bb: ByteBuffer): void {
   // optional bool doubleFlag = 1;
   let $doubleFlag = message.doubleFlag;
   if ($doubleFlag !== undefined) {
@@ -8362,7 +442,7 @@ export function decodeDoubleLikeDetail(binary: Uint8Array): DoubleLikeDetail {
   return _decodeDoubleLikeDetail(wrapByteBuffer(binary));
 }
 
-function _decodeDoubleLikeDetail(bb: ByteBuffer): DoubleLikeDetail {
+export function _decodeDoubleLikeDetail(bb: ByteBuffer): DoubleLikeDetail {
   let message: DoubleLikeDetail = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -8415,7 +495,7 @@ export function encodeDisplayControlInfo(message: DisplayControlInfo): Uint8Arra
   return toUint8Array(bb);
 }
 
-function _encodeDisplayControlInfo(message: DisplayControlInfo, bb: ByteBuffer): void {
+export function _encodeDisplayControlInfo(message: DisplayControlInfo, bb: ByteBuffer): void {
   // optional bool showText = 1;
   let $showText = message.showText;
   if ($showText !== undefined) {
@@ -8435,7 +515,7 @@ export function decodeDisplayControlInfo(binary: Uint8Array): DisplayControlInfo
   return _decodeDisplayControlInfo(wrapByteBuffer(binary));
 }
 
-function _decodeDisplayControlInfo(bb: ByteBuffer): DisplayControlInfo {
+export function _decodeDisplayControlInfo(bb: ByteBuffer): DisplayControlInfo {
   let message: DisplayControlInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -8479,7 +559,7 @@ export function encodeLandscapeAreaCommon(message: LandscapeAreaCommon): Uint8Ar
   return toUint8Array(bb);
 }
 
-function _encodeLandscapeAreaCommon(message: LandscapeAreaCommon, bb: ByteBuffer): void {
+export function _encodeLandscapeAreaCommon(message: LandscapeAreaCommon, bb: ByteBuffer): void {
   // optional bool showHead = 1;
   let $showHead = message.showHead;
   if ($showHead !== undefined) {
@@ -8520,7 +600,7 @@ export function decodeLandscapeAreaCommon(binary: Uint8Array): LandscapeAreaComm
   return _decodeLandscapeAreaCommon(wrapByteBuffer(binary));
 }
 
-function _decodeLandscapeAreaCommon(bb: ByteBuffer): LandscapeAreaCommon {
+export function _decodeLandscapeAreaCommon(bb: ByteBuffer): LandscapeAreaCommon {
   let message: LandscapeAreaCommon = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -8581,7 +661,7 @@ export function encodePicoDisplayInfo(message: PicoDisplayInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodePicoDisplayInfo(message: PicoDisplayInfo, bb: ByteBuffer): void {
+export function _encodePicoDisplayInfo(message: PicoDisplayInfo, bb: ByteBuffer): void {
   // optional int64 comboSumCount = 1;
   let $comboSumCount = message.comboSumCount;
   if ($comboSumCount !== undefined) {
@@ -8619,7 +699,7 @@ export function decodePicoDisplayInfo(binary: Uint8Array): PicoDisplayInfo {
   return _decodePicoDisplayInfo(wrapByteBuffer(binary));
 }
 
-function _decodePicoDisplayInfo(bb: ByteBuffer): PicoDisplayInfo {
+export function _decodePicoDisplayInfo(bb: ByteBuffer): PicoDisplayInfo {
   let message: PicoDisplayInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -8675,7 +755,7 @@ export function encodeRoomHotInfo(message: RoomHotInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeRoomHotInfo(message: RoomHotInfo, bb: ByteBuffer): void {
+export function _encodeRoomHotInfo(message: RoomHotInfo, bb: ByteBuffer): void {
   // optional int32 localHotStrategy = 1;
   let $localHotStrategy = message.localHotStrategy;
   if ($localHotStrategy !== undefined) {
@@ -8702,7 +782,7 @@ export function decodeRoomHotInfo(binary: Uint8Array): RoomHotInfo {
   return _decodeRoomHotInfo(wrapByteBuffer(binary));
 }
 
-function _decodeRoomHotInfo(bb: ByteBuffer): RoomHotInfo {
+export function _decodeRoomHotInfo(bb: ByteBuffer): RoomHotInfo {
   let message: RoomHotInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -8748,7 +828,7 @@ export function encodeRoomMsgExtra(message: RoomMsgExtra): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeRoomMsgExtra(message: RoomMsgExtra, bb: ByteBuffer): void {
+export function _encodeRoomMsgExtra(message: RoomMsgExtra, bb: ByteBuffer): void {
   // optional RoomMsgGiftExtra giftExtra = 1;
   let $giftExtra = message.giftExtra;
   if ($giftExtra !== undefined) {
@@ -8765,7 +845,7 @@ export function decodeRoomMsgExtra(binary: Uint8Array): RoomMsgExtra {
   return _decodeRoomMsgExtra(wrapByteBuffer(binary));
 }
 
-function _decodeRoomMsgExtra(bb: ByteBuffer): RoomMsgExtra {
+export function _decodeRoomMsgExtra(bb: ByteBuffer): RoomMsgExtra {
   let message: RoomMsgExtra = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -8809,7 +889,7 @@ export function encodeRoomMsgGiftExtra(message: RoomMsgGiftExtra): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeRoomMsgGiftExtra(message: RoomMsgGiftExtra, bb: ByteBuffer): void {
+export function _encodeRoomMsgGiftExtra(message: RoomMsgGiftExtra, bb: ByteBuffer): void {
   // optional int64 giftId = 1;
   let $giftId = message.giftId;
   if ($giftId !== undefined) {
@@ -8886,7 +966,7 @@ export function decodeRoomMsgGiftExtra(binary: Uint8Array): RoomMsgGiftExtra {
   return _decodeRoomMsgGiftExtra(wrapByteBuffer(binary));
 }
 
-function _decodeRoomMsgGiftExtra(bb: ByteBuffer): RoomMsgGiftExtra {
+export function _decodeRoomMsgGiftExtra(bb: ByteBuffer): RoomMsgGiftExtra {
   let message: RoomMsgGiftExtra = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -8973,7 +1053,7 @@ export function encodeEffectImageInfo(message: EffectImageInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeEffectImageInfo(message: EffectImageInfo, bb: ByteBuffer): void {
+export function _encodeEffectImageInfo(message: EffectImageInfo, bb: ByteBuffer): void {
   // optional string placeholderKey = 1;
   let $placeholderKey = message.placeholderKey;
   if ($placeholderKey !== undefined) {
@@ -8997,7 +1077,7 @@ export function decodeEffectImageInfo(binary: Uint8Array): EffectImageInfo {
   return _decodeEffectImageInfo(wrapByteBuffer(binary));
 }
 
-function _decodeEffectImageInfo(bb: ByteBuffer): EffectImageInfo {
+export function _decodeEffectImageInfo(bb: ByteBuffer): EffectImageInfo {
   let message: EffectImageInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -9042,7 +1122,7 @@ export function encodeEffectTextInfo(message: EffectTextInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeEffectTextInfo(message: EffectTextInfo, bb: ByteBuffer): void {
+export function _encodeEffectTextInfo(message: EffectTextInfo, bb: ByteBuffer): void {
   // optional string placeholderKey = 1;
   let $placeholderKey = message.placeholderKey;
   if ($placeholderKey !== undefined) {
@@ -9076,7 +1156,7 @@ export function decodeEffectTextInfo(binary: Uint8Array): EffectTextInfo {
   return _decodeEffectTextInfo(wrapByteBuffer(binary));
 }
 
-function _decodeEffectTextInfo(bb: ByteBuffer): EffectTextInfo {
+export function _decodeEffectTextInfo(bb: ByteBuffer): EffectTextInfo {
   let message: EffectTextInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -9131,7 +1211,7 @@ export function encodeSandwichBorder(message: SandwichBorder): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeSandwichBorder(message: SandwichBorder, bb: ByteBuffer): void {
+export function _encodeSandwichBorder(message: SandwichBorder, bb: ByteBuffer): void {
   // optional double top = 1;
   let $top = message.top;
   if ($top !== undefined) {
@@ -9165,7 +1245,7 @@ export function decodeSandwichBorder(binary: Uint8Array): SandwichBorder {
   return _decodeSandwichBorder(wrapByteBuffer(binary));
 }
 
-function _decodeSandwichBorder(bb: ByteBuffer): SandwichBorder {
+export function _decodeSandwichBorder(bb: ByteBuffer): SandwichBorder {
   let message: SandwichBorder = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -9220,7 +1300,7 @@ export function encodeText(message: Text): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeText(message: Text, bb: ByteBuffer): void {
+export function _encodeText(message: Text, bb: ByteBuffer): void {
   // optional string key = 1;
   let $key = message.key;
   if ($key !== undefined) {
@@ -9264,7 +1344,7 @@ export function decodeText(binary: Uint8Array): Text {
   return _decodeText(wrapByteBuffer(binary));
 }
 
-function _decodeText(bb: ByteBuffer): Text {
+export function _decodeText(bb: ByteBuffer): Text {
   let message: Text = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -9367,7 +1447,7 @@ export function encodeRoom(message: Room): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeRoom(message: Room, bb: ByteBuffer): void {
+export function _encodeRoom(message: Room, bb: ByteBuffer): void {
   // optional int64 id = 1;
   let $id = message.id;
   if ($id !== undefined) {
@@ -9770,7 +1850,7 @@ export function decodeRoom(binary: Uint8Array): Room {
   return _decodeRoom(wrapByteBuffer(binary));
 }
 
-function _decodeRoom(bb: ByteBuffer): Room {
+export function _decodeRoom(bb: ByteBuffer): Room {
   let message: Room = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -10136,13 +2216,13 @@ export function encodeRoomExtra(message: RoomExtra): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeRoomExtra(message: RoomExtra, bb: ByteBuffer): void {}
+export function _encodeRoomExtra(message: RoomExtra, bb: ByteBuffer): void {}
 
 export function decodeRoomExtra(binary: Uint8Array): RoomExtra {
   return _decodeRoomExtra(wrapByteBuffer(binary));
 }
 
-function _decodeRoomExtra(bb: ByteBuffer): RoomExtra {
+export function _decodeRoomExtra(bb: ByteBuffer): RoomExtra {
   let message: RoomExtra = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -10189,7 +2269,7 @@ export function encodeRoomStats(message: RoomStats): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeRoomStats(message: RoomStats, bb: ByteBuffer): void {
+export function _encodeRoomStats(message: RoomStats, bb: ByteBuffer): void {
   // optional int64 id = 1;
   let $id = message.id;
   if ($id !== undefined) {
@@ -10339,7 +2419,7 @@ export function decodeRoomStats(binary: Uint8Array): RoomStats {
   return _decodeRoomStats(wrapByteBuffer(binary));
 }
 
-function _decodeRoomStats(bb: ByteBuffer): RoomStats {
+export function _decodeRoomStats(bb: ByteBuffer): RoomStats {
   let message: RoomStats = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -10487,13 +2567,13 @@ export function encodeRoomStats_UserCountComposition(message: RoomStats_UserCoun
   return toUint8Array(bb);
 }
 
-function _encodeRoomStats_UserCountComposition(message: RoomStats_UserCountComposition, bb: ByteBuffer): void {}
+export function _encodeRoomStats_UserCountComposition(message: RoomStats_UserCountComposition, bb: ByteBuffer): void {}
 
 export function decodeRoomStats_UserCountComposition(binary: Uint8Array): RoomStats_UserCountComposition {
   return _decodeRoomStats_UserCountComposition(wrapByteBuffer(binary));
 }
 
-function _decodeRoomStats_UserCountComposition(bb: ByteBuffer): RoomStats_UserCountComposition {
+export function _decodeRoomStats_UserCountComposition(bb: ByteBuffer): RoomStats_UserCountComposition {
   let message: RoomStats_UserCountComposition = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -10519,13 +2599,13 @@ export function encodeRoomUserAttr(message: RoomUserAttr): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeRoomUserAttr(message: RoomUserAttr, bb: ByteBuffer): void {}
+export function _encodeRoomUserAttr(message: RoomUserAttr, bb: ByteBuffer): void {}
 
 export function decodeRoomUserAttr(binary: Uint8Array): RoomUserAttr {
   return _decodeRoomUserAttr(wrapByteBuffer(binary));
 }
 
-function _decodeRoomUserAttr(bb: ByteBuffer): RoomUserAttr {
+export function _decodeRoomUserAttr(bb: ByteBuffer): RoomUserAttr {
   let message: RoomUserAttr = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -10556,7 +2636,7 @@ export function encodeRanklistHourEntrance(message: RanklistHourEntrance): Uint8
   return toUint8Array(bb);
 }
 
-function _encodeRanklistHourEntrance(message: RanklistHourEntrance, bb: ByteBuffer): void {
+export function _encodeRanklistHourEntrance(message: RanklistHourEntrance, bb: ByteBuffer): void {
   // repeated RanklistHourEntrance_Info globalInfos = 1;
   let array$globalInfos = message.globalInfos;
   if (array$globalInfos !== undefined) {
@@ -10614,7 +2694,7 @@ export function decodeRanklistHourEntrance(binary: Uint8Array): RanklistHourEntr
   return _decodeRanklistHourEntrance(wrapByteBuffer(binary));
 }
 
-function _decodeRanklistHourEntrance(bb: ByteBuffer): RanklistHourEntrance {
+export function _decodeRanklistHourEntrance(bb: ByteBuffer): RanklistHourEntrance {
   let message: RanklistHourEntrance = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -10678,7 +2758,7 @@ export function encodeRanklistHourEntrance_Info(message: RanklistHourEntrance_In
   return toUint8Array(bb);
 }
 
-function _encodeRanklistHourEntrance_Info(message: RanklistHourEntrance_Info, bb: ByteBuffer): void {
+export function _encodeRanklistHourEntrance_Info(message: RanklistHourEntrance_Info, bb: ByteBuffer): void {
   // repeated RanklistHourEntrance_Detail details = 1;
   let array$details = message.details;
   if (array$details !== undefined) {
@@ -10697,7 +2777,7 @@ export function decodeRanklistHourEntrance_Info(binary: Uint8Array): RanklistHou
   return _decodeRanklistHourEntrance_Info(wrapByteBuffer(binary));
 }
 
-function _decodeRanklistHourEntrance_Info(bb: ByteBuffer): RanklistHourEntrance_Info {
+export function _decodeRanklistHourEntrance_Info(bb: ByteBuffer): RanklistHourEntrance_Info {
   let message: RanklistHourEntrance_Info = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -10739,7 +2819,7 @@ export function encodeRanklistHourEntrance_Detail(message: RanklistHourEntrance_
   return toUint8Array(bb);
 }
 
-function _encodeRanklistHourEntrance_Detail(message: RanklistHourEntrance_Detail, bb: ByteBuffer): void {
+export function _encodeRanklistHourEntrance_Detail(message: RanklistHourEntrance_Detail, bb: ByteBuffer): void {
   // repeated RanklistHourEntrance_Page pages = 1;
   let array$pages = message.pages;
   if (array$pages !== undefined) {
@@ -10793,7 +2873,7 @@ export function decodeRanklistHourEntrance_Detail(binary: Uint8Array): RanklistH
   return _decodeRanklistHourEntrance_Detail(wrapByteBuffer(binary));
 }
 
-function _decodeRanklistHourEntrance_Detail(bb: ByteBuffer): RanklistHourEntrance_Detail {
+export function _decodeRanklistHourEntrance_Detail(bb: ByteBuffer): RanklistHourEntrance_Detail {
   let message: RanklistHourEntrance_Detail = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -10863,7 +2943,7 @@ export function encodeRanklistHourEntrance_Page(message: RanklistHourEntrance_Pa
   return toUint8Array(bb);
 }
 
-function _encodeRanklistHourEntrance_Page(message: RanklistHourEntrance_Page, bb: ByteBuffer): void {
+export function _encodeRanklistHourEntrance_Page(message: RanklistHourEntrance_Page, bb: ByteBuffer): void {
   // optional string content = 1;
   let $content = message.content;
   if ($content !== undefined) {
@@ -10897,7 +2977,7 @@ export function decodeRanklistHourEntrance_Page(binary: Uint8Array): RanklistHou
   return _decodeRanklistHourEntrance_Page(wrapByteBuffer(binary));
 }
 
-function _decodeRanklistHourEntrance_Page(bb: ByteBuffer): RanklistHourEntrance_Page {
+export function _decodeRanklistHourEntrance_Page(bb: ByteBuffer): RanklistHourEntrance_Page {
   let message: RanklistHourEntrance_Page = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -10947,13 +3027,13 @@ export function encodeStreamUrl(message: StreamUrl): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeStreamUrl(message: StreamUrl, bb: ByteBuffer): void {}
+export function _encodeStreamUrl(message: StreamUrl, bb: ByteBuffer): void {}
 
 export function decodeStreamUrl(binary: Uint8Array): StreamUrl {
   return _decodeStreamUrl(wrapByteBuffer(binary));
 }
 
-function _decodeStreamUrl(bb: ByteBuffer): StreamUrl {
+export function _decodeStreamUrl(bb: ByteBuffer): StreamUrl {
   let message: StreamUrl = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -10979,13 +3059,13 @@ export function encodeLinkMic(message: LinkMic): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeLinkMic(message: LinkMic, bb: ByteBuffer): void {}
+export function _encodeLinkMic(message: LinkMic, bb: ByteBuffer): void {}
 
 export function decodeLinkMic(binary: Uint8Array): LinkMic {
   return _decodeLinkMic(wrapByteBuffer(binary));
 }
 
-function _decodeLinkMic(bb: ByteBuffer): LinkMic {
+export function _decodeLinkMic(bb: ByteBuffer): LinkMic {
   let message: LinkMic = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -11011,13 +3091,13 @@ export function encodeDecoration(message: Decoration): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeDecoration(message: Decoration, bb: ByteBuffer): void {}
+export function _encodeDecoration(message: Decoration, bb: ByteBuffer): void {}
 
 export function decodeDecoration(binary: Uint8Array): Decoration {
   return _decodeDecoration(wrapByteBuffer(binary));
 }
 
-function _decodeDecoration(bb: ByteBuffer): Decoration {
+export function _decodeDecoration(bb: ByteBuffer): Decoration {
   let message: Decoration = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -11043,13 +3123,13 @@ export function encodeTopFan(message: TopFan): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeTopFan(message: TopFan, bb: ByteBuffer): void {}
+export function _encodeTopFan(message: TopFan, bb: ByteBuffer): void {}
 
 export function decodeTopFan(binary: Uint8Array): TopFan {
   return _decodeTopFan(wrapByteBuffer(binary));
 }
 
-function _decodeTopFan(bb: ByteBuffer): TopFan {
+export function _decodeTopFan(bb: ByteBuffer): TopFan {
   let message: TopFan = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -11159,7 +3239,7 @@ export function encodeUser(message: User): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser(message: User, bb: ByteBuffer): void {
+export function _encodeUser(message: User, bb: ByteBuffer): void {
   // optional int64 id = 1;
   let $id = message.id;
   if ($id !== undefined) {
@@ -11910,7 +3990,7 @@ export function decodeUser(binary: Uint8Array): User {
   return _decodeUser(wrapByteBuffer(binary));
 }
 
-function _decodeUser(bb: ByteBuffer): User {
+export function _decodeUser(bb: ByteBuffer): User {
   let message: User = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -12521,7 +4601,7 @@ export function encodeUser_UserAttr(message: User_UserAttr): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser_UserAttr(message: User_UserAttr, bb: ByteBuffer): void {
+export function _encodeUser_UserAttr(message: User_UserAttr, bb: ByteBuffer): void {
   // optional bool isMuted = 1;
   let $isMuted = message.isMuted;
   if ($isMuted !== undefined) {
@@ -12561,7 +4641,7 @@ export function decodeUser_UserAttr(binary: Uint8Array): User_UserAttr {
   return _decodeUser_UserAttr(wrapByteBuffer(binary));
 }
 
-function _decodeUser_UserAttr(bb: ByteBuffer): User_UserAttr {
+export function _decodeUser_UserAttr(bb: ByteBuffer): User_UserAttr {
   let message: User_UserAttr = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -12624,7 +4704,7 @@ export function encodeUser_OwnRoom(message: User_OwnRoom): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser_OwnRoom(message: User_OwnRoom, bb: ByteBuffer): void {
+export function _encodeUser_OwnRoom(message: User_OwnRoom, bb: ByteBuffer): void {
   // repeated int64 roomIds = 1;
   let array$roomIds = message.roomIds;
   if (array$roomIds !== undefined) {
@@ -12665,7 +4745,7 @@ export function decodeUser_OwnRoom(binary: Uint8Array): User_OwnRoom {
   return _decodeUser_OwnRoom(wrapByteBuffer(binary));
 }
 
-function _decodeUser_OwnRoom(bb: ByteBuffer): User_OwnRoom {
+export function _decodeUser_OwnRoom(bb: ByteBuffer): User_OwnRoom {
   let message: User_OwnRoom = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -12730,7 +4810,7 @@ export function encodeUser_AnchorInfo(message: User_AnchorInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser_AnchorInfo(message: User_AnchorInfo, bb: ByteBuffer): void {
+export function _encodeUser_AnchorInfo(message: User_AnchorInfo, bb: ByteBuffer): void {
   // optional int64 level = 1;
   let $level = message.level;
   if ($level !== undefined) {
@@ -12743,7 +4823,7 @@ export function decodeUser_AnchorInfo(binary: Uint8Array): User_AnchorInfo {
   return _decodeUser_AnchorInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUser_AnchorInfo(bb: ByteBuffer): User_AnchorInfo {
+export function _decodeUser_AnchorInfo(bb: ByteBuffer): User_AnchorInfo {
   let message: User_AnchorInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -12781,7 +4861,7 @@ export function encodeUser_FollowInfo(message: User_FollowInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser_FollowInfo(message: User_FollowInfo, bb: ByteBuffer): void {
+export function _encodeUser_FollowInfo(message: User_FollowInfo, bb: ByteBuffer): void {
   // optional int64 followingCount = 1;
   let $followingCount = message.followingCount;
   if ($followingCount !== undefined) {
@@ -12822,7 +4902,7 @@ export function decodeUser_FollowInfo(binary: Uint8Array): User_FollowInfo {
   return _decodeUser_FollowInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUser_FollowInfo(bb: ByteBuffer): User_FollowInfo {
+export function _decodeUser_FollowInfo(bb: ByteBuffer): User_FollowInfo {
   let message: User_FollowInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -12881,7 +4961,7 @@ export function encodeUser_FansClub(message: User_FansClub): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser_FansClub(message: User_FansClub, bb: ByteBuffer): void {
+export function _encodeUser_FansClub(message: User_FansClub, bb: ByteBuffer): void {
   // optional User_FansClub_FansClubData data = 1;
   let $data = message.data;
   if ($data !== undefined) {
@@ -12919,7 +4999,7 @@ export function decodeUser_FansClub(binary: Uint8Array): User_FansClub {
   return _decodeUser_FansClub(wrapByteBuffer(binary));
 }
 
-function _decodeUser_FansClub(bb: ByteBuffer): User_FansClub {
+export function _decodeUser_FansClub(bb: ByteBuffer): User_FansClub {
   let message: User_FansClub = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -12991,7 +5071,7 @@ export function encodeUser_FansClub_FansClubData(message: User_FansClub_FansClub
   return toUint8Array(bb);
 }
 
-function _encodeUser_FansClub_FansClubData(message: User_FansClub_FansClubData, bb: ByteBuffer): void {
+export function _encodeUser_FansClub_FansClubData(message: User_FansClub_FansClubData, bb: ByteBuffer): void {
   // optional string clubName = 1;
   let $clubName = message.clubName;
   if ($clubName !== undefined) {
@@ -13049,7 +5129,7 @@ export function decodeUser_FansClub_FansClubData(binary: Uint8Array): User_FansC
   return _decodeUser_FansClub_FansClubData(wrapByteBuffer(binary));
 }
 
-function _decodeUser_FansClub_FansClubData(bb: ByteBuffer): User_FansClub_FansClubData {
+export function _decodeUser_FansClub_FansClubData(bb: ByteBuffer): User_FansClub_FansClubData {
   let message: User_FansClub_FansClubData = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -13125,7 +5205,7 @@ export function encodeUser_FansClub_FansClubData_UserBadge(message: User_FansClu
   return toUint8Array(bb);
 }
 
-function _encodeUser_FansClub_FansClubData_UserBadge(
+export function _encodeUser_FansClub_FansClubData_UserBadge(
   message: User_FansClub_FansClubData_UserBadge,
   bb: ByteBuffer
 ): void {
@@ -13162,7 +5242,7 @@ export function decodeUser_FansClub_FansClubData_UserBadge(binary: Uint8Array): 
   return _decodeUser_FansClub_FansClubData_UserBadge(wrapByteBuffer(binary));
 }
 
-function _decodeUser_FansClub_FansClubData_UserBadge(bb: ByteBuffer): User_FansClub_FansClubData_UserBadge {
+export function _decodeUser_FansClub_FansClubData_UserBadge(bb: ByteBuffer): User_FansClub_FansClubData_UserBadge {
   let message: User_FansClub_FansClubData_UserBadge = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -13230,7 +5310,7 @@ export function encodeUser_Border(message: User_Border): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser_Border(message: User_Border, bb: ByteBuffer): void {
+export function _encodeUser_Border(message: User_Border, bb: ByteBuffer): void {
   // optional Image icon = 1;
   let $icon = message.icon;
   if ($icon !== undefined) {
@@ -13272,7 +5352,7 @@ export function decodeUser_Border(binary: Uint8Array): User_Border {
   return _decodeUser_Border(wrapByteBuffer(binary));
 }
 
-function _decodeUser_Border(bb: ByteBuffer): User_Border {
+export function _decodeUser_Border(bb: ByteBuffer): User_Border {
   let message: User_Border = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -13332,7 +5412,7 @@ export function encodeUser_GradeBuffInfo(message: User_GradeBuffInfo): Uint8Arra
   return toUint8Array(bb);
 }
 
-function _encodeUser_GradeBuffInfo(message: User_GradeBuffInfo, bb: ByteBuffer): void {
+export function _encodeUser_GradeBuffInfo(message: User_GradeBuffInfo, bb: ByteBuffer): void {
   // optional int64 buffLevel = 1;
   let $buffLevel = message.buffLevel;
   if ($buffLevel !== undefined) {
@@ -13387,7 +5467,7 @@ export function decodeUser_GradeBuffInfo(binary: Uint8Array): User_GradeBuffInfo
   return _decodeUser_GradeBuffInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUser_GradeBuffInfo(bb: ByteBuffer): User_GradeBuffInfo {
+export function _decodeUser_GradeBuffInfo(bb: ByteBuffer): User_GradeBuffInfo {
   let message: User_GradeBuffInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -13498,7 +5578,7 @@ export function encodeUser_PayGrade(message: User_PayGrade): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser_PayGrade(message: User_PayGrade, bb: ByteBuffer): void {
+export function _encodeUser_PayGrade(message: User_PayGrade, bb: ByteBuffer): void {
   // optional int64 totalDiamondCount = 1;
   let $totalDiamondCount = message.totalDiamondCount;
   if ($totalDiamondCount !== undefined) {
@@ -13765,7 +5845,7 @@ export function decodeUser_PayGrade(binary: Uint8Array): User_PayGrade {
   return _decodeUser_PayGrade(wrapByteBuffer(binary));
 }
 
-function _decodeUser_PayGrade(bb: ByteBuffer): User_PayGrade {
+export function _decodeUser_PayGrade(bb: ByteBuffer): User_PayGrade {
   let message: User_PayGrade = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -13999,7 +6079,7 @@ export function encodeUser_PayGrade_GradeIcon(message: User_PayGrade_GradeIcon):
   return toUint8Array(bb);
 }
 
-function _encodeUser_PayGrade_GradeIcon(message: User_PayGrade_GradeIcon, bb: ByteBuffer): void {
+export function _encodeUser_PayGrade_GradeIcon(message: User_PayGrade_GradeIcon, bb: ByteBuffer): void {
   // optional Image icon = 1;
   let $icon = message.icon;
   if ($icon !== undefined) {
@@ -14037,7 +6117,7 @@ export function decodeUser_PayGrade_GradeIcon(binary: Uint8Array): User_PayGrade
   return _decodeUser_PayGrade_GradeIcon(wrapByteBuffer(binary));
 }
 
-function _decodeUser_PayGrade_GradeIcon(bb: ByteBuffer): User_PayGrade_GradeIcon {
+export function _decodeUser_PayGrade_GradeIcon(bb: ByteBuffer): User_PayGrade_GradeIcon {
   let message: User_PayGrade_GradeIcon = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14103,7 +6183,7 @@ export function encodeUser_AnchorLevel(message: User_AnchorLevel): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser_AnchorLevel(message: User_AnchorLevel, bb: ByteBuffer): void {
+export function _encodeUser_AnchorLevel(message: User_AnchorLevel, bb: ByteBuffer): void {
   // optional int64 level = 1;
   let $level = message.level;
   if ($level !== undefined) {
@@ -14216,7 +6296,7 @@ export function decodeUser_AnchorLevel(binary: Uint8Array): User_AnchorLevel {
   return _decodeUser_AnchorLevel(wrapByteBuffer(binary));
 }
 
-function _decodeUser_AnchorLevel(bb: ByteBuffer): User_AnchorLevel {
+export function _decodeUser_AnchorLevel(bb: ByteBuffer): User_AnchorLevel {
   let message: User_AnchorLevel = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14335,7 +6415,7 @@ export function encodeUser_AuthorStats(message: User_AuthorStats): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser_AuthorStats(message: User_AuthorStats, bb: ByteBuffer): void {
+export function _encodeUser_AuthorStats(message: User_AuthorStats, bb: ByteBuffer): void {
   // optional int64 videoTotalCount = 1;
   let $videoTotalCount = message.videoTotalCount;
   if ($videoTotalCount !== undefined) {
@@ -14383,7 +6463,7 @@ export function decodeUser_AuthorStats(binary: Uint8Array): User_AuthorStats {
   return _decodeUser_AuthorStats(wrapByteBuffer(binary));
 }
 
-function _decodeUser_AuthorStats(bb: ByteBuffer): User_AuthorStats {
+export function _decodeUser_AuthorStats(bb: ByteBuffer): User_AuthorStats {
   let message: User_AuthorStats = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14445,13 +6525,13 @@ export function encodeUser_XiguaParams(message: User_XiguaParams): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser_XiguaParams(message: User_XiguaParams, bb: ByteBuffer): void {}
+export function _encodeUser_XiguaParams(message: User_XiguaParams, bb: ByteBuffer): void {}
 
 export function decodeUser_XiguaParams(binary: Uint8Array): User_XiguaParams {
   return _decodeUser_XiguaParams(wrapByteBuffer(binary));
 }
 
-function _decodeUser_XiguaParams(bb: ByteBuffer): User_XiguaParams {
+export function _decodeUser_XiguaParams(bb: ByteBuffer): User_XiguaParams {
   let message: User_XiguaParams = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14477,13 +6557,13 @@ export function encodeUser_ActivityInfo(message: User_ActivityInfo): Uint8Array 
   return toUint8Array(bb);
 }
 
-function _encodeUser_ActivityInfo(message: User_ActivityInfo, bb: ByteBuffer): void {}
+export function _encodeUser_ActivityInfo(message: User_ActivityInfo, bb: ByteBuffer): void {}
 
 export function decodeUser_ActivityInfo(binary: Uint8Array): User_ActivityInfo {
   return _decodeUser_ActivityInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUser_ActivityInfo(bb: ByteBuffer): User_ActivityInfo {
+export function _decodeUser_ActivityInfo(bb: ByteBuffer): User_ActivityInfo {
   let message: User_ActivityInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14519,7 +6599,7 @@ export function encodeUser_NobleLevelInfo(message: User_NobleLevelInfo): Uint8Ar
   return toUint8Array(bb);
 }
 
-function _encodeUser_NobleLevelInfo(message: User_NobleLevelInfo, bb: ByteBuffer): void {
+export function _encodeUser_NobleLevelInfo(message: User_NobleLevelInfo, bb: ByteBuffer): void {
   // optional Image nobleBackground = 1;
   let $nobleBackground = message.nobleBackground;
   if ($nobleBackground !== undefined) {
@@ -14608,7 +6688,7 @@ export function decodeUser_NobleLevelInfo(binary: Uint8Array): User_NobleLevelIn
   return _decodeUser_NobleLevelInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUser_NobleLevelInfo(bb: ByteBuffer): User_NobleLevelInfo {
+export function _decodeUser_NobleLevelInfo(bb: ByteBuffer): User_NobleLevelInfo {
   let message: User_NobleLevelInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14698,13 +6778,13 @@ export function encodeUser_BrotherhoodInfo(message: User_BrotherhoodInfo): Uint8
   return toUint8Array(bb);
 }
 
-function _encodeUser_BrotherhoodInfo(message: User_BrotherhoodInfo, bb: ByteBuffer): void {}
+export function _encodeUser_BrotherhoodInfo(message: User_BrotherhoodInfo, bb: ByteBuffer): void {}
 
 export function decodeUser_BrotherhoodInfo(binary: Uint8Array): User_BrotherhoodInfo {
   return _decodeUser_BrotherhoodInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUser_BrotherhoodInfo(bb: ByteBuffer): User_BrotherhoodInfo {
+export function _decodeUser_BrotherhoodInfo(bb: ByteBuffer): User_BrotherhoodInfo {
   let message: User_BrotherhoodInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14730,13 +6810,13 @@ export function encodeUser_AuthenticationInfo(message: User_AuthenticationInfo):
   return toUint8Array(bb);
 }
 
-function _encodeUser_AuthenticationInfo(message: User_AuthenticationInfo, bb: ByteBuffer): void {}
+export function _encodeUser_AuthenticationInfo(message: User_AuthenticationInfo, bb: ByteBuffer): void {}
 
 export function decodeUser_AuthenticationInfo(binary: Uint8Array): User_AuthenticationInfo {
   return _decodeUser_AuthenticationInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUser_AuthenticationInfo(bb: ByteBuffer): User_AuthenticationInfo {
+export function _decodeUser_AuthenticationInfo(bb: ByteBuffer): User_AuthenticationInfo {
   let message: User_AuthenticationInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14762,13 +6842,13 @@ export function encodeUser_PoiInfo(message: User_PoiInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser_PoiInfo(message: User_PoiInfo, bb: ByteBuffer): void {}
+export function _encodeUser_PoiInfo(message: User_PoiInfo, bb: ByteBuffer): void {}
 
 export function decodeUser_PoiInfo(binary: Uint8Array): User_PoiInfo {
   return _decodeUser_PoiInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUser_PoiInfo(bb: ByteBuffer): User_PoiInfo {
+export function _decodeUser_PoiInfo(bb: ByteBuffer): User_PoiInfo {
   let message: User_PoiInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14794,13 +6874,13 @@ export function encodeUser_FansGroupInfo(message: User_FansGroupInfo): Uint8Arra
   return toUint8Array(bb);
 }
 
-function _encodeUser_FansGroupInfo(message: User_FansGroupInfo, bb: ByteBuffer): void {}
+export function _encodeUser_FansGroupInfo(message: User_FansGroupInfo, bb: ByteBuffer): void {}
 
 export function decodeUser_FansGroupInfo(binary: Uint8Array): User_FansGroupInfo {
   return _decodeUser_FansGroupInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUser_FansGroupInfo(bb: ByteBuffer): User_FansGroupInfo {
+export function _decodeUser_FansGroupInfo(bb: ByteBuffer): User_FansGroupInfo {
   let message: User_FansGroupInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14826,13 +6906,13 @@ export function encodeUser_JAccreditInfo(message: User_JAccreditInfo): Uint8Arra
   return toUint8Array(bb);
 }
 
-function _encodeUser_JAccreditInfo(message: User_JAccreditInfo, bb: ByteBuffer): void {}
+export function _encodeUser_JAccreditInfo(message: User_JAccreditInfo, bb: ByteBuffer): void {}
 
 export function decodeUser_JAccreditInfo(binary: Uint8Array): User_JAccreditInfo {
   return _decodeUser_JAccreditInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUser_JAccreditInfo(bb: ByteBuffer): User_JAccreditInfo {
+export function _decodeUser_JAccreditInfo(bb: ByteBuffer): User_JAccreditInfo {
   let message: User_JAccreditInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14858,13 +6938,13 @@ export function encodeUser_Subscribe(message: User_Subscribe): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser_Subscribe(message: User_Subscribe, bb: ByteBuffer): void {}
+export function _encodeUser_Subscribe(message: User_Subscribe, bb: ByteBuffer): void {}
 
 export function decodeUser_Subscribe(binary: Uint8Array): User_Subscribe {
   return _decodeUser_Subscribe(wrapByteBuffer(binary));
 }
 
-function _decodeUser_Subscribe(bb: ByteBuffer): User_Subscribe {
+export function _decodeUser_Subscribe(bb: ByteBuffer): User_Subscribe {
   let message: User_Subscribe = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14890,13 +6970,13 @@ export function encodeUser_ProfileStyleParams(message: User_ProfileStyleParams):
   return toUint8Array(bb);
 }
 
-function _encodeUser_ProfileStyleParams(message: User_ProfileStyleParams, bb: ByteBuffer): void {}
+export function _encodeUser_ProfileStyleParams(message: User_ProfileStyleParams, bb: ByteBuffer): void {}
 
 export function decodeUser_ProfileStyleParams(binary: Uint8Array): User_ProfileStyleParams {
   return _decodeUser_ProfileStyleParams(wrapByteBuffer(binary));
 }
 
-function _decodeUser_ProfileStyleParams(bb: ByteBuffer): User_ProfileStyleParams {
+export function _decodeUser_ProfileStyleParams(bb: ByteBuffer): User_ProfileStyleParams {
   let message: User_ProfileStyleParams = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14922,13 +7002,13 @@ export function encodeUser_UserDressInfo(message: User_UserDressInfo): Uint8Arra
   return toUint8Array(bb);
 }
 
-function _encodeUser_UserDressInfo(message: User_UserDressInfo, bb: ByteBuffer): void {}
+export function _encodeUser_UserDressInfo(message: User_UserDressInfo, bb: ByteBuffer): void {}
 
 export function decodeUser_UserDressInfo(binary: Uint8Array): User_UserDressInfo {
   return _decodeUser_UserDressInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUser_UserDressInfo(bb: ByteBuffer): User_UserDressInfo {
+export function _decodeUser_UserDressInfo(bb: ByteBuffer): User_UserDressInfo {
   let message: User_UserDressInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14954,13 +7034,13 @@ export function encodeUser_BizRelation(message: User_BizRelation): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser_BizRelation(message: User_BizRelation, bb: ByteBuffer): void {}
+export function _encodeUser_BizRelation(message: User_BizRelation, bb: ByteBuffer): void {}
 
 export function decodeUser_BizRelation(binary: Uint8Array): User_BizRelation {
   return _decodeUser_BizRelation(wrapByteBuffer(binary));
 }
 
-function _decodeUser_BizRelation(bb: ByteBuffer): User_BizRelation {
+export function _decodeUser_BizRelation(bb: ByteBuffer): User_BizRelation {
   let message: User_BizRelation = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -14986,13 +7066,13 @@ export function encodeUser_PublicAreaBadgeInfo(message: User_PublicAreaBadgeInfo
   return toUint8Array(bb);
 }
 
-function _encodeUser_PublicAreaBadgeInfo(message: User_PublicAreaBadgeInfo, bb: ByteBuffer): void {}
+export function _encodeUser_PublicAreaBadgeInfo(message: User_PublicAreaBadgeInfo, bb: ByteBuffer): void {}
 
 export function decodeUser_PublicAreaBadgeInfo(binary: Uint8Array): User_PublicAreaBadgeInfo {
   return _decodeUser_PublicAreaBadgeInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUser_PublicAreaBadgeInfo(bb: ByteBuffer): User_PublicAreaBadgeInfo {
+export function _decodeUser_PublicAreaBadgeInfo(bb: ByteBuffer): User_PublicAreaBadgeInfo {
   let message: User_PublicAreaBadgeInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -15018,13 +7098,13 @@ export function encodeUser_ExtraInfo(message: User_ExtraInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUser_ExtraInfo(message: User_ExtraInfo, bb: ByteBuffer): void {}
+export function _encodeUser_ExtraInfo(message: User_ExtraInfo, bb: ByteBuffer): void {}
 
 export function decodeUser_ExtraInfo(binary: Uint8Array): User_ExtraInfo {
   return _decodeUser_ExtraInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUser_ExtraInfo(bb: ByteBuffer): User_ExtraInfo {
+export function _decodeUser_ExtraInfo(bb: ByteBuffer): User_ExtraInfo {
   let message: User_ExtraInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -15050,13 +7130,13 @@ export function encodeUser_UserSettingInfo(message: User_UserSettingInfo): Uint8
   return toUint8Array(bb);
 }
 
-function _encodeUser_UserSettingInfo(message: User_UserSettingInfo, bb: ByteBuffer): void {}
+export function _encodeUser_UserSettingInfo(message: User_UserSettingInfo, bb: ByteBuffer): void {}
 
 export function decodeUser_UserSettingInfo(binary: Uint8Array): User_UserSettingInfo {
   return _decodeUser_UserSettingInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUser_UserSettingInfo(bb: ByteBuffer): User_UserSettingInfo {
+export function _decodeUser_UserSettingInfo(bb: ByteBuffer): User_UserSettingInfo {
   let message: User_UserSettingInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -15082,13 +7162,13 @@ export function encodeUser_UserPermissionGrant(message: User_UserPermissionGrant
   return toUint8Array(bb);
 }
 
-function _encodeUser_UserPermissionGrant(message: User_UserPermissionGrant, bb: ByteBuffer): void {}
+export function _encodeUser_UserPermissionGrant(message: User_UserPermissionGrant, bb: ByteBuffer): void {}
 
 export function decodeUser_UserPermissionGrant(binary: Uint8Array): User_UserPermissionGrant {
   return _decodeUser_UserPermissionGrant(wrapByteBuffer(binary));
 }
 
-function _decodeUser_UserPermissionGrant(bb: ByteBuffer): User_UserPermissionGrant {
+export function _decodeUser_UserPermissionGrant(bb: ByteBuffer): User_UserPermissionGrant {
   let message: User_UserPermissionGrant = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -15123,7 +7203,7 @@ export function encodeTextFormat(message: TextFormat): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeTextFormat(message: TextFormat, bb: ByteBuffer): void {
+export function _encodeTextFormat(message: TextFormat, bb: ByteBuffer): void {
   // optional string color = 1;
   let $color = message.color;
   if ($color !== undefined) {
@@ -15185,7 +7265,7 @@ export function decodeTextFormat(binary: Uint8Array): TextFormat {
   return _decodeTextFormat(wrapByteBuffer(binary));
 }
 
-function _decodeTextFormat(bb: ByteBuffer): TextFormat {
+export function _decodeTextFormat(bb: ByteBuffer): TextFormat {
   let message: TextFormat = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -15270,7 +7350,7 @@ export function encodeTextPiece(message: TextPiece): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeTextPiece(message: TextPiece, bb: ByteBuffer): void {
+export function _encodeTextPiece(message: TextPiece, bb: ByteBuffer): void {
   // optional int32 type = 1;
   let $type = message.type;
   if ($type !== undefined) {
@@ -15370,7 +7450,7 @@ export function decodeTextPiece(binary: Uint8Array): TextPiece {
   return _decodeTextPiece(wrapByteBuffer(binary));
 }
 
-function _decodeTextPiece(bb: ByteBuffer): TextPiece {
+export function _decodeTextPiece(bb: ByteBuffer): TextPiece {
   let message: TextPiece = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -15471,7 +7551,7 @@ export function encodeTextPieceGift(message: TextPieceGift): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeTextPieceGift(message: TextPieceGift, bb: ByteBuffer): void {
+export function _encodeTextPieceGift(message: TextPieceGift, bb: ByteBuffer): void {
   // optional int64 giftId = 1;
   let $giftId = message.giftId;
   if ($giftId !== undefined) {
@@ -15495,7 +7575,7 @@ export function decodeTextPieceGift(binary: Uint8Array): TextPieceGift {
   return _decodeTextPieceGift(wrapByteBuffer(binary));
 }
 
-function _decodeTextPieceGift(bb: ByteBuffer): TextPieceGift {
+export function _decodeTextPieceGift(bb: ByteBuffer): TextPieceGift {
   let message: TextPieceGift = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -15537,7 +7617,7 @@ export function encodeTextPieceHeart(message: TextPieceHeart): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeTextPieceHeart(message: TextPieceHeart, bb: ByteBuffer): void {
+export function _encodeTextPieceHeart(message: TextPieceHeart, bb: ByteBuffer): void {
   // optional string color = 1;
   let $color = message.color;
   if ($color !== undefined) {
@@ -15550,7 +7630,7 @@ export function decodeTextPieceHeart(binary: Uint8Array): TextPieceHeart {
   return _decodeTextPieceHeart(wrapByteBuffer(binary));
 }
 
-function _decodeTextPieceHeart(bb: ByteBuffer): TextPieceHeart {
+export function _decodeTextPieceHeart(bb: ByteBuffer): TextPieceHeart {
   let message: TextPieceHeart = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -15585,7 +7665,7 @@ export function encodeTextPiecePatternRef(message: TextPiecePatternRef): Uint8Ar
   return toUint8Array(bb);
 }
 
-function _encodeTextPiecePatternRef(message: TextPiecePatternRef, bb: ByteBuffer): void {
+export function _encodeTextPiecePatternRef(message: TextPiecePatternRef, bb: ByteBuffer): void {
   // optional string key = 1;
   let $key = message.key;
   if ($key !== undefined) {
@@ -15605,7 +7685,7 @@ export function decodeTextPiecePatternRef(binary: Uint8Array): TextPiecePatternR
   return _decodeTextPiecePatternRef(wrapByteBuffer(binary));
 }
 
-function _decodeTextPiecePatternRef(bb: ByteBuffer): TextPiecePatternRef {
+export function _decodeTextPiecePatternRef(bb: ByteBuffer): TextPiecePatternRef {
   let message: TextPiecePatternRef = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -15646,7 +7726,7 @@ export function encodeTextPieceImage(message: TextPieceImage): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeTextPieceImage(message: TextPieceImage, bb: ByteBuffer): void {
+export function _encodeTextPieceImage(message: TextPieceImage, bb: ByteBuffer): void {
   // optional Image image = 1;
   let $image = message.image;
   if ($image !== undefined) {
@@ -15670,7 +7750,7 @@ export function decodeTextPieceImage(binary: Uint8Array): TextPieceImage {
   return _decodeTextPieceImage(wrapByteBuffer(binary));
 }
 
-function _decodeTextPieceImage(bb: ByteBuffer): TextPieceImage {
+export function _decodeTextPieceImage(bb: ByteBuffer): TextPieceImage {
   let message: TextPieceImage = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -15713,7 +7793,7 @@ export function encodePatternRef(message: PatternRef): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodePatternRef(message: PatternRef, bb: ByteBuffer): void {
+export function _encodePatternRef(message: PatternRef, bb: ByteBuffer): void {
   // optional string key = 1;
   let $key = message.key;
   if ($key !== undefined) {
@@ -15733,7 +7813,7 @@ export function decodePatternRef(binary: Uint8Array): PatternRef {
   return _decodePatternRef(wrapByteBuffer(binary));
 }
 
-function _decodePatternRef(bb: ByteBuffer): PatternRef {
+export function _decodePatternRef(bb: ByteBuffer): PatternRef {
   let message: PatternRef = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -15781,7 +7861,7 @@ export function encodeImage(message: Image): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeImage(message: Image, bb: ByteBuffer): void {
+export function _encodeImage(message: Image, bb: ByteBuffer): void {
   // repeated string urlList = 1;
   let array$urlList = message.urlList;
   if (array$urlList !== undefined) {
@@ -15856,7 +7936,7 @@ export function decodeImage(binary: Uint8Array): Image {
   return _decodeImage(wrapByteBuffer(binary));
 }
 
-function _decodeImage(bb: ByteBuffer): Image {
+export function _decodeImage(bb: ByteBuffer): Image {
   let message: Image = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -15944,7 +8024,7 @@ export function encodeImage_Content(message: Image_Content): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeImage_Content(message: Image_Content, bb: ByteBuffer): void {
+export function _encodeImage_Content(message: Image_Content, bb: ByteBuffer): void {
   // optional string name = 1;
   let $name = message.name;
   if ($name !== undefined) {
@@ -15978,7 +8058,7 @@ export function decodeImage_Content(binary: Uint8Array): Image_Content {
   return _decodeImage_Content(wrapByteBuffer(binary));
 }
 
-function _decodeImage_Content(bb: ByteBuffer): Image_Content {
+export function _decodeImage_Content(bb: ByteBuffer): Image_Content {
   let message: Image_Content = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -16028,13 +8108,13 @@ export function encodeUserVIPInfo(message: UserVIPInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeUserVIPInfo(message: UserVIPInfo, bb: ByteBuffer): void {}
+export function _encodeUserVIPInfo(message: UserVIPInfo, bb: ByteBuffer): void {}
 
 export function decodeUserVIPInfo(binary: Uint8Array): UserVIPInfo {
   return _decodeUserVIPInfo(wrapByteBuffer(binary));
 }
 
-function _decodeUserVIPInfo(bb: ByteBuffer): UserVIPInfo {
+export function _decodeUserVIPInfo(bb: ByteBuffer): UserVIPInfo {
   let message: UserVIPInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -16060,13 +8140,13 @@ export function encodeIndustryCertification(message: IndustryCertification): Uin
   return toUint8Array(bb);
 }
 
-function _encodeIndustryCertification(message: IndustryCertification, bb: ByteBuffer): void {}
+export function _encodeIndustryCertification(message: IndustryCertification, bb: ByteBuffer): void {}
 
 export function decodeIndustryCertification(binary: Uint8Array): IndustryCertification {
   return _decodeIndustryCertification(wrapByteBuffer(binary));
 }
 
-function _decodeIndustryCertification(bb: ByteBuffer): IndustryCertification {
+export function _decodeIndustryCertification(bb: ByteBuffer): IndustryCertification {
   let message: IndustryCertification = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -16092,13 +8172,13 @@ export function encodeMemberEntranceInfo(message: MemberEntranceInfo): Uint8Arra
   return toUint8Array(bb);
 }
 
-function _encodeMemberEntranceInfo(message: MemberEntranceInfo, bb: ByteBuffer): void {}
+export function _encodeMemberEntranceInfo(message: MemberEntranceInfo, bb: ByteBuffer): void {}
 
 export function decodeMemberEntranceInfo(binary: Uint8Array): MemberEntranceInfo {
   return _decodeMemberEntranceInfo(wrapByteBuffer(binary));
 }
 
-function _decodeMemberEntranceInfo(bb: ByteBuffer): MemberEntranceInfo {
+export function _decodeMemberEntranceInfo(bb: ByteBuffer): MemberEntranceInfo {
   let message: MemberEntranceInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -16127,7 +8207,7 @@ export function encodeTextPieceUser(message: TextPieceUser): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeTextPieceUser(message: TextPieceUser, bb: ByteBuffer): void {
+export function _encodeTextPieceUser(message: TextPieceUser, bb: ByteBuffer): void {
   // optional User user = 1;
   let $user = message.user;
   if ($user !== undefined) {
@@ -16151,7 +8231,7 @@ export function decodeTextPieceUser(binary: Uint8Array): TextPieceUser {
   return _decodeTextPieceUser(wrapByteBuffer(binary));
 }
 
-function _decodeTextPieceUser(bb: ByteBuffer): TextPieceUser {
+export function _decodeTextPieceUser(bb: ByteBuffer): TextPieceUser {
   let message: TextPieceUser = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -16203,7 +8283,7 @@ export function encodePublicAreaCommon(message: PublicAreaCommon): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodePublicAreaCommon(message: PublicAreaCommon, bb: ByteBuffer): void {
+export function _encodePublicAreaCommon(message: PublicAreaCommon, bb: ByteBuffer): void {
   // optional Image userLabel = 1;
   let $userLabel = message.userLabel;
   if ($userLabel !== undefined) {
@@ -16298,7 +8378,7 @@ export function decodePublicAreaCommon(binary: Uint8Array): PublicAreaCommon {
   return _decodePublicAreaCommon(wrapByteBuffer(binary));
 }
 
-function _decodePublicAreaCommon(bb: ByteBuffer): PublicAreaCommon {
+export function _decodePublicAreaCommon(bb: ByteBuffer): PublicAreaCommon {
   let message: PublicAreaCommon = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -16398,7 +8478,7 @@ export function encodeAnchorGiftData(message: AnchorGiftData): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeAnchorGiftData(message: AnchorGiftData, bb: ByteBuffer): void {
+export function _encodeAnchorGiftData(message: AnchorGiftData, bb: ByteBuffer): void {
   // optional Image anchorDiyOriginImg = 1;
   let $anchorDiyOriginImg = message.anchorDiyOriginImg;
   if ($anchorDiyOriginImg !== undefined) {
@@ -16415,7 +8495,7 @@ export function decodeAnchorGiftData(binary: Uint8Array): AnchorGiftData {
   return _decodeAnchorGiftData(wrapByteBuffer(binary));
 }
 
-function _decodeAnchorGiftData(bb: ByteBuffer): AnchorGiftData {
+export function _decodeAnchorGiftData(bb: ByteBuffer): AnchorGiftData {
   let message: AnchorGiftData = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -16457,7 +8537,7 @@ export function encodeActivityEmojiGroup(message: ActivityEmojiGroup): Uint8Arra
   return toUint8Array(bb);
 }
 
-function _encodeActivityEmojiGroup(message: ActivityEmojiGroup, bb: ByteBuffer): void {
+export function _encodeActivityEmojiGroup(message: ActivityEmojiGroup, bb: ByteBuffer): void {
   // optional int64 id = 1;
   let $id = message.id;
   if ($id !== undefined) {
@@ -16522,7 +8602,7 @@ export function decodeActivityEmojiGroup(binary: Uint8Array): ActivityEmojiGroup
   return _decodeActivityEmojiGroup(wrapByteBuffer(binary));
 }
 
-function _decodeActivityEmojiGroup(bb: ByteBuffer): ActivityEmojiGroup {
+export function _decodeActivityEmojiGroup(bb: ByteBuffer): ActivityEmojiGroup {
   let message: ActivityEmojiGroup = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -16600,7 +8680,7 @@ export function encodeActivityEmoji(message: ActivityEmoji): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeActivityEmoji(message: ActivityEmoji, bb: ByteBuffer): void {
+export function _encodeActivityEmoji(message: ActivityEmoji, bb: ByteBuffer): void {
   // optional int64 id = 1;
   let $id = message.id;
   if ($id !== undefined) {
@@ -16638,7 +8718,7 @@ export function decodeActivityEmoji(binary: Uint8Array): ActivityEmoji {
   return _decodeActivityEmoji(wrapByteBuffer(binary));
 }
 
-function _decodeActivityEmoji(bb: ByteBuffer): ActivityEmoji {
+export function _decodeActivityEmoji(bb: ByteBuffer): ActivityEmoji {
   let message: ActivityEmoji = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -16690,13 +8770,13 @@ export function encodeAssetEffectMixInfo(message: AssetEffectMixInfo): Uint8Arra
   return toUint8Array(bb);
 }
 
-function _encodeAssetEffectMixInfo(message: AssetEffectMixInfo, bb: ByteBuffer): void {}
+export function _encodeAssetEffectMixInfo(message: AssetEffectMixInfo, bb: ByteBuffer): void {}
 
 export function decodeAssetEffectMixInfo(binary: Uint8Array): AssetEffectMixInfo {
   return _decodeAssetEffectMixInfo(wrapByteBuffer(binary));
 }
 
-function _decodeAssetEffectMixInfo(bb: ByteBuffer): AssetEffectMixInfo {
+export function _decodeAssetEffectMixInfo(bb: ByteBuffer): AssetEffectMixInfo {
   let message: AssetEffectMixInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -16727,7 +8807,7 @@ export function encodeBuffLockInfo(message: BuffLockInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeBuffLockInfo(message: BuffLockInfo, bb: ByteBuffer): void {
+export function _encodeBuffLockInfo(message: BuffLockInfo, bb: ByteBuffer): void {
   // optional bool locked = 1;
   let $locked = message.locked;
   if ($locked !== undefined) {
@@ -16761,7 +8841,7 @@ export function decodeBuffLockInfo(binary: Uint8Array): BuffLockInfo {
   return _decodeBuffLockInfo(wrapByteBuffer(binary));
 }
 
-function _decodeBuffLockInfo(bb: ByteBuffer): BuffLockInfo {
+export function _decodeBuffLockInfo(bb: ByteBuffer): BuffLockInfo {
   let message: BuffLockInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -16817,7 +8897,7 @@ export function encodeChatReplyRespInfo(message: ChatReplyRespInfo): Uint8Array 
   return toUint8Array(bb);
 }
 
-function _encodeChatReplyRespInfo(message: ChatReplyRespInfo, bb: ByteBuffer): void {
+export function _encodeChatReplyRespInfo(message: ChatReplyRespInfo, bb: ByteBuffer): void {
   // optional int64 replyMsgId = 1;
   let $replyMsgId = message.replyMsgId;
   if ($replyMsgId !== undefined) {
@@ -16862,7 +8942,7 @@ export function decodeChatReplyRespInfo(binary: Uint8Array): ChatReplyRespInfo {
   return _decodeChatReplyRespInfo(wrapByteBuffer(binary));
 }
 
-function _decodeChatReplyRespInfo(bb: ByteBuffer): ChatReplyRespInfo {
+export function _decodeChatReplyRespInfo(bb: ByteBuffer): ChatReplyRespInfo {
   let message: ChatReplyRespInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -16924,7 +9004,7 @@ export function encodeEffectiveActivityEmojiGroup(message: EffectiveActivityEmoj
   return toUint8Array(bb);
 }
 
-function _encodeEffectiveActivityEmojiGroup(message: EffectiveActivityEmojiGroup, bb: ByteBuffer): void {
+export function _encodeEffectiveActivityEmojiGroup(message: EffectiveActivityEmojiGroup, bb: ByteBuffer): void {
   // optional ActivityEmojiGroup emojiGroup = 1;
   let $emojiGroup = message.emojiGroup;
   if ($emojiGroup !== undefined) {
@@ -16955,7 +9035,7 @@ export function decodeEffectiveActivityEmojiGroup(binary: Uint8Array): Effective
   return _decodeEffectiveActivityEmojiGroup(wrapByteBuffer(binary));
 }
 
-function _decodeEffectiveActivityEmojiGroup(bb: ByteBuffer): EffectiveActivityEmojiGroup {
+export function _decodeEffectiveActivityEmojiGroup(bb: ByteBuffer): EffectiveActivityEmojiGroup {
   let message: EffectiveActivityEmojiGroup = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -17004,7 +9084,7 @@ export function encodeEffectMixImageInfo(message: EffectMixImageInfo): Uint8Arra
   return toUint8Array(bb);
 }
 
-function _encodeEffectMixImageInfo(message: EffectMixImageInfo, bb: ByteBuffer): void {
+export function _encodeEffectMixImageInfo(message: EffectMixImageInfo, bb: ByteBuffer): void {
   // optional string imageKey = 1;
   let $imageKey = message.imageKey;
   if ($imageKey !== undefined) {
@@ -17028,7 +9108,7 @@ export function decodeEffectMixImageInfo(binary: Uint8Array): EffectMixImageInfo
   return _decodeEffectMixImageInfo(wrapByteBuffer(binary));
 }
 
-function _decodeEffectMixImageInfo(bb: ByteBuffer): EffectMixImageInfo {
+export function _decodeEffectMixImageInfo(bb: ByteBuffer): EffectMixImageInfo {
   let message: EffectMixImageInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -17071,7 +9151,7 @@ export function encodeExtraEffect(message: ExtraEffect): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeExtraEffect(message: ExtraEffect, bb: ByteBuffer): void {
+export function _encodeExtraEffect(message: ExtraEffect, bb: ByteBuffer): void {
   // optional int64 assetId = 1;
   let $assetId = message.assetId;
   if ($assetId !== undefined) {
@@ -17091,7 +9171,7 @@ export function decodeExtraEffect(binary: Uint8Array): ExtraEffect {
   return _decodeExtraEffect(wrapByteBuffer(binary));
 }
 
-function _decodeExtraEffect(bb: ByteBuffer): ExtraEffect {
+export function _decodeExtraEffect(bb: ByteBuffer): ExtraEffect {
   let message: ExtraEffect = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -17133,7 +9213,7 @@ export function encodeEmojiInteractResource(message: EmojiInteractResource): Uin
   return toUint8Array(bb);
 }
 
-function _encodeEmojiInteractResource(message: EmojiInteractResource, bb: ByteBuffer): void {
+export function _encodeEmojiInteractResource(message: EmojiInteractResource, bb: ByteBuffer): void {
   // optional SendInteractEmojiConfig fromImage = 1;
   let $fromImage = message.fromImage;
   if ($fromImage !== undefined) {
@@ -17172,7 +9252,7 @@ export function decodeEmojiInteractResource(binary: Uint8Array): EmojiInteractRe
   return _decodeEmojiInteractResource(wrapByteBuffer(binary));
 }
 
-function _decodeEmojiInteractResource(bb: ByteBuffer): EmojiInteractResource {
+export function _decodeEmojiInteractResource(bb: ByteBuffer): EmojiInteractResource {
   let message: EmojiInteractResource = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -17226,7 +9306,7 @@ export function encodeGiftIMPriority(message: GiftIMPriority): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeGiftIMPriority(message: GiftIMPriority, bb: ByteBuffer): void {
+export function _encodeGiftIMPriority(message: GiftIMPriority, bb: ByteBuffer): void {
   // repeated int64 queueSizes = 1;
   let array$queueSizes = message.queueSizes;
   if (array$queueSizes !== undefined) {
@@ -17259,7 +9339,7 @@ export function decodeGiftIMPriority(binary: Uint8Array): GiftIMPriority {
   return _decodeGiftIMPriority(wrapByteBuffer(binary));
 }
 
-function _decodeGiftIMPriority(bb: ByteBuffer): GiftIMPriority {
+export function _decodeGiftIMPriority(bb: ByteBuffer): GiftIMPriority {
   let message: GiftIMPriority = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -17319,7 +9399,7 @@ export function encodeGiftTrayInfo(message: GiftTrayInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeGiftTrayInfo(message: GiftTrayInfo, bb: ByteBuffer): void {
+export function _encodeGiftTrayInfo(message: GiftTrayInfo, bb: ByteBuffer): void {
   // optional Text trayDisplayText = 1;
   let $trayDisplayText = message.trayDisplayText;
   if ($trayDisplayText !== undefined) {
@@ -17387,7 +9467,7 @@ export function decodeGiftTrayInfo(binary: Uint8Array): GiftTrayInfo {
   return _decodeGiftTrayInfo(wrapByteBuffer(binary));
 }
 
-function _decodeGiftTrayInfo(bb: ByteBuffer): GiftTrayInfo {
+export function _decodeGiftTrayInfo(bb: ByteBuffer): GiftTrayInfo {
   let message: GiftTrayInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -17540,7 +9620,7 @@ export function encodeGiftStruct(message: GiftStruct): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeGiftStruct(message: GiftStruct, bb: ByteBuffer): void {
+export function _encodeGiftStruct(message: GiftStruct, bb: ByteBuffer): void {
   // optional Image image = 1;
   let $image = message.image;
   if ($image !== undefined) {
@@ -18230,7 +10310,7 @@ export function decodeGiftStruct(binary: Uint8Array): GiftStruct {
   return _decodeGiftStruct(wrapByteBuffer(binary));
 }
 
-function _decodeGiftStruct(bb: ByteBuffer): GiftStruct {
+export function _decodeGiftStruct(bb: ByteBuffer): GiftStruct {
   let message: GiftStruct = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -18837,7 +10917,7 @@ export function encodeGiftStruct_GiftStructFansClubInfo(message: GiftStruct_Gift
   return toUint8Array(bb);
 }
 
-function _encodeGiftStruct_GiftStructFansClubInfo(message: GiftStruct_GiftStructFansClubInfo, bb: ByteBuffer): void {
+export function _encodeGiftStruct_GiftStructFansClubInfo(message: GiftStruct_GiftStructFansClubInfo, bb: ByteBuffer): void {
   // optional int32 minLevel = 1;
   let $minLevel = message.minLevel;
   if ($minLevel !== undefined) {
@@ -18857,7 +10937,7 @@ export function decodeGiftStruct_GiftStructFansClubInfo(binary: Uint8Array): Gif
   return _decodeGiftStruct_GiftStructFansClubInfo(wrapByteBuffer(binary));
 }
 
-function _decodeGiftStruct_GiftStructFansClubInfo(bb: ByteBuffer): GiftStruct_GiftStructFansClubInfo {
+export function _decodeGiftStruct_GiftStructFansClubInfo(bb: ByteBuffer): GiftStruct_GiftStructFansClubInfo {
   let message: GiftStruct_GiftStructFansClubInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -18898,7 +10978,7 @@ export function encodeGiftStruct_GiftMsgBoard(message: GiftStruct_GiftMsgBoard):
   return toUint8Array(bb);
 }
 
-function _encodeGiftStruct_GiftMsgBoard(message: GiftStruct_GiftMsgBoard, bb: ByteBuffer): void {
+export function _encodeGiftStruct_GiftMsgBoard(message: GiftStruct_GiftMsgBoard, bb: ByteBuffer): void {
   // optional bool forMsgBoard = 1;
   let $forMsgBoard = message.forMsgBoard;
   if ($forMsgBoard !== undefined) {
@@ -18918,7 +10998,7 @@ export function decodeGiftStruct_GiftMsgBoard(binary: Uint8Array): GiftStruct_Gi
   return _decodeGiftStruct_GiftMsgBoard(wrapByteBuffer(binary));
 }
 
-function _decodeGiftStruct_GiftMsgBoard(bb: ByteBuffer): GiftStruct_GiftMsgBoard {
+export function _decodeGiftStruct_GiftMsgBoard(bb: ByteBuffer): GiftStruct_GiftMsgBoard {
   let message: GiftStruct_GiftMsgBoard = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -18959,7 +11039,7 @@ export function encodeGiftTouchLabel(message: GiftTouchLabel): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeGiftTouchLabel(message: GiftTouchLabel, bb: ByteBuffer): void {
+export function _encodeGiftTouchLabel(message: GiftTouchLabel, bb: ByteBuffer): void {
   // optional Image icon = 1;
   let $icon = message.icon;
   if ($icon !== undefined) {
@@ -18983,7 +11063,7 @@ export function decodeGiftTouchLabel(binary: Uint8Array): GiftTouchLabel {
   return _decodeGiftTouchLabel(wrapByteBuffer(binary));
 }
 
-function _decodeGiftTouchLabel(bb: ByteBuffer): GiftTouchLabel {
+export function _decodeGiftTouchLabel(bb: ByteBuffer): GiftTouchLabel {
   let message: GiftTouchLabel = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -19025,7 +11105,7 @@ export function encodeGiftUnselectedBottomInfo(message: GiftUnselectedBottomInfo
   return toUint8Array(bb);
 }
 
-function _encodeGiftUnselectedBottomInfo(message: GiftUnselectedBottomInfo, bb: ByteBuffer): void {
+export function _encodeGiftUnselectedBottomInfo(message: GiftUnselectedBottomInfo, bb: ByteBuffer): void {
   // optional string text = 1;
   let $text = message.text;
   if ($text !== undefined) {
@@ -19038,7 +11118,7 @@ export function decodeGiftUnselectedBottomInfo(binary: Uint8Array): GiftUnselect
   return _decodeGiftUnselectedBottomInfo(wrapByteBuffer(binary));
 }
 
-function _decodeGiftUnselectedBottomInfo(bb: ByteBuffer): GiftUnselectedBottomInfo {
+export function _decodeGiftUnselectedBottomInfo(bb: ByteBuffer): GiftUnselectedBottomInfo {
   let message: GiftUnselectedBottomInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -19076,7 +11156,7 @@ export function encodeGiftConfirmInfo(message: GiftConfirmInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeGiftConfirmInfo(message: GiftConfirmInfo, bb: ByteBuffer): void {
+export function _encodeGiftConfirmInfo(message: GiftConfirmInfo, bb: ByteBuffer): void {
   // optional string title = 1;
   let $title = message.title;
   if ($title !== undefined) {
@@ -19117,7 +11197,7 @@ export function decodeGiftConfirmInfo(binary: Uint8Array): GiftConfirmInfo {
   return _decodeGiftConfirmInfo(wrapByteBuffer(binary));
 }
 
-function _decodeGiftConfirmInfo(bb: ByteBuffer): GiftConfirmInfo {
+export function _decodeGiftConfirmInfo(bb: ByteBuffer): GiftConfirmInfo {
   let message: GiftConfirmInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -19179,7 +11259,7 @@ export function encodeGiftPreviewInfo(message: GiftPreviewInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeGiftPreviewInfo(message: GiftPreviewInfo, bb: ByteBuffer): void {
+export function _encodeGiftPreviewInfo(message: GiftPreviewInfo, bb: ByteBuffer): void {
   // optional int64 lockStatus = 1;
   let $lockStatus = message.lockStatus;
   if ($lockStatus !== undefined) {
@@ -19220,7 +11300,7 @@ export function decodeGiftPreviewInfo(binary: Uint8Array): GiftPreviewInfo {
   return _decodeGiftPreviewInfo(wrapByteBuffer(binary));
 }
 
-function _decodeGiftPreviewInfo(bb: ByteBuffer): GiftPreviewInfo {
+export function _decodeGiftPreviewInfo(bb: ByteBuffer): GiftPreviewInfo {
   let message: GiftPreviewInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -19283,7 +11363,7 @@ export function encodeGiftTip(message: GiftTip): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeGiftTip(message: GiftTip, bb: ByteBuffer): void {
+export function _encodeGiftTip(message: GiftTip, bb: ByteBuffer): void {
   // optional Text displayText = 1;
   let $displayText = message.displayText;
   if ($displayText !== undefined) {
@@ -19343,7 +11423,7 @@ export function decodeGiftTip(binary: Uint8Array): GiftTip {
   return _decodeGiftTip(wrapByteBuffer(binary));
 }
 
-function _decodeGiftTip(bb: ByteBuffer): GiftTip {
+export function _decodeGiftTip(bb: ByteBuffer): GiftTip {
   let message: GiftTip = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -19414,7 +11494,7 @@ export function encodeGiftGroupInfo(message: GiftGroupInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeGiftGroupInfo(message: GiftGroupInfo, bb: ByteBuffer): void {
+export function _encodeGiftGroupInfo(message: GiftGroupInfo, bb: ByteBuffer): void {
   // optional int32 groupCount = 1;
   let $groupCount = message.groupCount;
   if ($groupCount !== undefined) {
@@ -19434,7 +11514,7 @@ export function decodeGiftGroupInfo(binary: Uint8Array): GiftGroupInfo {
   return _decodeGiftGroupInfo(wrapByteBuffer(binary));
 }
 
-function _decodeGiftGroupInfo(bb: ByteBuffer): GiftGroupInfo {
+export function _decodeGiftGroupInfo(bb: ByteBuffer): GiftGroupInfo {
   let message: GiftGroupInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -19482,7 +11562,7 @@ export function encodeGiftSortStrategy(message: GiftSortStrategy): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeGiftSortStrategy(message: GiftSortStrategy, bb: ByteBuffer): void {
+export function _encodeGiftSortStrategy(message: GiftSortStrategy, bb: ByteBuffer): void {
   // optional string scene = 1;
   let $scene = message.scene;
   if ($scene !== undefined) {
@@ -19551,7 +11631,7 @@ export function decodeGiftSortStrategy(binary: Uint8Array): GiftSortStrategy {
   return _decodeGiftSortStrategy(wrapByteBuffer(binary));
 }
 
-function _decodeGiftSortStrategy(bb: ByteBuffer): GiftSortStrategy {
+export function _decodeGiftSortStrategy(bb: ByteBuffer): GiftSortStrategy {
   let message: GiftSortStrategy = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -19631,13 +11711,13 @@ export function encodeGiftPanelOperation(message: GiftPanelOperation): Uint8Arra
   return toUint8Array(bb);
 }
 
-function _encodeGiftPanelOperation(message: GiftPanelOperation, bb: ByteBuffer): void {}
+export function _encodeGiftPanelOperation(message: GiftPanelOperation, bb: ByteBuffer): void {}
 
 export function decodeGiftPanelOperation(binary: Uint8Array): GiftPanelOperation {
   return _decodeGiftPanelOperation(wrapByteBuffer(binary));
 }
 
-function _decodeGiftPanelOperation(bb: ByteBuffer): GiftPanelOperation {
+export function _decodeGiftPanelOperation(bb: ByteBuffer): GiftPanelOperation {
   let message: GiftPanelOperation = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -19672,7 +11752,7 @@ export function encodeGiftBanner(message: GiftBanner): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeGiftBanner(message: GiftBanner, bb: ByteBuffer): void {
+export function _encodeGiftBanner(message: GiftBanner, bb: ByteBuffer): void {
   // optional Text displayText = 1;
   let $displayText = message.displayText;
   if ($displayText !== undefined) {
@@ -19746,7 +11826,7 @@ export function decodeGiftBanner(binary: Uint8Array): GiftBanner {
   return _decodeGiftBanner(wrapByteBuffer(binary));
 }
 
-function _decodeGiftBanner(bb: ByteBuffer): GiftBanner {
+export function _decodeGiftBanner(bb: ByteBuffer): GiftBanner {
   let message: GiftBanner = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -19841,7 +11921,7 @@ export function encodeGiftBuffInfo(message: GiftBuffInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeGiftBuffInfo(message: GiftBuffInfo, bb: ByteBuffer): void {
+export function _encodeGiftBuffInfo(message: GiftBuffInfo, bb: ByteBuffer): void {
   // optional string text = 1;
   let $text = message.text;
   if ($text !== undefined) {
@@ -19965,7 +12045,7 @@ export function decodeGiftBuffInfo(binary: Uint8Array): GiftBuffInfo {
   return _decodeGiftBuffInfo(wrapByteBuffer(binary));
 }
 
-function _decodeGiftBuffInfo(bb: ByteBuffer): GiftBuffInfo {
+export function _decodeGiftBuffInfo(bb: ByteBuffer): GiftBuffInfo {
   let message: GiftBuffInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -20085,13 +12165,13 @@ export function encodeGoodsBizItem(message: GoodsBizItem): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeGoodsBizItem(message: GoodsBizItem, bb: ByteBuffer): void {}
+export function _encodeGoodsBizItem(message: GoodsBizItem, bb: ByteBuffer): void {}
 
 export function decodeGoodsBizItem(binary: Uint8Array): GoodsBizItem {
   return _decodeGoodsBizItem(wrapByteBuffer(binary));
 }
 
-function _decodeGoodsBizItem(bb: ByteBuffer): GoodsBizItem {
+export function _decodeGoodsBizItem(bb: ByteBuffer): GoodsBizItem {
   let message: GoodsBizItem = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -20123,7 +12203,7 @@ export function encodeLuckyMoneyGiftMeta(message: LuckyMoneyGiftMeta): Uint8Arra
   return toUint8Array(bb);
 }
 
-function _encodeLuckyMoneyGiftMeta(message: LuckyMoneyGiftMeta, bb: ByteBuffer): void {
+export function _encodeLuckyMoneyGiftMeta(message: LuckyMoneyGiftMeta, bb: ByteBuffer): void {
   // optional Image image = 1;
   let $image = message.image;
   if ($image !== undefined) {
@@ -20172,7 +12252,7 @@ export function decodeLuckyMoneyGiftMeta(binary: Uint8Array): LuckyMoneyGiftMeta
   return _decodeLuckyMoneyGiftMeta(wrapByteBuffer(binary));
 }
 
-function _decodeLuckyMoneyGiftMeta(bb: ByteBuffer): LuckyMoneyGiftMeta {
+export function _decodeLuckyMoneyGiftMeta(bb: ByteBuffer): LuckyMoneyGiftMeta {
   let message: LuckyMoneyGiftMeta = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -20236,7 +12316,7 @@ export function encodeSendTogether(message: SendTogether): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeSendTogether(message: SendTogether, bb: ByteBuffer): void {
+export function _encodeSendTogether(message: SendTogether, bb: ByteBuffer): void {
   // optional string id = 1;
   let $id = message.id;
   if ($id !== undefined) {
@@ -20263,7 +12343,7 @@ export function decodeSendTogether(binary: Uint8Array): SendTogether {
   return _decodeSendTogether(wrapByteBuffer(binary));
 }
 
-function _decodeSendTogether(bb: ByteBuffer): SendTogether {
+export function _decodeSendTogether(bb: ByteBuffer): SendTogether {
   let message: SendTogether = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -20314,7 +12394,7 @@ export function encodeSeriesPlayGift(message: SeriesPlayGift): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeSeriesPlayGift(message: SeriesPlayGift, bb: ByteBuffer): void {
+export function _encodeSeriesPlayGift(message: SeriesPlayGift, bb: ByteBuffer): void {
   // optional GiftStruct giftStruct = 1;
   let $giftStruct = message.giftStruct;
   if ($giftStruct !== undefined) {
@@ -20382,7 +12462,7 @@ export function decodeSeriesPlayGift(binary: Uint8Array): SeriesPlayGift {
   return _decodeSeriesPlayGift(wrapByteBuffer(binary));
 }
 
-function _decodeSeriesPlayGift(bb: ByteBuffer): SeriesPlayGift {
+export function _decodeSeriesPlayGift(bb: ByteBuffer): SeriesPlayGift {
   let message: SeriesPlayGift = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -20458,7 +12538,7 @@ export function encodeSeriesTrayInfo(message: SeriesTrayInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeSeriesTrayInfo(message: SeriesTrayInfo, bb: ByteBuffer): void {
+export function _encodeSeriesTrayInfo(message: SeriesTrayInfo, bb: ByteBuffer): void {
   // optional int64 duration = 1;
   let $duration = message.duration;
   if ($duration !== undefined) {
@@ -20493,7 +12573,7 @@ export function decodeSeriesTrayInfo(binary: Uint8Array): SeriesTrayInfo {
   return _decodeSeriesTrayInfo(wrapByteBuffer(binary));
 }
 
-function _decodeSeriesTrayInfo(bb: ByteBuffer): SeriesTrayInfo {
+export function _decodeSeriesTrayInfo(bb: ByteBuffer): SeriesTrayInfo {
   let message: SeriesTrayInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -20544,7 +12624,7 @@ export function encodeSuffixText(message: SuffixText): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeSuffixText(message: SuffixText, bb: ByteBuffer): void {
+export function _encodeSuffixText(message: SuffixText, bb: ByteBuffer): void {
   // optional int64 bizType = 1;
   let $bizType = message.bizType;
   if ($bizType !== undefined) {
@@ -20568,7 +12648,7 @@ export function decodeSuffixText(binary: Uint8Array): SuffixText {
   return _decodeSuffixText(wrapByteBuffer(binary));
 }
 
-function _decodeSuffixText(bb: ByteBuffer): SuffixText {
+export function _decodeSuffixText(bb: ByteBuffer): SuffixText {
   let message: SuffixText = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -20619,7 +12699,7 @@ export function encodeSendInteractEmojiConfig(message: SendInteractEmojiConfig):
   return toUint8Array(bb);
 }
 
-function _encodeSendInteractEmojiConfig(message: SendInteractEmojiConfig, bb: ByteBuffer): void {
+export function _encodeSendInteractEmojiConfig(message: SendInteractEmojiConfig, bb: ByteBuffer): void {
   // optional Image interactEmoji = 1;
   let $interactEmoji = message.interactEmoji;
   if ($interactEmoji !== undefined) {
@@ -20703,7 +12783,7 @@ export function decodeSendInteractEmojiConfig(binary: Uint8Array): SendInteractE
   return _decodeSendInteractEmojiConfig(wrapByteBuffer(binary));
 }
 
-function _decodeSendInteractEmojiConfig(bb: ByteBuffer): SendInteractEmojiConfig {
+export function _decodeSendInteractEmojiConfig(bb: ByteBuffer): SendInteractEmojiConfig {
   let message: SendInteractEmojiConfig = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -20802,7 +12882,7 @@ export function encodeRoomIntroLabel(message: RoomIntroLabel): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeRoomIntroLabel(message: RoomIntroLabel, bb: ByteBuffer): void {
+export function _encodeRoomIntroLabel(message: RoomIntroLabel, bb: ByteBuffer): void {
   // optional int32 labelTag = 1;
   let $labelTag = message.labelTag;
   if ($labelTag !== undefined) {
@@ -20864,7 +12944,7 @@ export function decodeRoomIntroLabel(binary: Uint8Array): RoomIntroLabel {
   return _decodeRoomIntroLabel(wrapByteBuffer(binary));
 }
 
-function _decodeRoomIntroLabel(bb: ByteBuffer): RoomIntroLabel {
+export function _decodeRoomIntroLabel(bb: ByteBuffer): RoomIntroLabel {
   let message: RoomIntroLabel = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -20947,7 +13027,7 @@ export function encodeRoomIntroAppointmentInfo(message: RoomIntroAppointmentInfo
   return toUint8Array(bb);
 }
 
-function _encodeRoomIntroAppointmentInfo(message: RoomIntroAppointmentInfo, bb: ByteBuffer): void {
+export function _encodeRoomIntroAppointmentInfo(message: RoomIntroAppointmentInfo, bb: ByteBuffer): void {
   // optional bool enabled = 1;
   let $enabled = message.enabled;
   if ($enabled !== undefined) {
@@ -21015,7 +13095,7 @@ export function decodeRoomIntroAppointmentInfo(binary: Uint8Array): RoomIntroApp
   return _decodeRoomIntroAppointmentInfo(wrapByteBuffer(binary));
 }
 
-function _decodeRoomIntroAppointmentInfo(bb: ByteBuffer): RoomIntroAppointmentInfo {
+export function _decodeRoomIntroAppointmentInfo(bb: ByteBuffer): RoomIntroAppointmentInfo {
   let message: RoomIntroAppointmentInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -21102,7 +13182,7 @@ export function encodeCombinedText(message: CombinedText): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeCombinedText(message: CombinedText, bb: ByteBuffer): void {
+export function _encodeCombinedText(message: CombinedText, bb: ByteBuffer): void {
   // repeated DisplayItem displayItems = 1;
   let array$displayItems = message.displayItems;
   if (array$displayItems !== undefined) {
@@ -21143,7 +13223,7 @@ export function decodeCombinedText(binary: Uint8Array): CombinedText {
   return _decodeCombinedText(wrapByteBuffer(binary));
 }
 
-function _decodeCombinedText(bb: ByteBuffer): CombinedText {
+export function _decodeCombinedText(bb: ByteBuffer): CombinedText {
   let message: CombinedText = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -21196,7 +13276,7 @@ export function encodeSchemaInfo(message: SchemaInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeSchemaInfo(message: SchemaInfo, bb: ByteBuffer): void {
+export function _encodeSchemaInfo(message: SchemaInfo, bb: ByteBuffer): void {
   // optional string schemaUrl = 1;
   let $schemaUrl = message.schemaUrl;
   if ($schemaUrl !== undefined) {
@@ -21209,7 +13289,7 @@ export function decodeSchemaInfo(binary: Uint8Array): SchemaInfo {
   return _decodeSchemaInfo(wrapByteBuffer(binary));
 }
 
-function _decodeSchemaInfo(bb: ByteBuffer): SchemaInfo {
+export function _decodeSchemaInfo(bb: ByteBuffer): SchemaInfo {
   let message: SchemaInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -21244,7 +13324,7 @@ export function encodeComboInfo(message: ComboInfo): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeComboInfo(message: ComboInfo, bb: ByteBuffer): void {
+export function _encodeComboInfo(message: ComboInfo, bb: ByteBuffer): void {
   // optional int64 comboSeq = 1;
   let $comboSeq = message.comboSeq;
   if ($comboSeq !== undefined) {
@@ -21264,7 +13344,7 @@ export function decodeComboInfo(binary: Uint8Array): ComboInfo {
   return _decodeComboInfo(wrapByteBuffer(binary));
 }
 
-function _decodeComboInfo(bb: ByteBuffer): ComboInfo {
+export function _decodeComboInfo(bb: ByteBuffer): ComboInfo {
   let message: ComboInfo = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -21309,7 +13389,7 @@ export function encodeDisplayItem(message: DisplayItem): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeDisplayItem(message: DisplayItem, bb: ByteBuffer): void {
+export function _encodeDisplayItem(message: DisplayItem, bb: ByteBuffer): void {
   // optional int32 displayItemType = 1;
   let $displayItemType = message.displayItemType;
   if ($displayItemType !== undefined) {
@@ -21373,7 +13453,7 @@ export function decodeDisplayItem(binary: Uint8Array): DisplayItem {
   return _decodeDisplayItem(wrapByteBuffer(binary));
 }
 
-function _decodeDisplayItem(bb: ByteBuffer): DisplayItem {
+export function _decodeDisplayItem(bb: ByteBuffer): DisplayItem {
   let message: DisplayItem = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -21446,7 +13526,7 @@ export function encodeImagesItem(message: ImagesItem): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeImagesItem(message: ImagesItem, bb: ByteBuffer): void {
+export function _encodeImagesItem(message: ImagesItem, bb: ByteBuffer): void {
   // repeated Image images = 1;
   let array$images = message.images;
   if (array$images !== undefined) {
@@ -21472,7 +13552,7 @@ export function decodeImagesItem(binary: Uint8Array): ImagesItem {
   return _decodeImagesItem(wrapByteBuffer(binary));
 }
 
-function _decodeImagesItem(bb: ByteBuffer): ImagesItem {
+export function _decodeImagesItem(bb: ByteBuffer): ImagesItem {
   let message: ImagesItem = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -21515,7 +13595,7 @@ export function encodeTextItem(message: TextItem): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeTextItem(message: TextItem, bb: ByteBuffer): void {
+export function _encodeTextItem(message: TextItem, bb: ByteBuffer): void {
   // optional Text text = 1;
   let $text = message.text;
   if ($text !== undefined) {
@@ -21532,7 +13612,7 @@ export function decodeTextItem(binary: Uint8Array): TextItem {
   return _decodeTextItem(wrapByteBuffer(binary));
 }
 
-function _decodeTextItem(bb: ByteBuffer): TextItem {
+export function _decodeTextItem(bb: ByteBuffer): TextItem {
   let message: TextItem = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -21569,7 +13649,7 @@ export function encodeDisplayItemFormat(message: DisplayItemFormat): Uint8Array 
   return toUint8Array(bb);
 }
 
-function _encodeDisplayItemFormat(message: DisplayItemFormat, bb: ByteBuffer): void {
+export function _encodeDisplayItemFormat(message: DisplayItemFormat, bb: ByteBuffer): void {
   // optional bool enableLeftSpace = 1;
   let $enableLeftSpace = message.enableLeftSpace;
   if ($enableLeftSpace !== undefined) {
@@ -21589,7 +13669,7 @@ export function decodeDisplayItemFormat(binary: Uint8Array): DisplayItemFormat {
   return _decodeDisplayItemFormat(wrapByteBuffer(binary));
 }
 
-function _decodeDisplayItemFormat(bb: ByteBuffer): DisplayItemFormat {
+export function _decodeDisplayItemFormat(bb: ByteBuffer): DisplayItemFormat {
   let message: DisplayItemFormat = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -21638,7 +13718,7 @@ export function encodeQuiz(message: Quiz): Uint8Array {
   return toUint8Array(bb);
 }
 
-function _encodeQuiz(message: Quiz, bb: ByteBuffer): void {
+export function _encodeQuiz(message: Quiz, bb: ByteBuffer): void {
   // optional string quizId = 1;
   let $quizId = message.quizId;
   if ($quizId !== undefined) {
@@ -21714,7 +13794,7 @@ export function decodeQuiz(binary: Uint8Array): Quiz {
   return _decodeQuiz(wrapByteBuffer(binary));
 }
 
-function _decodeQuiz(bb: ByteBuffer): Quiz {
+export function _decodeQuiz(bb: ByteBuffer): Quiz {
   let message: Quiz = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
@@ -21792,465 +13872,3 @@ function _decodeQuiz(bb: ByteBuffer): Quiz {
   return message;
 }
 
-interface ByteBuffer {
-  bytes: Uint8Array;
-  offset: number;
-  limit: number;
-}
-
-function pushTemporaryLength(bb: ByteBuffer): number {
-  let length = readVarint32(bb);
-  let limit = bb.limit;
-  bb.limit = bb.offset + length;
-  return limit;
-}
-
-function skipUnknownField(bb: ByteBuffer, type: number): void {
-  switch (type) {
-    case 0:
-      while (readByte(bb) & 0x80) {}
-      break;
-    case 2:
-      skip(bb, readVarint32(bb));
-      break;
-    case 5:
-      skip(bb, 4);
-      break;
-    case 1:
-      skip(bb, 8);
-      break;
-    default:
-      throw new Error('Unimplemented type: ' + type);
-  }
-}
-
-function stringToLong(value: string): Long {
-  // return {
-  //   low: value.charCodeAt(0) | (value.charCodeAt(1) << 16),
-  //   high: value.charCodeAt(2) | (value.charCodeAt(3) << 16),
-  //   unsigned: false
-  // };
-  return Long.fromString(value);
-}
-
-function longToString(value: Long): string {
-  return value.toString();
-}
-
-// The code below was modified from https://github.com/protobufjs/bytebuffer.js
-// which is under the Apache License 2.0.
-
-let f32 = new Float32Array(1);
-let f32_u8 = new Uint8Array(f32.buffer);
-
-let f64 = new Float64Array(1);
-let f64_u8 = new Uint8Array(f64.buffer);
-
-function intToLong(value: number): Long {
-  value |= 0;
-  // return {
-  //   low: value,
-  //   high: value >> 31,
-  //   unsigned: value >= 0
-  // };
-  return Long.fromInt(value);
-}
-
-let bbStack: ByteBuffer[] = [];
-
-function popByteBuffer(): ByteBuffer {
-  const bb = bbStack.pop();
-  if (!bb) return { bytes: new Uint8Array(64), offset: 0, limit: 0 };
-  bb.offset = bb.limit = 0;
-  return bb;
-}
-
-function pushByteBuffer(bb: ByteBuffer): void {
-  bbStack.push(bb);
-}
-
-function wrapByteBuffer(bytes: Uint8Array): ByteBuffer {
-  return { bytes, offset: 0, limit: bytes.length };
-}
-
-function toUint8Array(bb: ByteBuffer): Uint8Array {
-  let bytes = bb.bytes;
-  let limit = bb.limit;
-  return bytes.length === limit ? bytes : bytes.subarray(0, limit);
-}
-
-function skip(bb: ByteBuffer, offset: number): void {
-  if (bb.offset + offset > bb.limit) {
-    throw new Error('Skip past limit');
-  }
-  bb.offset += offset;
-}
-
-function isAtEnd(bb: ByteBuffer): boolean {
-  return bb.offset >= bb.limit;
-}
-
-function grow(bb: ByteBuffer, count: number): number {
-  let bytes = bb.bytes;
-  let offset = bb.offset;
-  let limit = bb.limit;
-  let finalOffset = offset + count;
-  if (finalOffset > bytes.length) {
-    let newBytes = new Uint8Array(finalOffset * 2);
-    newBytes.set(bytes);
-    bb.bytes = newBytes;
-  }
-  bb.offset = finalOffset;
-  if (finalOffset > limit) {
-    bb.limit = finalOffset;
-  }
-  return offset;
-}
-
-function advance(bb: ByteBuffer, count: number): number {
-  let offset = bb.offset;
-  if (offset + count > bb.limit) {
-    throw new Error('Read past limit');
-  }
-  bb.offset += count;
-  return offset;
-}
-
-function readBytes(bb: ByteBuffer, count: number): Uint8Array {
-  let offset = advance(bb, count);
-  return bb.bytes.subarray(offset, offset + count);
-}
-
-function writeBytes(bb: ByteBuffer, buffer: Uint8Array): void {
-  let offset = grow(bb, buffer.length);
-  bb.bytes.set(buffer, offset);
-}
-
-function readString(bb: ByteBuffer, count: number): string {
-  // Sadly a hand-coded UTF8 decoder is much faster than subarray+TextDecoder in V8
-  let offset = advance(bb, count);
-  let fromCharCode = String.fromCharCode;
-  let bytes = bb.bytes;
-  let invalid = '\uFFFD';
-  let text = '';
-
-  for (let i = 0; i < count; i++) {
-    let c1 = bytes[i + offset],
-      c2: number,
-      c3: number,
-      c4: number,
-      c: number;
-
-    // 1 byte
-    if ((c1 & 0x80) === 0) {
-      text += fromCharCode(c1);
-    }
-
-    // 2 bytes
-    else if ((c1 & 0xe0) === 0xc0) {
-      if (i + 1 >= count) text += invalid;
-      else {
-        c2 = bytes[i + offset + 1];
-        if ((c2 & 0xc0) !== 0x80) text += invalid;
-        else {
-          c = ((c1 & 0x1f) << 6) | (c2 & 0x3f);
-          if (c < 0x80) text += invalid;
-          else {
-            text += fromCharCode(c);
-            i++;
-          }
-        }
-      }
-    }
-
-    // 3 bytes
-    else if ((c1 & 0xf0) == 0xe0) {
-      if (i + 2 >= count) text += invalid;
-      else {
-        c2 = bytes[i + offset + 1];
-        c3 = bytes[i + offset + 2];
-        if (((c2 | (c3 << 8)) & 0xc0c0) !== 0x8080) text += invalid;
-        else {
-          c = ((c1 & 0x0f) << 12) | ((c2 & 0x3f) << 6) | (c3 & 0x3f);
-          if (c < 0x0800 || (c >= 0xd800 && c <= 0xdfff)) text += invalid;
-          else {
-            text += fromCharCode(c);
-            i += 2;
-          }
-        }
-      }
-    }
-
-    // 4 bytes
-    else if ((c1 & 0xf8) == 0xf0) {
-      if (i + 3 >= count) text += invalid;
-      else {
-        c2 = bytes[i + offset + 1];
-        c3 = bytes[i + offset + 2];
-        c4 = bytes[i + offset + 3];
-        if (((c2 | (c3 << 8) | (c4 << 16)) & 0xc0c0c0) !== 0x808080) text += invalid;
-        else {
-          c = ((c1 & 0x07) << 0x12) | ((c2 & 0x3f) << 0x0c) | ((c3 & 0x3f) << 0x06) | (c4 & 0x3f);
-          if (c < 0x10000 || c > 0x10ffff) text += invalid;
-          else {
-            c -= 0x10000;
-            text += fromCharCode((c >> 10) + 0xd800, (c & 0x3ff) + 0xdc00);
-            i += 3;
-          }
-        }
-      }
-    } else text += invalid;
-  }
-
-  return text;
-}
-
-function writeString(bb: ByteBuffer, text: string): void {
-  // Sadly a hand-coded UTF8 encoder is much faster than TextEncoder+set in V8
-  let n = text.length;
-  let byteCount = 0;
-
-  // Write the byte count first
-  for (let i = 0; i < n; i++) {
-    let c = text.charCodeAt(i);
-    if (c >= 0xd800 && c <= 0xdbff && i + 1 < n) {
-      c = (c << 10) + text.charCodeAt(++i) - 0x35fdc00;
-    }
-    byteCount += c < 0x80 ? 1 : c < 0x800 ? 2 : c < 0x10000 ? 3 : 4;
-  }
-  writeVarint32(bb, byteCount);
-
-  let offset = grow(bb, byteCount);
-  let bytes = bb.bytes;
-
-  // Then write the bytes
-  for (let i = 0; i < n; i++) {
-    let c = text.charCodeAt(i);
-    if (c >= 0xd800 && c <= 0xdbff && i + 1 < n) {
-      c = (c << 10) + text.charCodeAt(++i) - 0x35fdc00;
-    }
-    if (c < 0x80) {
-      bytes[offset++] = c;
-    } else {
-      if (c < 0x800) {
-        bytes[offset++] = ((c >> 6) & 0x1f) | 0xc0;
-      } else {
-        if (c < 0x10000) {
-          bytes[offset++] = ((c >> 12) & 0x0f) | 0xe0;
-        } else {
-          bytes[offset++] = ((c >> 18) & 0x07) | 0xf0;
-          bytes[offset++] = ((c >> 12) & 0x3f) | 0x80;
-        }
-        bytes[offset++] = ((c >> 6) & 0x3f) | 0x80;
-      }
-      bytes[offset++] = (c & 0x3f) | 0x80;
-    }
-  }
-}
-
-function writeByteBuffer(bb: ByteBuffer, buffer: ByteBuffer): void {
-  let offset = grow(bb, buffer.limit);
-  let from = bb.bytes;
-  let to = buffer.bytes;
-
-  // This for loop is much faster than subarray+set on V8
-  for (let i = 0, n = buffer.limit; i < n; i++) {
-    from[i + offset] = to[i];
-  }
-}
-
-function readByte(bb: ByteBuffer): number {
-  return bb.bytes[advance(bb, 1)];
-}
-
-function writeByte(bb: ByteBuffer, value: number): void {
-  let offset = grow(bb, 1);
-  bb.bytes[offset] = value;
-}
-
-function readFloat(bb: ByteBuffer): number {
-  let offset = advance(bb, 4);
-  let bytes = bb.bytes;
-
-  // Manual copying is much faster than subarray+set in V8
-  f32_u8[0] = bytes[offset++];
-  f32_u8[1] = bytes[offset++];
-  f32_u8[2] = bytes[offset++];
-  f32_u8[3] = bytes[offset++];
-  return f32[0];
-}
-
-function writeFloat(bb: ByteBuffer, value: number): void {
-  let offset = grow(bb, 4);
-  let bytes = bb.bytes;
-  f32[0] = value;
-
-  // Manual copying is much faster than subarray+set in V8
-  bytes[offset++] = f32_u8[0];
-  bytes[offset++] = f32_u8[1];
-  bytes[offset++] = f32_u8[2];
-  bytes[offset++] = f32_u8[3];
-}
-
-function readDouble(bb: ByteBuffer): number {
-  let offset = advance(bb, 8);
-  let bytes = bb.bytes;
-
-  // Manual copying is much faster than subarray+set in V8
-  f64_u8[0] = bytes[offset++];
-  f64_u8[1] = bytes[offset++];
-  f64_u8[2] = bytes[offset++];
-  f64_u8[3] = bytes[offset++];
-  f64_u8[4] = bytes[offset++];
-  f64_u8[5] = bytes[offset++];
-  f64_u8[6] = bytes[offset++];
-  f64_u8[7] = bytes[offset++];
-  return f64[0];
-}
-
-function writeDouble(bb: ByteBuffer, value: number): void {
-  let offset = grow(bb, 8);
-  let bytes = bb.bytes;
-  f64[0] = value;
-
-  // Manual copying is much faster than subarray+set in V8
-  bytes[offset++] = f64_u8[0];
-  bytes[offset++] = f64_u8[1];
-  bytes[offset++] = f64_u8[2];
-  bytes[offset++] = f64_u8[3];
-  bytes[offset++] = f64_u8[4];
-  bytes[offset++] = f64_u8[5];
-  bytes[offset++] = f64_u8[6];
-  bytes[offset++] = f64_u8[7];
-}
-
-function readVarint32(bb: ByteBuffer): number {
-  let c = 0;
-  let value = 0;
-  let b: number;
-  do {
-    b = readByte(bb);
-    if (c < 32) value |= (b & 0x7f) << c;
-    c += 7;
-  } while (b & 0x80);
-  return value;
-}
-
-function writeVarint32(bb: ByteBuffer, value: number): void {
-  value >>>= 0;
-  while (value >= 0x80) {
-    writeByte(bb, (value & 0x7f) | 0x80);
-    value >>>= 7;
-  }
-  writeByte(bb, value);
-}
-
-function readVarint64(bb: ByteBuffer, unsigned: boolean): string {
-  let part0 = 0;
-  let part1 = 0;
-  let part2 = 0;
-  let b: number;
-
-  b = readByte(bb);
-  part0 = b & 0x7f;
-  if (b & 0x80) {
-    b = readByte(bb);
-    part0 |= (b & 0x7f) << 7;
-    if (b & 0x80) {
-      b = readByte(bb);
-      part0 |= (b & 0x7f) << 14;
-      if (b & 0x80) {
-        b = readByte(bb);
-        part0 |= (b & 0x7f) << 21;
-        if (b & 0x80) {
-          b = readByte(bb);
-          part1 = b & 0x7f;
-          if (b & 0x80) {
-            b = readByte(bb);
-            part1 |= (b & 0x7f) << 7;
-            if (b & 0x80) {
-              b = readByte(bb);
-              part1 |= (b & 0x7f) << 14;
-              if (b & 0x80) {
-                b = readByte(bb);
-                part1 |= (b & 0x7f) << 21;
-                if (b & 0x80) {
-                  b = readByte(bb);
-                  part2 = b & 0x7f;
-                  if (b & 0x80) {
-                    b = readByte(bb);
-                    part2 |= (b & 0x7f) << 7;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // return {
-  //   low: part0 | (part1 << 28),
-  //   high: (part1 >>> 4) | (part2 << 24),
-  //   unsigned
-  // };
-  const res = new Long(part0 | (part1 << 28), (part1 >>> 4) | (part2 << 24), unsigned);
-  return longToString(res);
-}
-
-function writeVarint64(bb: ByteBuffer, value: Long | string): void {
-  if (typeof value === 'string') value = stringToLong(value);
-
-  let part0 = value.low >>> 0;
-  let part1 = ((value.low >>> 28) | (value.high << 4)) >>> 0;
-  let part2 = value.high >>> 24;
-
-  // ref: src/google/protobuf/io/coded_stream.cc
-  let size =
-    part2 === 0
-      ? part1 === 0
-        ? part0 < 1 << 14
-          ? part0 < 1 << 7
-            ? 1
-            : 2
-          : part0 < 1 << 21
-          ? 3
-          : 4
-        : part1 < 1 << 14
-        ? part1 < 1 << 7
-          ? 5
-          : 6
-        : part1 < 1 << 21
-        ? 7
-        : 8
-      : part2 < 1 << 7
-      ? 9
-      : 10;
-
-  let offset = grow(bb, size);
-  let bytes = bb.bytes;
-
-  switch (size) {
-    case 10:
-      bytes[offset + 9] = (part2 >>> 7) & 0x01;
-    case 9:
-      bytes[offset + 8] = size !== 9 ? part2 | 0x80 : part2 & 0x7f;
-    case 8:
-      bytes[offset + 7] = size !== 8 ? (part1 >>> 21) | 0x80 : (part1 >>> 21) & 0x7f;
-    case 7:
-      bytes[offset + 6] = size !== 7 ? (part1 >>> 14) | 0x80 : (part1 >>> 14) & 0x7f;
-    case 6:
-      bytes[offset + 5] = size !== 6 ? (part1 >>> 7) | 0x80 : (part1 >>> 7) & 0x7f;
-    case 5:
-      bytes[offset + 4] = size !== 5 ? part1 | 0x80 : part1 & 0x7f;
-    case 4:
-      bytes[offset + 3] = size !== 4 ? (part0 >>> 21) | 0x80 : (part0 >>> 21) & 0x7f;
-    case 3:
-      bytes[offset + 2] = size !== 3 ? (part0 >>> 14) | 0x80 : (part0 >>> 14) & 0x7f;
-    case 2:
-      bytes[offset + 1] = size !== 2 ? (part0 >>> 7) | 0x80 : (part0 >>> 7) & 0x7f;
-    case 1:
-      bytes[offset] = size !== 1 ? part0 | 0x80 : part0 & 0x7f;
-  }
-}

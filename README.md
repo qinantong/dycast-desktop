@@ -31,7 +31,7 @@ Dycast Desktop（dycast-desktop）是一个基于 [skmcj/dycast](https://github.
 
 - `src/`：Vue 前端界面、弹幕解析、转发逻辑和工具函数。
 - `src/core/dycast.ts`：直播间连接、弹幕消息解析和事件分发核心逻辑。
-- `src/core/model.ts`：抖音直播弹幕相关 protobuf 结构的 TypeScript 解析模型。
+- `src/core/model/`：抖音直播弹幕相关 protobuf 结构的 TypeScript 解析模型。
 - `src/platform/`：浏览器环境与 Tauri 环境的 HTTP / WebSocket 适配层。
 - `src-tauri/`：Tauri 2 Rust 工程、桌面端配置和原生能力实现。
 - `public/`：静态资源。
@@ -99,11 +99,144 @@ npm run tauri-build
 5. 如需转发弹幕，在「WS地址」输入框填写外部 WebSocket 服务地址，例如 `ws://127.0.0.1:8080`，然后点击「转发」。
 6. 如需记录弹幕，点击左侧工具区的记录按钮，选择 `.jsonl` 文件保存位置；再次点击可停止记录。
 
-转发数据为 JSON 字符串，记录文件为 JSON Lines 格式，即每行一条弹幕 JSON。主要结构见 `src/core/dycast.ts` 中的 `DyMessage`、`CastUser`、`CastGift`、`LiveRoom` 等类型定义。
+### WebSocket 转发数据结构
+
+转发端每次发送的是一个 WebSocket text message，内容是一段 JSON 字符串。接收端需要先 `JSON.parse`，解析后有两类数据：
+
+- 连接转发成功后先发送一次直播间信息对象 `DyLiveInfo`。
+- 后续每次收到弹幕批次时发送一个数组 `DyMessage[]`，数组里可能包含多条消息，也可能包含不同 `method` 类型的消息。
+
+接收端可用 `Array.isArray(payload)` 区分两类数据。
+
+直播间信息对象结构：
+
+```ts
+interface DyLiveInfo {
+  roomNum?: string;
+  roomId: string;
+  uniqueId: string;
+  avatar: string;
+  cover: string;
+  nickname: string;
+  title: string;
+  status: number;
+}
+```
+
+弹幕批次结构。注意：一次 WebSocket message 对应一个消息数组，不是一条单独弹幕；接收端应遍历数组逐条处理。
+
+```ts
+type RelayMessagePayload = DyMessage[];
+
+interface DyMessage {
+  id?: string;
+  method?: CastMethod;
+  user?: CastUser;
+  toUser?: CastUser;
+  gift?: CastGift;
+  content?: string;
+  rtfContent?: CastRtfContent[];
+  room?: LiveRoom;
+  rank?: LiveRankItem[];
+}
+
+interface CastUser {
+  id?: string;
+  name?: string;
+  avatar?: string;
+  gender?: number;
+}
+
+interface CastGift {
+  id?: string;
+  name?: string;
+  price?: number;
+  type?: number;
+  desc?: string;
+  icon?: string;
+  count?: number | string;
+  repeatEnd?: number;
+}
+
+interface LiveRoom {
+  audienceCount?: number | string;
+  likeCount?: number | string;
+  followCount?: number | string;
+  totalUserCount?: number | string;
+  status?: number;
+}
+
+interface LiveRankItem {
+  nickname: string;
+  avatar: string;
+  rank: number | string;
+}
+```
+
+常见 `method` 值：
+
+| method | 含义 | 常见字段 |
+| --- | --- | --- |
+| `WebcastChatMessage` | 聊天弹幕 | `user`、`content`、`rtfContent` |
+| `WebcastEmojiChatMessage` | 表情弹幕 | `user`、`content` |
+| `WebcastGiftMessage` | 礼物消息 | `user`、`toUser`、`gift` |
+| `WebcastLikeMessage` | 点赞消息 | `user`、`content`、`room.likeCount` |
+| `WebcastMemberMessage` | 用户进入直播间 | `user`、`content`、`room.audienceCount` |
+| `WebcastSocialMessage` | 关注消息 | `user`、`content`、`room.followCount` |
+| `WebcastRoomUserSeqMessage` | 在线人数和榜单 | `room.audienceCount`、`room.totalUserCount`、`rank` |
+| `WebcastRoomStatsMessage` | 房间统计 | `room.audienceCount` |
+| `WebcastControlMessage` | 房间状态控制 | `content`、`room.status` |
+
+示例：
+
+```json
+[
+  {
+    "id": "7649725134995427337",
+    "method": "WebcastMemberMessage",
+    "user": {
+      "id": "MS4wLjABAAAA...",
+      "name": "之乎者也",
+      "avatar": "https://p11.douyinpic.com/..."
+    },
+    "content": "进入直播间",
+    "room": {
+      "audienceCount": "21497"
+    }
+  },
+  {
+    "id": "7649725129967285311",
+    "method": "WebcastChatMessage",
+    "user": {
+      "id": "MS4wLjABAAAA...",
+      "name": "吃柠檬",
+      "gender": 1,
+      "avatar": "https://p11.douyinpic.com/..."
+    },
+    "content": "点点关注，点点赞"
+  }
+]
+```
+
+Python 接收示例：
+
+```py
+import json
+
+async for message in websocket:
+    payload = json.loads(message)
+    if isinstance(payload, list):
+        for item in payload:
+            print(item.get("method"), item.get("content"))
+    else:
+        print("live info:", payload.get("roomNum"), payload.get("title"))
+```
+
+记录文件为 JSON Lines 格式，即每行一条弹幕 JSON。
 
 ## 弹幕记录与内存策略
 
-为保证长时间运行稳定性，界面弹幕列表只保留最近 3000 条消息；去重缓存只保留最近 10000 个消息 ID。虚拟列表只优化 DOM 渲染，不会自动释放 JavaScript 数据，因此应用不会在前端内存中默认保存全量弹幕。
+为保证长时间运行稳定性，界面弹幕列表只保留最近 3000 条消息，因此应用不会在内存中默认保存全量弹幕。
 
 需要长期保存弹幕时，请使用记录功能。记录开启后，应用会将接收到的弹幕按批追加写入本地 `.jsonl` 文件，而不是累积在前端内存中。JSONL 文件可用文本编辑器逐行查看，也便于后续用脚本、数据库或数据分析工具处理。
 

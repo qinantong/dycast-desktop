@@ -1,21 +1,8 @@
 import { CLog } from '@/utils/logUtil';
 import { Emitter, type EventMap } from './emitter';
-import pako from 'pako';
-import {
-  decodeChatMessage,
-  decodeControlMessage,
-  decodeEmojiChatMessage,
-  decodeGiftMessage,
-  decodeLikeMessage,
-  decodeMemberMessage,
-  decodePushFrame,
-  decodeResponse,
-  decodeRoomRankMessage,
-  decodeRoomStatsMessage,
-  decodeRoomUserSeqMessage,
-  decodeSocialMessage,
-  encodePushFrame
-} from './model';
+// Core decoders (always needed, ~600 lines)
+import { decodePushFrame, encodePushFrame, decodeResponse } from './model/core';
+// Types (zero runtime cost)
 import type {
   GiftStruct,
   Message,
@@ -24,6 +11,48 @@ import type {
   Text,
   User
 } from './model';
+
+// ---- Lazy-loaded message decoders (dynamically imported on first message) ----
+// Each file imports base.ts (~15K lines shared types) + its own message decoder.
+// First import loads base.ts + the message file; subsequent imports are cheap.
+
+type DecoderModules = Awaited<ReturnType<typeof loadDecoders>>;
+
+async function loadDecoders() {
+  const [chat, gift, like, member, social, control, roomUserSeq, roomRank, roomStats] = await Promise.all([
+    import('./model/messages/chat'),
+    import('./model/messages/gift'),
+    import('./model/messages/like'),
+    import('./model/messages/member'),
+    import('./model/messages/social'),
+    import('./model/messages/control'),
+    import('./model/messages/room_user_seq'),
+    import('./model/messages/room_rank'),
+    import('./model/messages/room_stats'),
+  ]);
+  return { chat, gift, like, member, social, control, roomUserSeq, roomRank, roomStats };
+}
+
+/**
+ * Gzip 解压 — 优先使用原生 DecompressionStream（零依赖），
+ * 仅在旧浏览器中降级为动态加载 pako。
+ */
+async function decompressGzip(data: Uint8Array): Promise<Uint8Array> {
+  if (typeof DecompressionStream !== 'undefined') {
+    try {
+      const ds = new DecompressionStream('gzip');
+      const writer = ds.writable.getWriter();
+      void writer.write(data);
+      void writer.close();
+      return new Uint8Array(await new Response(ds.readable).arrayBuffer());
+    } catch {
+      // 原生解压失败，降级到 pako
+    }
+  }
+  const { ungzip } = await import('pako');
+  return ungzip(data);
+}
+
 import { fetchUser, getImInfo, getLiveInfo } from './request';
 import { getSignature } from './signature';
 import { createSocket, getWsBase, type DySocket } from '@/platform/websocket';
@@ -415,6 +444,9 @@ export class DyCast {
   // 订阅者
   private emitter: Emitter<DyCastEvent>;
 
+  // 懒加载解码器模块
+  private _decoders: DecoderModules | null = null;
+
   constructor(roomNum: string) {
     // 初始化
     this.roomNum = roomNum;
@@ -603,6 +635,7 @@ export class DyCast {
     try {
       res = await this._decodeFrame(new Uint8Array(data));
     } catch (err) {
+      CLog.error('DyCast Frame Decode Error =>', err);
       res = null;
     }
     if (!res) return;
@@ -734,7 +767,9 @@ export class DyCast {
         const message = await this._dealMessage(msg);
         if (message) messages.push(message);
       }
-    } catch (err) {}
+    } catch (err) {
+      CLog.error('DyCast Deal Messages Error =>', err);
+    }
     if (!messages.length) return;
     this.emitter.emit('message', messages);
   }
@@ -750,11 +785,13 @@ export class DyCast {
     let message = null;
     let payload = msg.payload;
     if (!payload) return null;
+    // 确保解码器已加载
+    const d = await this._ensureDecoders();
     try {
       // 处理消息
       switch (method) {
         case CastMethod.CHAT:
-          message = decodeChatMessage(payload);
+          message = d.chat.decodeChatMessage(payload);
           data.method = CastMethod.CHAT;
           data.user = this._getCastUser(message.user);
           data.content = message.content;
@@ -762,68 +799,75 @@ export class DyCast {
           data.rtfContent = this._getCastRtfContent(message.rtfContentV2);
           break;
         case CastMethod.GIFT:
-          message = decodeGiftMessage(payload);
+          message = d.gift.decodeGiftMessage(payload);
           data.method = CastMethod.GIFT;
           data.user = this._getCastUser(message.user);
           data.toUser = this._getCastUser(message.toUser);
           data.gift = this._getCastGift(message.gift, message.repeatCount || message.comboCount, message.repeatEnd);
           break;
         case CastMethod.LIKE:
-          message = decodeLikeMessage(payload);
+          message = d.like.decodeLikeMessage(payload);
           data.method = CastMethod.LIKE;
           data.user = this._getCastUser(message.user);
           data.content = `为主播点赞了(${message.count})`;
           data.room = { likeCount: message.total };
           break;
         case CastMethod.MEMBER:
-          message = decodeMemberMessage(payload);
+          message = d.member.decodeMemberMessage(payload);
           data.method = CastMethod.MEMBER;
           data.user = this._getCastUser(message.user);
           data.content = '进入直播间';
           data.room = { audienceCount: message.memberCount };
           break;
         case CastMethod.SOCIAL:
-          message = decodeSocialMessage(payload);
+          message = d.social.decodeSocialMessage(payload);
           data.method = CastMethod.SOCIAL;
           data.user = this._getCastUser(message.user);
           data.content = '关注了主播';
           data.room = { followCount: message.followCount };
           break;
         case CastMethod.EMOJI_CHAT:
-          message = decodeEmojiChatMessage(payload);
+          message = d.chat.decodeEmojiChatMessage(payload);
           data.method = CastMethod.EMOJI_CHAT;
           data.user = this._getCastUser(message.user);
           data.content = this._getCastEmoji(message.emojiContent);
           break;
         case CastMethod.ROOM_USER_SEQ:
-          message = decodeRoomUserSeqMessage(payload);
+          message = d.roomUserSeq.decodeRoomUserSeqMessage(payload);
           data.method = CastMethod.ROOM_USER_SEQ;
           data.rank = this._getCastRanksA(message.ranks);
           data.room = { audienceCount: message.total, totalUserCount: message.totalUser };
           break;
         case CastMethod.CONTROL:
-          message = decodeControlMessage(payload);
+          message = d.control.decodeControlMessage(payload);
           data.method = CastMethod.CONTROL;
           data.content = message.common?.describe;
           data.room = { status: parseInt(message.action || '') || void 0 };
           break;
         case CastMethod.ROOM_RANK:
-          message = decodeRoomRankMessage(payload);
+          message = d.roomRank.decodeRoomRankMessage(payload);
           data.method = CastMethod.ROOM_RANK;
           data.rank = this._getCastRanksB(message.ranks);
           break;
         case CastMethod.ROOM_STATS:
-          message = decodeRoomStatsMessage(payload);
+          message = d.roomStats.decodeRoomStatsMessage(payload);
           data.method = CastMethod.ROOM_STATS;
           data.room = { audienceCount: message.displayMiddle };
           break;
       }
       if (!data.method) return null;
     } catch (err) {
-      // MLog.error('DyCast Message Decode Error =>', method);
+      CLog.error('DyCast Message Decode Error =>', method, err);
       return null;
     }
     return data;
+  }
+
+  /** 确保消息解码器已加载（首次调用时异步加载） */
+  private async _ensureDecoders(): Promise<DecoderModules> {
+    if (this._decoders) return this._decoders;
+    this._decoders = await loadDecoders();
+    return this._decoders;
   }
 
   /**
@@ -966,7 +1010,7 @@ export class DyCast {
     if (!payload) return null;
     if (headers) {
       if (headers['compress_type'] && headers['compress_type'] === 'gzip') {
-        payload = pako.ungzip(payload);
+        payload = await decompressGzip(payload);
       }
       if (headers['im-cursor']) {
         cursor = headers['im-cursor'];
@@ -1001,22 +1045,9 @@ export class DyCast {
    * @param logId
    */
   private _ack(ext: string = '', logId?: string) {
-    const getPayload = function (_ext: string) {
-      let arr = [];
-      for (let s of _ext) {
-        let index = s.charCodeAt(0);
-        index < 128
-          ? arr.push(index)
-          : index < 2048
-            ? (arr.push(192 + (index >> 6)), arr.push(128 + (63 & index)))
-            : index < 65536 &&
-              (arr.push(224 + (index >> 12)), arr.push(128 + ((index >> 6) & 63)), arr.push(128 + (63 & index)));
-      }
-      return new Uint8Array(arr);
-    };
     return encodePushFrame({
       payloadType: PayloadType.Ack,
-      payload: getPayload(ext),
+      payload: new TextEncoder().encode(ext),
       logId
     }) as Uint8Array<ArrayBuffer>;
   }
@@ -1037,6 +1068,7 @@ export class DyCast {
     this.closeEvent = { code: DyCastCloseCode.NO_STATUS, msg: 'CLOSE_NO_STATUS' };
     this.ws = void 0;
     this.isReconnecting = false;
+    this._decoders = null;
   }
 
   /** 打开后 */
@@ -1045,6 +1077,14 @@ export class DyCast {
     this.wsRoomStatus = WSRoomStatus.CONNECTED;
     this.isReconnecting = false;
     this.reconnectCount = 0;
+    // 预加载消息解码器
+    if (!this._decoders) {
+      loadDecoders().then(mods => {
+        this._decoders = mods;
+      }).catch(err => {
+        CLog.error('DyCast Preload Decoders Error =>', err);
+      });
+    }
   }
 
   /**

@@ -20,6 +20,7 @@ pub fn run() {
             cast_record::cast_record_stop,
             ws_relay::ws_connect,
             ws_relay::ws_send,
+            ws_relay::ws_send_text,
             ws_relay::ws_close
         ])
         .setup(|_app| {

@@ -57,6 +57,35 @@ impl HttpState {
     }
 }
 
+/// Build common HTTP headers shared across all Douyin API requests.
+fn build_headers(
+    state: &HttpState,
+    cookies: &str,
+    accept: &str,
+    include_origin: bool,
+) -> Result<HeaderMap, String> {
+    state.ingest_webview_cookies(cookies);
+    let cookie_header = state.cookie_header(cookies);
+
+    let mut headers = HeaderMap::new();
+    headers.insert(USER_AGENT, HeaderValue::from_static(UA));
+    headers.insert(REFERER, HeaderValue::from_static("https://live.douyin.com/"));
+    headers.insert(ACCEPT, HeaderValue::from_str(accept).map_err(|e| format!("Accept 无效: {}", e))?);
+    headers.insert(
+        ACCEPT_LANGUAGE,
+        HeaderValue::from_static("zh-CN,zh;q=0.9,en;q=0.8"),
+    );
+    if include_origin {
+        headers.insert(ORIGIN, HeaderValue::from_static("https://live.douyin.com"));
+    }
+    if !cookie_header.trim().is_empty() {
+        let cookie_value =
+            HeaderValue::from_str(&cookie_header).map_err(|e| format!("Cookie 无效: {}", e))?;
+        headers.insert(COOKIE, cookie_value);
+    }
+    Ok(headers)
+}
+
 #[derive(Debug, Serialize)]
 pub struct LiveInfo {
     #[serde(rename = "roomId")]
@@ -138,29 +167,7 @@ async fn fetch_live_html_inner(
     room_num: &str,
     cookies: &str,
 ) -> Result<String, String> {
-    state.ingest_webview_cookies(cookies);
-    let mut headers = HeaderMap::new();
-    headers.insert(USER_AGENT, HeaderValue::from_static(UA));
-    headers.insert(
-        REFERER,
-        HeaderValue::from_static("https://live.douyin.com/"),
-    );
-    headers.insert(
-        ACCEPT,
-        HeaderValue::from_static(
-            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-        ),
-    );
-    headers.insert(
-        ACCEPT_LANGUAGE,
-        HeaderValue::from_static("zh-CN,zh;q=0.9,en;q=0.8"),
-    );
-    let cookie_header = state.cookie_header(cookies);
-    if !cookie_header.trim().is_empty() {
-        let cookie_value =
-            HeaderValue::from_str(&cookie_header).map_err(|e| format!("Cookie 无效: {}", e))?;
-        headers.insert(COOKIE, cookie_value);
-    }
+    let headers = build_headers(state, cookies, "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8", false)?;
 
     let url = format!("https://live.douyin.com/{}", room_num);
     let response = state
@@ -213,25 +220,7 @@ pub async fn fetch_binary(
     url: String,
     cookies: String,
 ) -> Result<Vec<u8>, String> {
-    state.ingest_webview_cookies(&cookies);
-    let cookie_header = state.cookie_header(&cookies);
-    let mut headers = HeaderMap::new();
-    headers.insert(USER_AGENT, HeaderValue::from_static(UA));
-    headers.insert(ORIGIN, HeaderValue::from_static("https://live.douyin.com"));
-    headers.insert(
-        REFERER,
-        HeaderValue::from_static("https://live.douyin.com/"),
-    );
-    headers.insert(ACCEPT, HeaderValue::from_static("*/*"));
-    headers.insert(
-        ACCEPT_LANGUAGE,
-        HeaderValue::from_static("zh-CN,zh;q=0.9,en;q=0.8"),
-    );
-    if !cookie_header.trim().is_empty() {
-        let cookie_value =
-            HeaderValue::from_str(&cookie_header).map_err(|e| format!("Cookie 无效: {}", e))?;
-        headers.insert(COOKIE, cookie_value);
-    }
+    let headers = build_headers(&state, &cookies, "*/*", true)?;
 
     let response = state
         .client
@@ -258,25 +247,7 @@ pub async fn fetch_head(
     cookies: String,
     headers: HashMap<String, String>,
 ) -> Result<(), String> {
-    state.ingest_webview_cookies(&cookies);
-    let cookie_header = state.cookie_header(&cookies);
-    let mut header_map = HeaderMap::new();
-    header_map.insert(USER_AGENT, HeaderValue::from_static(UA));
-    header_map.insert(ORIGIN, HeaderValue::from_static("https://live.douyin.com"));
-    header_map.insert(
-        REFERER,
-        HeaderValue::from_static("https://live.douyin.com/"),
-    );
-    header_map.insert(ACCEPT, HeaderValue::from_static("*/*"));
-    header_map.insert(
-        ACCEPT_LANGUAGE,
-        HeaderValue::from_static("zh-CN,zh;q=0.9,en;q=0.8"),
-    );
-    if !cookie_header.trim().is_empty() {
-        let cookie_value =
-            HeaderValue::from_str(&cookie_header).map_err(|e| format!("Cookie 无效: {}", e))?;
-        header_map.insert(COOKIE, cookie_value);
-    }
+    let mut header_map = build_headers(&state, &cookies, "*/*", true)?;
     for (key, value) in headers {
         let name =
             HeaderName::from_bytes(key.as_bytes()).map_err(|e| format!("请求头无效: {}", e))?;

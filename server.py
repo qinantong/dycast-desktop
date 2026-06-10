@@ -4,7 +4,6 @@ import time
 
 async def echo(websocket):
     async for message in websocket:
-        print(f'[{time.ctime()}]: ')
         print(message)
         message = "服务端获取到消息: {}".format(message)
         await websocket.send(message)

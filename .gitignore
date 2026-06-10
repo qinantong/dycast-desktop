@@ -30,3 +30,4 @@ coverage
 *.tsbuildinfo
 
 test/
+CLAUDE.md

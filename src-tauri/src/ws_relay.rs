@@ -209,6 +209,26 @@ pub async fn ws_send(
 }
 
 #[tauri::command]
+pub async fn ws_send_text(
+    state: tauri::State<'_, Arc<Mutex<WsState>>>,
+    id: u64,
+    data: String,
+) -> Result<(), String> {
+    let sender = {
+        let state = state.lock().map_err(|e| e.to_string())?;
+        state
+            .connections
+            .get(&id)
+            .map(|(s, _)| s.clone())
+            .ok_or_else(|| format!("连接 {} 未找到", id))?
+    };
+    sender
+        .send(Message::Text(data.into()))
+        .map_err(|e| format!("发送失败: {}", e))?;
+    Ok(())
+}
+
+#[tauri::command]
 pub async fn ws_close(state: tauri::State<'_, Arc<Mutex<WsState>>>, id: u64) -> Result<(), String> {
     let (sender, close_signal) = {
         let state = state.lock().map_err(|e| e.to_string())?;

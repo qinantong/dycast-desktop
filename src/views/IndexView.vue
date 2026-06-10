@@ -272,7 +272,9 @@ const handleMessages = function (msgs: DyMessage[]) {
           break;
       }
     }
-  } catch (err) {}
+  } catch (err) {
+    CLog.error('IndexView Handle Messages Error =>', err);
+  }
   writeRecordedCasts(newCasts);
   if (castRef.value) castRef.value.appendCasts(mainCasts);
   if (otherRef.value) otherRef.value.appendCasts(otherCasts);
@@ -385,10 +387,11 @@ const connectLive = function () {
 /** 断开连接 */
 const disconnectLive = function () {
   if (castWs) castWs.close(1000, '断开连接');
+  stopRelayCast();
 };
 
 /** 连接转发房间 */
-const relayCast = function () {
+const relayCast = async function () {
   try {
     CLog.info('正在连接转发中 =>', relayUrl.value);
     SkMessage.info(`转发连接中: ${relayUrl.value}`);
@@ -409,7 +412,8 @@ const relayCast = function () {
       if (code === 1000) SkMessage.info(`已停止转发`);
       else SkMessage.warning(`转发已停止: ${msg || '未知原因'}`);
       setRelayInputStatus(false);
-      relayStatus.value = 0;
+      relayStatus.value = code === 1000 ? 0 : 2;
+      relayWs = void 0;
       addConsoleMessage('转发已关闭');
     });
     cast.on('error', ev => {
@@ -418,11 +422,12 @@ const relayCast = function () {
       setRelayInputStatus(false);
       relayStatus.value = 2;
     });
-    cast.connect();
+    const connected = await cast.connect();
+    if (!connected) return;
     relayWs = cast;
   } catch (err) {
     CLog.error('弹幕转发出错:', err);
-    SkMessage.error('转发出错: ${err.message}');
+    SkMessage.error(`转发出错: ${err instanceof Error ? err.message : err}`);
     setRelayInputStatus(false);
     relayStatus.value = 2;
     relayWs = void 0;

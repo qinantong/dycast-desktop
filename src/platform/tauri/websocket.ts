@@ -82,12 +82,16 @@ export class TauriWebSocket {
     if (this.readyState !== TauriWebSocket.OPEN || this.id === null) {
       throw new Error('WebSocket is not open');
     }
+    if (typeof data === 'string') {
+      void invoke('ws_send_text', { id: this.id, data }).catch(error => {
+        this.dispatchError(String(error));
+      });
+      return;
+    }
     const bytes =
-      typeof data === 'string'
-        ? new TextEncoder().encode(data)
-        : data instanceof Uint8Array
-          ? data
-          : new Uint8Array(data);
+      data instanceof Uint8Array
+        ? data
+        : new Uint8Array(data);
     void invoke('ws_send', { id: this.id, data: Array.from(bytes) }).catch(error => {
       this.dispatchError(String(error));
     });
