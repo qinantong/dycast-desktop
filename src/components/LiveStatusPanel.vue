@@ -101,7 +101,7 @@ defineExpose({
   .panel-dur {
     min-width: 3.5em;
     text-align: center;
-    font-family: 'mkwxy';
+    font-weight: 600;
     font-size: 1.4rem;
     font-weight: bold;
     color: #9079ad;
@@ -124,7 +124,7 @@ defineExpose({
 
     .text {
       font-size: 0.9rem;
-      font-family: 'mkwxy';
+      font-weight: 600;
       color: var(--app-text-muted);
     }
   }

@@ -198,10 +198,10 @@ $giftText: #eba825;
   width: 100%;
   display: flex;
   padding-bottom: 3px;
-  font-family: 'dymht';
+    font-weight: 700;
   font-size: 1rem;
   .prefix {
-    font-family: 'mkwxy';
+    font-weight: 600;
     color: $prefixColor;
     flex-shrink: 0;
     font-size: 1rem;
@@ -210,7 +210,7 @@ $giftText: #eba825;
   }
   .nickname {
     margin-right: 3px;
-    font-family: 'mkwxy';
+    font-weight: 600;
     color: $nameColor;
     flex-shrink: 0;
   }

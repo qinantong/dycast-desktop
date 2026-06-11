@@ -440,7 +440,7 @@ $lgoutHColor: #e94829;
   height: $sidToolH;
   padding-left: $btnSize;
   box-sizing: border-box;
-  font-family: 'dymht';
+    font-weight: 700;
   font-size: 14px;
   color: $inputColor;
   &::placeholder {
@@ -621,7 +621,7 @@ $lgoutHColor: #e94829;
   display: flex;
   justify-content: center;
   flex-direction: column;
-  font-family: 'dymht';
+    font-weight: 700;
   .user-name {
     display: block;
     font-size: 16px;

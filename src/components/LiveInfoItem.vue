@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<LiveInfoItemProps>(), {
   gap: 8px;
   box-sizing: border-box;
   .title {
-    font-family: 'mkwxy';
+    font-weight: 600;
     font-size: 1rem;
     font-weight: bold;
     color: var(--app-text);
@@ -50,7 +50,7 @@ const props = withDefaults(defineProps<LiveInfoItemProps>(), {
     user-select: none;
     font-size: 0.9rem;
     color: var(--app-text-muted);
-    font-family: 'dymht';
+    font-weight: 700;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

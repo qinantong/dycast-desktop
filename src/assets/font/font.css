@@ -1,15 +1,3 @@
-/* 抖音美好体 */
-@font-face {
-  font-family: 'dymht';
-  src: url('./DouyinSansBold.otf') format('opentype');
-}
-
-/* 猫啃忘形圆 */
-@font-face {
-  font-family: 'mkwxy';
-  src: url('./MaoKenWangXingYuan.ttf') format('truetype');
-}
-
 /* 图标 */
 @font-face {
   font-family: "castfont";

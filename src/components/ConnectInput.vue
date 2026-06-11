@@ -204,7 +204,7 @@ defineExpose({
     flex-grow: 1;
     height: 100%;
     font-size: 16px;
-    font-family: 'mkwxy';
+    font-weight: 600;
     letter-spacing: 1px;
     color: var(--app-text-muted);
     transition: opacity 0.2s;

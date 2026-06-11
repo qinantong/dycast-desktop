@@ -345,7 +345,7 @@ $darkText: #a5a5a5;
     align-items: center;
     justify-content: center;
     text-align: center;
-    font-family: 'mkwxy';
+    font-weight: 600;
     font-size: 1rem;
     font-weight: bold;
     color: $lightText;

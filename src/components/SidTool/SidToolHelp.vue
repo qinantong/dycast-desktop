@@ -159,7 +159,7 @@ $linkC: #6ca8af;
   flex-direction: column;
   padding: 8px 12px;
   .help-title {
-    font-family: 'dymht';
+    font-weight: 700;
     font-size: 21px;
     font-weight: bold;
     color: $titleC;
@@ -175,7 +175,7 @@ $linkC: #6ca8af;
   }
   .article-content {
     margin-top: 18px;
-    font-family: 'mkwxy';
+    font-weight: 600;
     display: flex;
     flex-direction: column;
     color: $textC;

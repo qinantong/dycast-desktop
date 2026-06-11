@@ -176,7 +176,7 @@ const handleCoverError = function () {
   }
   span {
     font-size: 0.8rem;
-    font-family: 'mkwxy';
+    font-weight: 600;
     color: var(--app-text-subtle);
     letter-spacing: 2px;
     overflow: hidden;
