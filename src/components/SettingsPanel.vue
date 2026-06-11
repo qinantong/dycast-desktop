@@ -85,6 +85,30 @@
 
             <hr class="setting-divider" />
 
+            <!-- 转发消息类型过滤 -->
+            <div class="setting-item section-header">
+              <div class="setting-info">
+                <div class="setting-label">转发消息类型</div>
+                <div class="setting-desc">选择要转发到 WebSocket 服务的消息类型</div>
+              </div>
+            </div>
+            <div class="relay-filter-grid">
+              <label
+                v-for="item in relayTypeList"
+                :key="item.method"
+                class="relay-filter-item"
+              >
+                <input
+                  type="checkbox"
+                  :checked="localSettings.relayFilter.includes(item.method)"
+                  @change="toggleRelayType(item.method)"
+                />
+                <span class="relay-filter-label">{{ item.label }}</span>
+              </label>
+            </div>
+
+            <hr class="setting-divider" />
+
             <!-- 手动检查更新 -->
             <div class="setting-item">
               <div class="setting-info">
@@ -109,7 +133,8 @@
 
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue';
-import { settings, type AppTheme } from '@/hooks/useSettings';
+import { settings, FORWARDABLE_TYPES, type AppTheme } from '@/hooks/useSettings';
+import { CastMethod } from '@/core/dycast';
 import { useUpdater } from '@/hooks/useUpdater';
 
 defineProps<{
@@ -133,8 +158,31 @@ watch(
   { deep: true },
 );
 
+const typeLabels: Record<string, string> = {
+  [CastMethod.CHAT]: '聊天',
+  [CastMethod.GIFT]: '礼物',
+  [CastMethod.LIKE]: '点赞',
+  [CastMethod.MEMBER]: '进场',
+  [CastMethod.SOCIAL]: '关注',
+  [CastMethod.EMOJI_CHAT]: '表情',
+  [CastMethod.CONTROL]: '直播状态',
+  [CastMethod.FANSCLUB]: '粉丝团',
+  [CastMethod.ROOM_RANK]: '排行',
+};
+
+const relayTypeList = FORWARDABLE_TYPES.map(m => ({ method: m, label: typeLabels[m] || m }));
+
 function toggle(key: 'autoUpdate' | 'rememberRoom' | 'rememberRelay') {
   localSettings[key] = !localSettings[key];
+}
+
+function toggleRelayType(method: CastMethod) {
+  const idx = localSettings.relayFilter.indexOf(method);
+  if (idx >= 0) {
+    localSettings.relayFilter.splice(idx, 1);
+  } else {
+    localSettings.relayFilter.push(method);
+  }
 }
 
 function selectTheme(theme: AppTheme) {
@@ -393,6 +441,44 @@ async function handleCheckUpdate() {
     border: 1px solid var(--app-danger);
     color: var(--app-danger);
   }
+}
+
+// Relay filter grid
+.section-header {
+  padding-bottom: 4px;
+}
+
+.relay-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  padding: 4px 0 8px;
+}
+
+.relay-filter-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--app-text);
+  background: var(--app-surface-soft);
+  transition: background 0.15s;
+  user-select: none;
+
+  input {
+    accent-color: var(--app-accent);
+  }
+
+  &:hover {
+    background: var(--app-surface-hover);
+  }
+}
+
+.relay-filter-label {
+  line-height: 1;
 }
 
 // Transitions

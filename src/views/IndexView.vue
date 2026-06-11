@@ -304,7 +304,8 @@ const handleMessages = function (msgs: DyMessage[]) {
   if (castRef.value) castRef.value.appendCasts(mainCasts);
   if (otherRef.value) otherRef.value.appendCasts(otherCasts);
   if (relayWs && relayWs.isConnected()) {
-    relayWs.send(JSON.stringify(msgs));
+    const filtered = msgs.filter((m): m is DyMessage & { method: CastMethod } => !!m.method && settings.relayFilter.includes(m.method));
+    if (filtered.length) relayWs.send(JSON.stringify(filtered));
   }
 };
 

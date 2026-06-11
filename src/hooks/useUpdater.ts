@@ -5,8 +5,6 @@ import { isTauriProd } from '@/platform/runtime';
 export interface UpdateStatus {
   /** Whether an update is available */
   available: boolean;
-  /** The Update object from the updater plugin */
-  update: Update | null;
   /** Current/detected version info */
   version: string | null;
   /** Release body/notes */
@@ -20,9 +18,13 @@ export interface UpdateStatus {
 }
 
 // Module-level shared state — all callers share the same instance
+// NOTE: `update` object is stored OUTSIDE the reactive ref because
+// @tauri-apps/plugin-updater's Update class uses JavaScript private fields (#),
+// which are incompatible with Vue 3's Proxy-based reactivity.
+let _update: Update | null = null;
+
 const status = ref<UpdateStatus>({
   available: false,
-  update: null,
   version: null,
   body: null,
   downloading: false,
@@ -41,9 +43,9 @@ async function checkUpdate() {
     const { check } = await import('@tauri-apps/plugin-updater');
     const update = await check();
     if (update) {
+      _update = update;
       status.value = {
         available: true,
-        update,
         version: update.version,
         body: update.body || null,
         downloading: false,
@@ -51,10 +53,10 @@ async function checkUpdate() {
         error: null,
       };
     } else {
+      _update = null;
       // No update available (including 404 / manifest not found)
       status.value = {
         available: false,
-        update: null,
         version: null,
         body: null,
         downloading: false,
@@ -63,12 +65,12 @@ async function checkUpdate() {
       };
     }
   } catch (e) {
+    _update = null;
     const msg = e instanceof Error ? e.message : String(e);
     // Network errors or temporary failures — log but don't treat as fatal
     console.warn('Update check failed:', msg, e);
     status.value = {
       available: false,
-      update: null,
       version: null,
       body: null,
       downloading: false,
@@ -79,11 +81,11 @@ async function checkUpdate() {
 }
 
 async function downloadAndInstall() {
-  if (!status.value.update) return;
+  if (!_update) return;
 
   status.value.downloading = true;
   try {
-    await status.value.update.downloadAndInstall((progress) => {
+    await _update.downloadAndInstall((progress) => {
       console.log(`Update progress: ${progress}`);
     });
     status.value.downloading = false;

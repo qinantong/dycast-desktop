@@ -12,7 +12,6 @@ jobs:
       contents: write
     strategy:
       fail-fast: false
-      max-parallel: 1
       matrix:
         include:
           - platform: windows-latest
@@ -21,8 +20,6 @@ jobs:
             args: ''
           - platform: macos-latest
             args: '--target aarch64-apple-darwin'
-          - platform: macos-latest
-            args: '--target x86_64-apple-darwin'
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -43,7 +40,7 @@ jobs:
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin' || '' }}
 
       - name: Cache Rust build
         uses: swatinem/rust-cache@v2
@@ -54,7 +51,7 @@ jobs:
         run: npm ci
 
       - name: Build and publish Tauri app
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
@@ -63,13 +60,18 @@ jobs:
           tagName: v__VERSION__
           releaseName: 'Dycast Desktop v__VERSION__'
           releaseBody: |
-            ## 重点更新
+            ## 新增
 
-            - 新增自动更新能力，应用启动时可检查新版本，并支持下载、安装和重启生效。
-            - 新增设置面板，可开启或关闭启动时自动检查更新，并支持手动检查更新。
-            - 新增更新提示弹窗，展示新版本号、更新内容、下载状态和安装结果。
-            - 修复 Tauri updater 发布配置，确保 release 生成可用的 `latest.json` 和签名更新包。
-            - 修复生产环境更新检查判断，避免 Tauri 生产包被误判为开发环境而跳过更新。
+            - **WebSocket 转发消息类型过滤** — 设置面板新增转发消息类型开关，可选择只转发聊天、礼物、点赞、进场等特定类型的消息，减少无关流量
+
+            ## 修复
+
+            - **修复自动更新下载失败** — 修复点击"立即更新"时报错的问题，Tauri updater 的 Update 类使用 JS 私有字段，与 Vue 响应式 Proxy 不兼容
+
+            ## 工程
+
+            - CI: 精简为单 job，由 tauri-action 自动生成 latest.json，不再上传 .sig 文件
+            - 取消 darwin-x86_64 构建支持，仅保留 darwin-aarch64
 
             ## 下载
 
@@ -79,31 +81,5 @@ jobs:
           prerelease: false
           tauriScript: npm run tauri
           args: ${{ matrix.args }}
-          includeUpdaterJson: true
-          updaterJsonPreferNsis: true
-
-  verify-updater:
-    needs: release
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Verify updater manifest
-        run: |
-          set -e
-          TAG="v$(node -p "require('./package.json').version")"
-          URL="https://github.com/qinant/dycast-desktop/releases/download/${TAG}/latest.json"
-          curl -sfL "$URL" -o latest.json
-          node -e "
-            const fs = require('fs');
-            const data = JSON.parse(fs.readFileSync('latest.json', 'utf8'));
-            const required = ['windows-x86_64', 'linux-x86_64', 'darwin-x86_64', 'darwin-aarch64'];
-            for (const platform of required) {
-              const entry = data.platforms?.[platform];
-              if (!entry?.url || !entry?.signature) {
-                console.error('Missing updater platform entry:', platform);
-                process.exit(1);
-              }
-            }
-            console.log('Verified updater manifest for', required.join(', '));
-          "
+          uploadUpdaterJson: true
+          uploadUpdaterSignatures: false

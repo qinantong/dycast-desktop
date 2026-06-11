@@ -1,8 +1,22 @@
 import { reactive, watch } from 'vue';
+import { CastMethod } from '@/core/dycast';
 
 const STORAGE_KEY = 'dycast-settings';
 
 export type AppTheme = 'light' | 'dark';
+
+/** 适合转发的消息类型 */
+export const FORWARDABLE_TYPES: CastMethod[] = [
+  CastMethod.CHAT,
+  CastMethod.GIFT,
+  CastMethod.LIKE,
+  CastMethod.MEMBER,
+  CastMethod.SOCIAL,
+  CastMethod.EMOJI_CHAT,
+  CastMethod.CONTROL,
+  CastMethod.FANSCLUB,
+  CastMethod.ROOM_RANK,
+];
 
 export interface AppSettings {
   /** 自动检查更新 */
@@ -17,6 +31,8 @@ export interface AppSettings {
   lastRoomId: string;
   /** 上次转发地址 */
   lastRelayUrl: string;
+  /** 转发消息类型过滤 */
+  relayFilter: CastMethod[];
 }
 
 const defaults: AppSettings = {
@@ -26,6 +42,7 @@ const defaults: AppSettings = {
   theme: 'light',
   lastRoomId: '',
   lastRelayUrl: '',
+  relayFilter: [...FORWARDABLE_TYPES],
 };
 
 function load(): AppSettings {
