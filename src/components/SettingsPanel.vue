@@ -109,6 +109,30 @@
 
             <hr class="setting-divider" />
 
+            <!-- 录制消息类型过滤 -->
+            <div class="setting-item section-header">
+              <div class="setting-info">
+                <div class="setting-label">录制消息类型</div>
+                <div class="setting-desc">选择要录制到 .jsonl 文件的消息类型</div>
+              </div>
+            </div>
+            <div class="relay-filter-grid">
+              <label
+                v-for="item in recordTypeList"
+                :key="item.method"
+                class="relay-filter-item"
+              >
+                <input
+                  type="checkbox"
+                  :checked="localSettings.recordFilter.includes(item.method)"
+                  @change="toggleRecordType(item.method)"
+                />
+                <span class="relay-filter-label">{{ item.label }}</span>
+              </label>
+            </div>
+
+            <hr class="setting-divider" />
+
             <!-- 手动检查更新 -->
             <div class="setting-item">
               <div class="setting-info">
@@ -171,9 +195,19 @@ const typeLabels: Record<string, string> = {
 };
 
 const relayTypeList = FORWARDABLE_TYPES.map(m => ({ method: m, label: typeLabels[m] || m }));
+const recordTypeList = FORWARDABLE_TYPES.map(m => ({ method: m, label: typeLabels[m] || m }));
 
 function toggle(key: 'autoUpdate' | 'rememberRoom' | 'rememberRelay') {
   localSettings[key] = !localSettings[key];
+}
+
+function toggleRecordType(method: CastMethod) {
+  const idx = localSettings.recordFilter.indexOf(method);
+  if (idx >= 0) {
+    localSettings.recordFilter.splice(idx, 1);
+  } else {
+    localSettings.recordFilter.push(method);
+  }
 }
 
 function toggleRelayType(method: CastMethod) {

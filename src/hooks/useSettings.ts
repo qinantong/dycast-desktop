@@ -33,6 +33,8 @@ export interface AppSettings {
   lastRelayUrl: string;
   /** 转发消息类型过滤 */
   relayFilter: CastMethod[];
+  /** 录制消息类型过滤 */
+  recordFilter: CastMethod[];
 }
 
 const defaults: AppSettings = {
@@ -43,6 +45,7 @@ const defaults: AppSettings = {
   lastRoomId: '',
   lastRelayUrl: '',
   relayFilter: [...FORWARDABLE_TYPES],
+  recordFilter: [...FORWARDABLE_TYPES],
 };
 
 function load(): AppSettings {

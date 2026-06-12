@@ -300,7 +300,8 @@ const handleMessages = function (msgs: DyMessage[]) {
   } catch (err) {
     CLog.error('IndexView Handle Messages Error =>', err);
   }
-  writeRecordedCasts(newCasts);
+  const recordCasts = newCasts.filter(m => !!m.method && settings.recordFilter.includes(m.method));
+  writeRecordedCasts(recordCasts);
   if (castRef.value) castRef.value.appendCasts(mainCasts);
   if (otherRef.value) otherRef.value.appendCasts(otherCasts);
   if (relayWs && relayWs.isConnected()) {
