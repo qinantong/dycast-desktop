@@ -13,6 +13,7 @@
       <div class="view-left-bottom">
         <SidTool />
         <div class="view-left-tools">
+          <span class="version-text">v{{ version }}</span>
           <div
             :class="{ 'view-left-tool': true, 'cm-btn': true, 'is-recording': isRecording }"
             :title="isRecording ? `停止记录(${recordingCount})` : '记录弹幕'"
@@ -93,6 +94,7 @@ import SkMessage from '@/components/Message';
 import { formatDate } from '@/utils/commonUtil';
 import { JsonlRecorder } from '@/utils/jsonlRecorder';
 import { settings } from '@/hooks/useSettings';
+import { version } from '../../package.json';
 
 const MAX_DEDUPE_IDS = 10000;
 
@@ -569,6 +571,12 @@ const toggleCastRecording = function () {
     align-items: center;
     justify-content: flex-end;
     gap: 8px;
+    .version-text {
+      margin-right: auto;
+      font-size: 12px;
+      color: var(--app-text-subtle);
+      user-select: none;
+    }
     box-sizing: border-box;
     padding: 0 12px;
   }
