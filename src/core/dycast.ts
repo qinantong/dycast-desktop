@@ -176,6 +176,7 @@ export interface DyMessage {
   rtfContent?: CastRtfContent[];
   room?: LiveRoom;
   rank?: LiveRankItem[];
+  timestamp?: number;
 }
 
 export enum CastMethod {

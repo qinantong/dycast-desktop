@@ -22,6 +22,14 @@
           </div>
           <div
             class="view-left-tool cm-btn"
+            title="弹幕重放"
+            @click.stop="showReplay = true">
+            <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+          </div>
+          <div
+            class="view-left-tool cm-btn"
             title="设置"
             @click.stop="showSettings = true">
             <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -65,6 +73,7 @@
       </div>
     </div>
     <SettingsPanel :visible="showSettings" @close="showSettings = false" />
+    <ReplayPanel :visible="showReplay" :relay-url="relayUrl" @close="showReplay = false" @replay-start="onReplayStart" @replay-stop="onReplayStop" />
   </div>
 </template>
 
@@ -75,6 +84,7 @@ import LiveStatusPanel from '@/components/LiveStatusPanel.vue';
 import CastList from '@/components/CastList.vue';
 import SidTool from '@/components/SidTool/SidTool.vue';
 import SettingsPanel from '@/components/SettingsPanel.vue';
+import ReplayPanel from '@/components/ReplayPanel.vue';
 import {
   CastMethod,
   DyCast,
@@ -138,6 +148,9 @@ let castWs: DyCast | undefined;
 let relayWs: RelayCast | undefined;
 // 设置面板
 const showSettings = ref(false);
+// 重放面板
+const showReplay = ref(false);
+const isReplaying = ref(false);
 const appTheme = computed(() => settings.theme);
 
 onMounted(() => {
@@ -226,8 +239,10 @@ const addCastId = function (id: string) {
 
 const writeRecordedCasts = function (casts: DyMessage[]) {
   if (!castRecorder.isRecording || !casts.length) return;
+  const now = Date.now();
+  const stamped = casts.map(c => ({ ...c, timestamp: now }));
   castRecorder
-    .write(casts)
+    .write(stamped)
     .then(count => {
       recordingCount.value = count;
     })
@@ -526,6 +541,16 @@ const toggleCastRecording = function () {
   } else {
     startCastRecording();
   }
+};
+
+const onReplayStart = function () {
+  isReplaying.value = true;
+  SkMessage.info('弹幕重放已开始');
+};
+
+const onReplayStop = function () {
+  isReplaying.value = false;
+  SkMessage.info('弹幕重放已停止');
 };
 
 </script>

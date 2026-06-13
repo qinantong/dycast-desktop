@@ -1,4 +1,5 @@
 mod cast_record;
+mod cast_replay;
 mod live_info;
 mod ws_relay;
 
@@ -18,6 +19,7 @@ pub fn run() {
             cast_record::cast_record_start,
             cast_record::cast_record_write,
             cast_record::cast_record_stop,
+            cast_replay::cast_replay_read,
             ws_relay::ws_connect,
             ws_relay::ws_send,
             ws_relay::ws_send_text,
