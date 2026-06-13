@@ -58,7 +58,13 @@ jobs:
           tool: git-cliff
 
       - name: Generate release notes
-        run: git-cliff --latest --strip header --output release-notes.md
+        id: changelog
+        shell: bash
+        run: |
+          notes=$(git-cliff --latest --strip header)
+          echo "notes<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$notes" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
 
       - name: Build and publish Tauri app
         uses: tauri-apps/tauri-action@dev
@@ -69,7 +75,7 @@ jobs:
         with:
           tagName: v__VERSION__
           releaseName: 'Dycast Desktop v__VERSION__'
-          releaseBody: ''
+          releaseBody: ${{ steps.changelog.outputs.notes }}
           generateReleaseNotes: false
           releaseDraft: false
           prerelease: false
@@ -77,8 +83,3 @@ jobs:
           args: ${{ matrix.args }}
           uploadUpdaterJson: true
           uploadUpdaterSignatures: false
-
-      - name: Update release body
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release edit ${{ github.ref_name }} --notes-file release-notes.md
