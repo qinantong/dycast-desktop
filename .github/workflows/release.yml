@@ -79,4 +79,6 @@ jobs:
           uploadUpdaterSignatures: false
 
       - name: Update release body
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release edit ${{ github.ref_name }} --notes-file release-notes.md
