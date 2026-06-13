@@ -24,6 +24,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install Linux dependencies
         if: matrix.platform == 'ubuntu-22.04'
@@ -50,6 +52,14 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
 
+      - name: Install git-cliff
+        uses: taiki-e/install-action@v2
+        with:
+          tool: git-cliff
+
+      - name: Generate release notes
+        run: git-cliff --latest --strip header --output release-notes.md
+
       - name: Build and publish Tauri app
         uses: tauri-apps/tauri-action@dev
         env:
@@ -59,27 +69,14 @@ jobs:
         with:
           tagName: v__VERSION__
           releaseName: 'Dycast Desktop v__VERSION__'
-          releaseBody: |
-            ## 新增
-
-            - **WebSocket 转发消息类型过滤** — 设置面板新增转发消息类型开关，可选择只转发聊天、礼物、点赞、进场等特定类型的消息，减少无关流量
-
-            ## 修复
-
-            - **修复自动更新下载失败** — 修复点击"立即更新"时报错的问题，Tauri updater 的 Update 类使用 JS 私有字段，与 Vue 响应式 Proxy 不兼容
-
-            ## 工程
-
-            - CI: 精简为单 job，由 tauri-action 自动生成 latest.json，不再上传 .sig 文件
-            - 取消 darwin-x86_64 构建支持，仅保留 darwin-aarch64
-
-            ## 下载
-
-            请在下方 Assets 中下载对应系统安装包。
-          generateReleaseNotes: true
+          releaseBody: ''
+          generateReleaseNotes: false
           releaseDraft: false
           prerelease: false
           tauriScript: npm run tauri
           args: ${{ matrix.args }}
           uploadUpdaterJson: true
           uploadUpdaterSignatures: false
+
+      - name: Update release body
+        run: gh release edit ${{ github.ref_name }} --notes-file release-notes.md

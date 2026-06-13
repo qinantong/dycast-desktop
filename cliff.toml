@@ -1,0 +1,45 @@
+[changelog]
+header = "# Changelog\n\nAll notable changes to this project will be documented in this file.\n"
+body = """
+{% for group, commits in commits | group_by(attribute="group") %}
+### {{ group | upper_first }}
+{% for commit in commits %}
+- {{ commit.message | upper_first }}
+{% endfor %}
+{% endfor %}
+"""
+trim = true
+postprocessors = [
+  { pattern = "<[^>]+>", replace = "" },
+  { pattern = "\\s*\n", replace = "\n" },
+]
+
+[git]
+conventional_commits = false
+filter_unconventional = false
+commit_parsers = [
+  { message = "^<feat>", group = "Features" },
+  { message = "^<fix>", group = "Bug Fixes" },
+  { message = "^<docs>", group = "Documentation" },
+  { message = "^<perf>", group = "Performance" },
+  { message = "^<refactor>", group = "Refactoring" },
+  { message = "^<chore>", group = "Miscellaneous" },
+  { message = "^release:", group = "Release", skip = true },
+  { message = "^feat\\(", group = "Features" },
+  { message = "^fix\\(", group = "Bug Fixes" },
+  { message = "^docs\\(", group = "Documentation" },
+  { message = "^perf\\(", group = "Performance" },
+  { message = "^refactor\\(", group = "Refactoring" },
+  { message = "^chore\\(", group = "Miscellaneous" },
+  { message = "^feat:", group = "Features" },
+  { message = "^fix:", group = "Bug Fixes" },
+  { message = "^docs:", group = "Documentation" },
+  { message = "^perf:", group = "Performance" },
+  { message = "^refactor:", group = "Refactoring" },
+  { message = "^chore:", group = "Miscellaneous" },
+  { message = ".*", group = "Other", default_group = true },
+]
+filter_commits = false
+tag_pattern = "v[0-9]*"
+skip_tags = ""
+ignore_tags = ""

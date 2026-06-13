@@ -12,7 +12,9 @@
     "tauri": "tauri",
     "tauri-dev": "tauri dev",
     "tauri-build": "tauri build --config src-tauri/tauri.local-build.conf.json",
-    "version": "node scripts/sync-version.mjs"
+    "version": "node scripts/sync-version.mjs",
+    "changelog": "git-cliff -o CHANGELOG.md",
+    "changelog:unreleased": "git-cliff --unreleased --strip header"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.11.0",
